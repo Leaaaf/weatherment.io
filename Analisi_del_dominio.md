@@ -4,7 +4,7 @@ Topic | Definisce l'argomento a cui l'evento fa riferimento. | Argomento
 Tipo evento | Definisce nello specifico il tipo di evento che riferisce il topic |
 Schema | Definisce per ogni tipo di evento delle regole e dei formati necessari per la validazione. | 
 Payload | Pacchetto che contiene tutti i dati raccolti dalla stazione. | Carico 
-Sensore | | 
+Sensore | Dispositivo elettronico in grado di rilevare una grandezza fisica e di trasmettere le variazioni a un sistema di misurazione o di controllo. | Strumento di misura
 Stazione | L'insieme dei sensori collegati alla scheda principale. | 
 Scheda | Unisce tutti i componenti elettrici ed i sensori e ne permette il funzionamento. | 
 Notifica |  |
