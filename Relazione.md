@@ -57,6 +57,9 @@ F.3 | I dati raccolti dalle stazioni vengono validati dal server prima dell'inse
 F.4 | Attraverso il client è possibile visualizzare i dati in tempo reale, in un intervallo di tempo definito dall'utente o visualizzare lo storico di una stazione. | Funzionale
 F.5 | L'interfaccia web deve permettere la consultazione attraverso filtri e criteri di ricerca. | Funzionale
 F.6 | L'interfaccia web deve permettere la consultazione di grafici riassuntivi. | Funzionale
+F.7 | Ogni evento generato dalla stazione meteo appartiene ad uno specifico topic. | Funzionale
+F.8 | Per ogni topic ci sono determinati tipi di evento. | Funzionale
+F.9 | Per ogni tipo di evento è definito un preciso schema che il payload deve rispettare. | Funzionale
 N.1 | Le frequenze di campionamento dei vari sensori possono variare a seconda del modello. | Non Funzionale
 N.2 | Le nuove stazioni meteo prima di poter trasmettere i dati dovranno essere autenticate per garantire l'affidabilità del sistema. | Non Funzionale
 D.1 | La temperatura inviata dai sensori deve essere misurata in *gradi Celsius (°C)*. | Dominio
