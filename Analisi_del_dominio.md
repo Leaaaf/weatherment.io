@@ -3,18 +3,18 @@ Voce | Definizione | Sinonimi
 Topic | Definisce l'argomento a cui l'evento fa riferimento. | Argomento
 Tipo evento | Definisce nello specifico il tipo di evento che riferisce il topic |
 Schema | Definisce per ogni tipo di evento delle regole e dei formati necessari per la validazione. | 
-Payload | Pacchetto che contiene tutti i dati raccolti dalla stazione. | Carico 
+Payload | Pacchetto contenente tutti i dati raccolti dalla stazione. | Carico 
 Sensore | Dispositivo elettronico in grado di rilevare una grandezza fisica e di trasmettere le variazioni a un sistema di misurazione o di controllo. | Strumento di misura
-Stazione | L'insieme dei sensori collegati alla scheda principale. | 
+Stazione | L'insieme dei sensori collegati alla scheda principale, situata in un determinato luogo, capace di comunicare con il sistema. | 
 Scheda | Unisce tutti i componenti elettrici ed i sensori e ne permette il funzionamento. | 
-Notifica |  |
-Evento |  |
+Notifica Postgres | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres. | Notify
+Evento | La stazione emette un evento per notificare all'intero sistema dei cambiamenti, necessari per la ricostruzione dello storico dei dati. | Cambiamento
 Scalabilità | In informatica, la caratteristica di un sistema software o hardware facilmente modificabile nel caso di variazioni notevoli della mole o della tipologia dei dati trattati. | Espandibilità
-Storico | |
+Storico | L'insieme di tutti i dati raccolti dalle diverse stazioni organizzati in base agli eventi a cui fanno riferimento. | 
 Frequenza di campionamento | Numero di volte al secondo in cui un segnale analogico viene misurato e memorizzato in forma digitale. |
 Architettura | Definisce l'organizzazione e la comunicazione dei diversi componenti all'interno dell'ecosistema. |
 Database relazionale |  Modello logico di rappresentazione o strutturazione dei dati di un database implementato su sistemi di gestione di basi di dati. |
-Database documentale | | 
-Autenticazione | |
-Buffer | |
-Barriera | |
+Database documentale | Un database di documenti è un database di tipo non relazionale progettato per memorizzare e cercare dati come documenti di tipo JSON. | 
+Autenticazione | Sistema di riconoscimento necessario per permettere ad una stazione di poter inviare i dati al sistema. | Registrazione
+Buffer | Memoria dedicata nella stazione meteo per il salvataggio dei dati nel caso in cui il server non fosse pronto a riceverli o se ci dovesse essere qualche problema nel sistema. | 
+Barriera | Sistema di validazione dei dati inviati da una stazione secondo uno schema ben definito. Necessario per evitare di scrivere sul database dati non validi. | Validazione
