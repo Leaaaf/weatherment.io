@@ -1,7 +1,7 @@
 $main-blue:rgb(0, 75, 168);
 $light-blue:#457CBF;
-$comprimary: rgb(255, 230, 89);
-$white: #F1F4C3;
+$comprimary: #ff3953;
+$white: #F7F7F7;
 
 body {
     margin: 0;
@@ -18,7 +18,7 @@ body {
     &.left {
         width: 20%;
         position: fixed;
-        background-color: $main-blue;
+        background-color: $white;
 
         .title {
             display: flex;
@@ -44,7 +44,7 @@ body {
                 height: 100%;
 
                 li {
-                    color: $white;
+                    color: $main-blue;
                     list-style-type: none;
                     font-weight: 500;
                     font-size: 1.3vw;
@@ -52,7 +52,8 @@ body {
                     padding-bottom: 20px;
 
                     &.selected {
-                        color: $comprimary;    
+                        color: $comprimary;
+                        text-decoration: underline $comprimary wavy;
                     }
                 }
             }
@@ -66,10 +67,15 @@ body {
         h1 {
             margin-top: 5px;
             color: $main-blue;
-            font-size: 2.9em;
+            background: url("../pattern.png");
+            background-size: contain;
+            background-position: bottom;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 4.8em;
             font-family: 'Montserrat', sans-serif;
             margin-left: 25px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
     }
 }
@@ -81,7 +87,7 @@ body {
 
     .button {
         color: $white;
-        background-color: $light-blue;
+        background-color: $main-blue;
         font-family: 'Source Sans Pro', sans-serif;
         font-weight: 700;
         font-size: 1.1em;
