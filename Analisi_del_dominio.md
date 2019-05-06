@@ -4,15 +4,12 @@ Architettura | Definisce l'organizzazione e la comunicazione dei diversi compone
 Autenticazione | Sistema di riconoscimento necessario per permettere ad una stazione di poter inviare i dati al sistema. | Registrazione
 Barriera | Sistema di validazione dei dati inviati da una stazione secondo uno schema ben definito. Necessario per evitare di scrivere sul database dati non validi. | Validazione
 Buffer | Memoria dedicata nella stazione meteo per il salvataggio dei dati nel caso in cui il server non fosse pronto a riceverli o se ci dovesse essere qualche problema nel sistema. | 
+Database documentale | Un database di documenti è un database di tipo non relazionale progettato per memorizzare e cercare dati come documenti di tipo JSON. | 
 Database relazionale |  Modello logico di rappresentazione o strutturazione dei dati di un database implementato su sistemi di gestione di basi di dati. |
 Evento | La stazione emette un evento per notificare all'intero sistema dei cambiamenti, necessari per la ricostruzione dello storico dei dati. | Cambiamento
 Frequenza di campionamento | Numero di volte al secondo in cui un segnale analogico viene misurato e memorizzato in forma digitale. |
-<<<<<<< HEAD
 Modello | Indica la versione di una stazione
 Notifica Postgres | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres. | Notify
-=======
-Notifica PostgreSQL | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres. | Notify
->>>>>>> b7c1e8a5967bf5979c7574c48c0a7f8715838062
 Payload | Pacchetto contenente tutti i dati raccolti dalla stazione. | Carico 
 Proiezione | Interrogazione al database che fornisce all'utente soltanto i dati richiesti
 Scalabilità | In informatica, la caratteristica di un sistema software o hardware facilmente modificabile nel caso di variazioni notevoli della mole o della tipologia dei dati trattati. | Espandibilità
@@ -23,3 +20,4 @@ Stazione | L'insieme dei sensori collegati alla scheda principale, situata in un
 Storico | L'insieme di tutti i dati raccolti dalle diverse stazioni organizzati in base agli eventi a cui fanno riferimento. | 
 Tipo evento | Definisce nello specifico il tipo di evento che riferisce il topic |
 Topic | Definisce l'argomento a cui l'evento fa riferimento. | Argomento
+
