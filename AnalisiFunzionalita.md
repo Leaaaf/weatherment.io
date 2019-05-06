@@ -2,8 +2,9 @@
 ### Analisi delle funzionalità
 
 **Tabella Funzionalità** 
+
 **Funzionalità** | **Tipo** | **Grado Complessità**
--|-|-
+|-|-|-
 Gestione Eventi | Gestione e memorizzazione dei dati, interazione con l'esterno | Complessa
 Gestione Stazioni | Gestione e memorizzazione dati, interazione con l'esterno | Complessa
 Storico | Gestione e memorizzazione dati | Semplice
