@@ -18,7 +18,6 @@
   - [Interfacce grafiche](#interfacce-grafiche)
     - [HOMEPAGE](#homepage)
     - [PAGINA SPECIFICA DELLA LOCALITA'](#pagina-specifica-della-localita)
-    - [`SE CI AVANZA DEL TEMPO CI SBATTIAMO I COGLIONI PER FARE ALTRE COSE`](#se-ci-avanza-del-tempo-ci-sbattiamo-i-coglioni-per-fare-altre-cose)
 - [Analisi del problema](#analisi-del-problema)
   - [Modello del dominio](#modello-del-dominio)
   - [Architettura logica](#architettura-logica)
@@ -114,7 +113,6 @@ D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *part
 -   Stream in tempo reale con i valori ricevuti
 -   `Possibilità di modellare i dati secondi diversi criteri quali data e/o altri`
 
-### `SE CI AVANZA DEL TEMPO CI SBATTIAMO I COGLIONI PER FARE ALTRE COSE`
 
 <P style='page-break-before: always'>
 
