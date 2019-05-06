@@ -11,6 +11,7 @@ Storico | Gestione e memorizzazione dati | Semplice
 Scrittura Log | Memorizzazione dati | Semplice
 
 **Gestione Eventi: Tabella Informazioni/ Flusso**
+
 Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
 -|-|-|-|-|-
 Dato sensore Hardware | Semplice | Media | Input | |
@@ -20,6 +21,7 @@ Ora | Semplice | Media | Input | |
 Stazione D'origine | Composto | Media | Input | |
 
 **Gestione Stazioni: Tabella Informazioni/ Flusso** 
+
 Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
 -|-|-|-|-|-
 UUID | Semplice | Bassa | Input | Deve essere valido |
@@ -28,6 +30,7 @@ IP | Semplice | Bassa | Input | Deve essere un IP valido
 Porta | Semplice | Bassa | Input | Intero compreso tra 1024 e 65535
 
 **Storico: Tabella Informazioni/ Flusso** 
+
 Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
 -|-|-|-|-|-
 **Evento** composto da: | Composto | Alta | Input | |
@@ -36,6 +39,7 @@ Type | Semplice | Media | Input | Stringa |Version | Semplice | Media | Input | 
 Payload | Composto | Media | Input | |
 
 **Scrittura Log: Tabella Informazioni/ Flusso** 
+
 Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
 -|-|-|-|-|-
 IP | Semplice | Alta | Input | |
