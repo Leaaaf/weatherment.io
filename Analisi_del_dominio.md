@@ -8,8 +8,10 @@ Database documentale | Un database di documenti è un database di tipo non relaz
 Database relazionale |  Modello logico di rappresentazione o strutturazione dei dati di un database implementato su sistemi di gestione di basi di dati. |
 Evento | La stazione emette un evento per notificare all'intero sistema dei cambiamenti, necessari per la ricostruzione dello storico dei dati. | Cambiamento
 Frequenza di campionamento | Numero di volte al secondo in cui un segnale analogico viene misurato e memorizzato in forma digitale. |
+Modello | Indica la versione di una stazione
 Notifica Postgres | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres. | Notify
 Payload | Pacchetto contenente tutti i dati raccolti dalla stazione. | Carico 
+Proiezione | Interrogazione al database che fornisce all'utente soltanto i dati richiesti
 Scalabilità | In informatica, la caratteristica di un sistema software o hardware facilmente modificabile nel caso di variazioni notevoli della mole o della tipologia dei dati trattati. | Espandibilità
 Scheda | Unisce tutti i componenti elettrici ed i sensori e ne permette il funzionamento. | 
 Schema | Definisce per ogni tipo di evento delle regole e dei formati necessari per la validazione. | 
