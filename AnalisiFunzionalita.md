@@ -49,7 +49,7 @@ Data | Semplice | Media | Input | |
 
 **Sistemi esterni**
 Sistema | Descrizione | Protocollo di interazione | Livello di sicurezza
--|-|-|-|
+|-|-|-|-
 Stazione meteo | Insieme di sensori e componenti hardware che formano una stazione meteo | La stazione invia al server gli eventi in un formato prestabolito. Il server, dopo la validazione dei dati ricevuti, salva gli eventi sul database. | Alto
 
 **Analisi dei ruoli e delle responsabilità**
