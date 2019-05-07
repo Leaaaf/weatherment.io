@@ -46,3 +46,18 @@ IP | Semplice | Alta | Input | |
 Azione | Semplice | Alta | Input | |
 Ora | Semplice | Media | Input | |
 Data | Semplice | Media | Input | |
+
+**Sistemi esterni**
+Sistema | Descrizione | Protocollo di interazione | Livello di sicurezza
+-|-|-|-|
+Stazione meteo | Insieme di sensori e componenti hardware che formano una stazione meteo | La stazione invia al server gli eventi in un formato prestabolito. Il server, dopo la validazione dei dati ricevuti, salva gli eventi sul database. | Alto
+
+**Analisi dei ruoli e delle responsabilità**
+Ruolo | Responsabilità | Maschere | Riservatezza | Numerosità
+-|-|-|-|-|
+Utente | Consulta i dati delle stazioni meteo utilizzando i filtri offerti dall'applicazione. | | | Il numero di utenti non è limitato. Dipende dalla scalabilità del sistema
+
+**Utente : tabella ruolo/informazioni**
+Informazione | Tipo di accesso
+-|-|
+Storico | Lettura

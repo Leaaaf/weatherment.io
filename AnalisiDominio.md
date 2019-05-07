@@ -2,6 +2,7 @@ Voce | Definizione | Sinonimi
 -|-|-
 Architettura | Definisce l'organizzazione e la comunicazione dei diversi componenti all'interno dell'ecosistema. |
 Autenticazione | Sistema di riconoscimento necessario per permettere ad una stazione di poter inviare i dati al sistema. | Registrazione
+Append-Only | Tipologia di database che permette soltanto l'inserimento dei dati e non la modifica o l'eliminazione
 Barriera | Sistema di validazione dei dati inviati da una stazione secondo uno schema ben definito. Necessario per evitare di scrivere sul database dati non validi. | Validazione
 Buffer | Memoria dedicata nella stazione meteo per il salvataggio dei dati nel caso in cui il server non fosse pronto a riceverli o se ci dovesse essere qualche problema nel sistema. |  
 Database relazionale |  Modello logico di rappresentazione o strutturazione dei dati di un database implementato su sistemi di gestione di basi di dati. |
