@@ -15,7 +15,7 @@ body {
     &.left {
         width: 20%;
         position: fixed;
-        background-image: url("../resources/pattern.png");
+        background-color: $white;
         background-size: contain;
         background-position: bottom;
         
@@ -30,6 +30,11 @@ body {
                 text-align: center;
                 font-size: 2vw;
                 font-family: 'Montserrat', sans-serif;
+
+                a {
+                    color: $yellow;
+                    text-decoration: none;
+                }
             }
         }
 
@@ -123,8 +128,8 @@ body {
                 }
 
                 .fa {
-                    background: $comprimary;
-                    color: $white;
+                    background: $white;
+                    color: $comprimary;
                 }
             }
             
