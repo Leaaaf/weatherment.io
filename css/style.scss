@@ -1,6 +1,7 @@
 $main-blue:rgb(0, 75, 168);
 $light-blue:#457CBF;
 $comprimary: #ff3953;
+$yellow: #FFD700;
 $white: #F7F7F7;
 
 body {
@@ -18,8 +19,10 @@ body {
     &.left {
         width: 20%;
         position: fixed;
-        background-color: $white;
-
+        background-image: url("../pattern.png");
+        background-size: contain;
+        background-position: bottom;
+        
         .title {
             display: flex;
             align-items: center;
@@ -27,7 +30,7 @@ body {
 
             h1 {
                 margin: 10px;
-                color: $comprimary;
+                color: $yellow;
                 text-align: center;
                 font-size: 2vw;
                 font-family: 'Montserrat', sans-serif;
@@ -44,16 +47,18 @@ body {
                 height: 100%;
 
                 li {
-                    color: $main-blue;
+                    color: $white;
                     list-style-type: none;
                     font-weight: 500;
-                    font-size: 1.3vw;
+                    font-size: 1.7vw;
+                    text-shadow: 2px 2px $main-blue;
                     font-family: 'Montserrat', sans-serif;
                     padding-bottom: 20px;
 
                     &.selected {
-                        color: $comprimary;
-                        text-decoration: underline $comprimary wavy;
+                        color: $yellow;
+                        text-decoration: underline $yellow wavy;
+                        text-shadow: 2px 2px $main-blue;
                     }
                 }
             }
@@ -118,6 +123,7 @@ body {
                 
                 input {
                     display: block;
+                    color: $main-blue;
                 }
 
                 .fa {
