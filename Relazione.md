@@ -54,23 +54,21 @@ Il progetto mira ad essere facilmente scalabile sia orizzontalmente che vertical
 ## Requisiti del sistema
 ID  | Requisito | Tipo
 -|-|-
-F.1 | La stazione invia i dati al server solo quando avvengono cambiamenti nei valori letti dai sensori; così facendo non si generano eventi ridondanti.  | Funzionale
-F.2 | Nel momento in cui si genera un evento da inviare al server, la stazione provvederà a determinare la sua posizione e aggiungerà nazione e ZIP Code prima di inoltrarlo. | Funzionale
-F.3 | I dati raccolti dalle stazioni vengono validati dal server prima dell'inserimento sul database, assicurandone la correttezza all'utente finale. | Funzionale
-F.4 | Attraverso il client è possibile visualizzare i dati in tempo reale, in un intervallo di tempo definito dall'utente o visualizzare lo storico di una stazione. | Funzionale
-F.5 | L'interfaccia web deve permettere la consultazione attraverso filtri e criteri di ricerca. | Funzionale
-F.6 | L'interfaccia web deve permettere la consultazione di grafici riassuntivi. | Funzionale
-F.7 | Ogni evento generato dalla stazione meteo appartiene ad uno specifico topic. | Funzionale
-F.8 | Per ogni topic ci sono determinati tipi di evento. | Funzionale
-F.9 | Per ogni tipo di evento è definito un preciso schema che il payload deve rispettare. | Funzionale
-F.10 | Ogni volta che viene aggiunto un evento sul database si notifica ai server in ascolto. | Funzionale 
-N.1 | Le frequenze di campionamento dei vari sensori possono variare a seconda del modello. | Non Funzionale
-N.2 | Le nuove stazioni meteo prima di poter trasmettere i dati dovranno essere autenticate per garantire l'affidabilità del sistema. | Non Funzionale
-D.1 | La temperatura inviata dai sensori deve essere misurata in *gradi Celsius (°C)*. | Dominio
-D.2 | La pressione inviata dai sensori deve essere misurata in *ettopascal (hPa)*. | Dominio
-D.3 | La velocità del vento inviata dai sensori deve essere misurata in *chilometri orari (km/h)*. | Dominio
-D.4 | L'umidità inviata dai sensori deve essere misurata in *percentuale (%)*. | Dominio
-D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *parti per milione (ppm)*. | Dominio 
+F.1 | La stazione invia i dati al server solo quando avvengono cambiamenti nei valori letti dai sensori; così facendo non si generano eventi ridondanti  | Funzionale
+F.2 | Nel momento in cui si genera un evento da inviare al server, la stazione provvederà a determinare la sua posizione e aggiungerà nazione e ZIP Code prima di inoltrarlo | Funzionale
+F.3 | I dati raccolti dalle stazioni vengono validati dal server prima dell'inserimento sul database, assicurandone la correttezza all'utente finale | Funzionale
+F.4 | Attraverso il client è possibile visualizzare i dati in tempo reale, in un intervallo di tempo definito dall'utente o visualizzare lo storico di una stazione | Funzionale
+F.5 | L'interfaccia web deve permettere la consultazione attraverso filtri e criteri di ricerca | Funzionale
+F.6 | L'interfaccia web deve permettere la consultazione di grafici riassuntivi | Funzionale
+F.7 | Ogni evento generato dalla stazione meteo appartiene ad uno specifico topic | Funzionale
+F.8 | Per ogni topic ci sono determinati tipi di evento | Funzionale
+F.9 | Per ogni tipo di evento è definito un preciso schema che il payload deve rispettare | Funzionale
+F.10 | Ogni volta che viene aggiunto un evento sul database si notifica ai server in ascolto | Funzionale 
+D.1 | La temperatura inviata dai sensori deve essere misurata in *gradi Celsius (°C)* | Dominio
+D.2 | La pressione inviata dai sensori deve essere misurata in *ettopascal (hPa)* | Dominio
+D.3 | La velocità del vento inviata dai sensori deve essere misurata in *chilometri orari (km/h)* | Dominio
+D.4 | L'umidità inviata dai sensori deve essere misurata in *percentuale (%)* | Dominio
+D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *parti per milione (ppm)* | Dominio 
 
 <P style='page-break-before: always'>
 
@@ -79,26 +77,26 @@ D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *part
 ### Vocabolario
 Voce | Definizione | Sinonimi
 -|-|-
-Architettura | Definisce l'organizzazione e la comunicazione dei diversi componenti all'interno dell'ecosistema. |
-Autenticazione | Sistema di riconoscimento necessario per permettere ad una stazione di poter inviare i dati al sistema. | Registrazione
+Architettura | Definisce l'organizzazione e la comunicazione dei diversi componenti all'interno dell'ecosistema |
+Autenticazione | Sistema di riconoscimento necessario per permettere ad una stazione di poter inviare i dati al sistema | Registrazione
 Append-Only | Tipologia di database che permette soltanto l'inserimento dei dati e non la modifica o l'eliminazione
-Barriera | Sistema di validazione dei dati inviati da una stazione secondo uno schema ben definito. Necessario per evitare di scrivere sul database dati non validi. | Validazione
-Buffer | Memoria dedicata nella stazione meteo per il salvataggio dei dati nel caso in cui il server non fosse pronto a riceverli o se ci dovesse essere qualche problema nel sistema. |  
-Database relazionale |  Modello logico di rappresentazione o strutturazione dei dati di un database implementato su sistemi di gestione di basi di dati. |
-Evento | La stazione emette un evento per notificare all'intero sistema dei cambiamenti, necessari per la ricostruzione dello storico dei dati. | Cambiamento
-Frequenza di campionamento | Numero di volte al secondo in cui un segnale analogico viene misurato e memorizzato in forma digitale. |
+Barriera | Sistema di validazione dei dati inviati da una stazione secondo uno schema ben definito. Necessario per evitare di scrivere sul database dati non validi | Validazione
+Buffer | Memoria dedicata nella stazione meteo per il salvataggio dei dati nel caso in cui il server non fosse pronto a riceverli o se ci dovesse essere qualche problema nel sistema |  
+Database relazionale |  Modello logico di rappresentazione o strutturazione dei dati di un database implementato su sistemi di gestione di basi di dati |
+Evento | La stazione emette un evento per notificare all'intero sistema dei cambiamenti, necessari per la ricostruzione dello storico dei dati | Cambiamento
+Frequenza di campionamento | Numero di volte al secondo in cui un segnale analogico viene misurato e memorizzato in forma digitale |
 Modello | Indica la versione di una stazione 
-Notifica PostgreSQL | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres. | Notify
-Payload | Pacchetto contenente tutti i dati raccolti dalla stazione. | Carico 
+Notifica PostgreSQL | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres | Notify
+Payload | Pacchetto contenente tutti i dati raccolti dalla stazione | Carico 
 Proiezione | Interrogazione al database che fornisce all'utente soltanto i dati richiesti
-Scalabilità | In informatica, la caratteristica di un sistema software o hardware facilmente modificabile nel caso di variazioni notevoli della mole o della tipologia dei dati trattati. | Espandibilità
-Scheda | Unisce tutti i componenti elettrici ed i sensori e ne permette il funzionamento. | 
-Schema | Definisce per ogni tipo di evento delle regole e dei formati necessari per la validazione. | 
-Sensore | Dispositivo elettronico in grado di rilevare una grandezza fisica e di trasmettere le variazioni a un sistema di misurazione o di controllo. | Strumento di misura
-Stazione | L'insieme dei sensori collegati alla scheda principale, situata in un determinato luogo, capace di comunicare con il sistema. | 
-Storico | L'insieme di tutti i dati raccolti dalle diverse stazioni organizzati in base agli eventi a cui fanno riferimento. | 
+Scalabilità | In informatica, la caratteristica di un sistema software o hardware facilmente modificabile nel caso di variazioni notevoli della mole o della tipologia dei dati trattati | Espandibilità
+Scheda | Unisce tutti i componenti elettrici ed i sensori e ne permette il funzionamento | 
+Schema | Definisce per ogni tipo di evento delle regole e dei formati necessari per la validazione | 
+Sensore | Dispositivo elettronico in grado di rilevare una grandezza fisica e di trasmettere le variazioni a un sistema di misurazione o di controllo | Strumento di misura
+Stazione | L'insieme dei sensori collegati alla scheda principale, situata in un determinato luogo, capace di comunicare con il sistema | 
+Storico | L'insieme di tutti i dati raccolti dalle diverse stazioni organizzati in base agli eventi a cui fanno riferimento | 
 Tipo evento | Definisce nello specifico il tipo di evento che riferisce il topic |
-Topic | Definisce l'argomento a cui l'evento fa riferimento. | Argomento
+Topic | Definisce l'argomento a cui l'evento fa riferimento | Argomento
 
 <P style='page-break-before: always'>
 
@@ -134,7 +132,7 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 <tr><td><b>Postcondizioni</b></td><td>Il sistema ha mostrato all'utente gli eventi registrati</td></tr>
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;"> L'utente ricerca la città di cui vuole visualizzare i dati<li style="list-style-type: decimal;"> Viene mostrata una schermata contenente tutti gli eventi relativi a quella città (registrati in base al cap della stazione meteo)<li style="list-style-type: decimal;">L'utente può decidere di filtrare attraverso Filtro Grafici per decidere la visualizzazione secondo criteri di tempo e di dato</td></tr>
 <tr><td><b>Scenari alternativi</b> </td><td>La città ricercata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente e ridireziona alla schermata di ricerca</td></tr>
-<tr><td><b>Requisiti non funzionali</b></td><td>Semplicità nell'utilizzo e immediatezza nella lettura</td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati <br>Semplicità nell'utilizzo e immediatezza nella lettura<br>Velocità in lettura</td></tr>
 </table>
 <br>
 <table>
@@ -146,7 +144,7 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 <tr><td><b>Postcondizioni</b></td><td>Il sistema ha mostrato all'utente gli eventi registrati filtrati a seconda dei criteri specificati</td></tr>
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente imposta i criteri secondo cui filtrare gli eventi: temporali, oppure legati al dato da visualizzare: pressione, inquinamento aria, temperatura, vento e l'umidità<li style="list-style-type: decimal;">Il sistema effettua la ricerca e mostra all'utente gli eventi risultanti</td></tr>
 <tr><td><b>Scenari alternativi</b> </td><td>La ricerca effettuata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente</td></tr>
-<tr><td><b>Requisiti non funzionali</b></td><td></td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td>Rapidità ricerca</td></tr>
 </table>
 <br>
 <table>
@@ -170,7 +168,7 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 <tr><td><b>Postcondizioni</b></td><td>Il sistema ha mostrato all'utente statistiche dettagliate sugli eventi registrati nel sistema che soddisfano i criteri di ricerca</td></tr>
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente imposta i criteri secondo cui filtrare le statistiche: temporalmente o geograficamente può impostare un'area di grandezza variabile che comprenda diverse località<li style="list-style-type: decimal;">Il sistema mostra all'utente un report che soddisfi i criteri impostati</td></tr>
 <tr><td><b>Scenari alternativi</b> </td><td>Non vi sono statistiche che soddisfino i criteri da mostrare:<li style="list-style-type: decimal;">Il sistema notifica all'utente di non poter proseguire l'azione</td></tr>
-<tr><td><b>Requisiti non funzionali</b></td><td></td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td>Rapidità ricerca</td></tr>
 </table>
 
 <P style='page-break-before: always'>
