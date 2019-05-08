@@ -1,4 +1,5 @@
-# WeatherMent.IO
+![](resources/logo.svg)
+
 ## Membri del team (Gruppo 38):
 -   Alessandro Foglia (0000801918)
 -   Mattia Forcellese (0000788898)
@@ -6,19 +7,21 @@
   
 <P style='page-break-before: always'>
 
-- [WeatherMent.IO](#weathermentio)
-  - [Membri del team (Gruppo 38):](#membri-del-team-gruppo-38)
 - [Abstract](#abstract)
   - [Descrizione del progetto](#descrizione-del-progetto)
 - [Analisi dei requisiti](#analisi-dei-requisiti)
   - [Requisiti del sistema](#requisiti-del-sistema)
   - [Analisi del dominio](#analisi-del-dominio)
+    - [Vocabolario](#vocabolario)
   - [Analisi dei requisiti](#analisi-dei-requisiti-1)
     - [Casi D'uso](#casi-duso)
   - [Analisi del rischio](#analisi-del-rischio)
+    - [Valutazione dei beni](#valutazione-dei-beni)
+    - [Analisi minacce e controlli](#analisi-minacce-e-controlli)
+    - [Analisi della tecnologia dal punto di vista della sicurezza](#analisi-della-tecnologia-dal-punto-di-vista-della-sicurezza)
+    - [Security use case e Misuse case](#security-use-case-e-misuse-case)
+    - [Requisiti di Protezione](#requisiti-di-protezione)
   - [Interfacce grafiche](#interfacce-grafiche)
-    - [HOMEPAGE](#homepage)
-    - [PAGINA SPECIFICA DELLA LOCALITA'](#pagina-specifica-della-localita)
 - [Analisi del problema](#analisi-del-problema)
   - [Modello del dominio](#modello-del-dominio)
   - [Architettura logica](#architettura-logica)
@@ -72,7 +75,30 @@ D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *part
 <P style='page-break-before: always'>
 
 ## Analisi del dominio
-`QUI INSERIRE VOCABOLI E UTILIZZO DI SOFTWARE DA TERZE PARTI`
+
+### Vocabolario
+Voce | Definizione | Sinonimi
+-|-|-
+Architettura | Definisce l'organizzazione e la comunicazione dei diversi componenti all'interno dell'ecosistema. |
+Autenticazione | Sistema di riconoscimento necessario per permettere ad una stazione di poter inviare i dati al sistema. | Registrazione
+Append-Only | Tipologia di database che permette soltanto l'inserimento dei dati e non la modifica o l'eliminazione
+Barriera | Sistema di validazione dei dati inviati da una stazione secondo uno schema ben definito. Necessario per evitare di scrivere sul database dati non validi. | Validazione
+Buffer | Memoria dedicata nella stazione meteo per il salvataggio dei dati nel caso in cui il server non fosse pronto a riceverli o se ci dovesse essere qualche problema nel sistema. |  
+Database relazionale |  Modello logico di rappresentazione o strutturazione dei dati di un database implementato su sistemi di gestione di basi di dati. |
+Evento | La stazione emette un evento per notificare all'intero sistema dei cambiamenti, necessari per la ricostruzione dello storico dei dati. | Cambiamento
+Frequenza di campionamento | Numero di volte al secondo in cui un segnale analogico viene misurato e memorizzato in forma digitale. |
+Modello | Indica la versione di una stazione 
+Notifica PostgreSQL | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres. | Notify
+Payload | Pacchetto contenente tutti i dati raccolti dalla stazione. | Carico 
+Proiezione | Interrogazione al database che fornisce all'utente soltanto i dati richiesti
+Scalabilità | In informatica, la caratteristica di un sistema software o hardware facilmente modificabile nel caso di variazioni notevoli della mole o della tipologia dei dati trattati. | Espandibilità
+Scheda | Unisce tutti i componenti elettrici ed i sensori e ne permette il funzionamento. | 
+Schema | Definisce per ogni tipo di evento delle regole e dei formati necessari per la validazione. | 
+Sensore | Dispositivo elettronico in grado di rilevare una grandezza fisica e di trasmettere le variazioni a un sistema di misurazione o di controllo. | Strumento di misura
+Stazione | L'insieme dei sensori collegati alla scheda principale, situata in un determinato luogo, capace di comunicare con il sistema. | 
+Storico | L'insieme di tutti i dati raccolti dalle diverse stazioni organizzati in base agli eventi a cui fanno riferimento. | 
+Tipo evento | Definisce nello specifico il tipo di evento che riferisce il topic |
+Topic | Definisce l'argomento a cui l'evento fa riferimento. | Argomento
 
 <P style='page-break-before: always'>
 
@@ -98,7 +124,7 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 <tr><td><b>Scenari alternativi</b> </td><td>La connessione con la stazione meteo viene persa o è molto lenta: <li style="list-style-type: decimal;">La stazione meteo nel caso in cui il server smetta di rispondere riempie un buffer<li style="list-style-type: decimal;">Appena il server torna a rispondere la stazione svuota il buffer inviando gli eventi memorizzati<li style="list-style-type: decimal;">La stazione meteo elimina localmente in via definitiva l'evento solo ed esclusivamente se il server ne conferma la ricezione, per evitare una perdita di eventi</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati letti dal sensore <br> Velocità nella validazione dell'evento <br> Efficienza nella scrittura persisente sul sistema <br> Efficienza della stazione meteo nell'invio dei dati e nell'utilizzo di memoria cache</td></tr>
 </table>
-
+<br>
 <table>
 <tr><td><b>Titolo</b></td> <td>Storico</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di visualizzare l'elenco degli eventi registrati</td></tr>
@@ -110,7 +136,7 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 <tr><td><b>Scenari alternativi</b> </td><td>La città ricercata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente e ridireziona alla schermata di ricerca</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Semplicità nell'utilizzo e immediatezza nella lettura</td></tr>
 </table>
-
+<br>
 <table>
 <tr><td><b>Titolo</b></td> <td>Filtro Grafici</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di filtrare gli eventi da visualizzare</td></tr>
@@ -122,40 +148,126 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 <tr><td><b>Scenari alternativi</b> </td><td>La ricerca effettuata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td></td></tr>
 </table>
+<br>
+<table>
+<tr><td><b>Titolo</b></td> <td>Statistiche</td></tr>
+<tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di visualizzare dei rapporti statistici sugli eventi relativi alle varie località </td></tr>
+<tr><td><b>Attori</b></td><td>Utente</td></tr>
+<tr><td><b>Relazioni</b></td> <td>Filtro Statistiche</td></tr>
+<tr><td><b>Precondizioni</b></td> <td></td></tr>
+<tr><td><b>Postcondizioni</b></td><td>Il sistema ha mostrato all'utente statistiche dettagliate sugli eventi registrati nel sistema</td></tr>
+<tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente seleziona la schermata relativa alle statistiche<li style="list-style-type: decimal;">Il sistema mostra all'utente un report annuo generale di tutte le località<li style="list-style-type: decimal;">L'utente può decidere di filtrare le statistiche temporalmente e/o geograficamente</td></tr>
+<tr><td><b>Scenari alternativi</b> </td><td>Non vi sono statistiche da mostrare:<li style="list-style-type: decimal;">Il sistema notifica all'utente di non poter proseguire l'azione</td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati<br>Velocità in lettura <br>Immediatezza e semplicità di utilizzo e di consultazione</td></tr>
+</table>
+<br>
+<table>
+<tr><td><b>Titolo</b></td> <td>Filtro Statistiche</td></tr>
+<tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di filtrare i rapporti statistici sugli eventi relativi alle varie località a seconda di diversi criteri </td></tr>
+<tr><td><b>Attori</b></td><td>Utente</td></tr>
+<tr><td><b>Relazioni</b></td> <td>Statistiche</td></tr>
+<tr><td><b>Precondizioni</b></td> <td></td></tr>
+<tr><td><b>Postcondizioni</b></td><td>Il sistema ha mostrato all'utente statistiche dettagliate sugli eventi registrati nel sistema che soddisfano i criteri di ricerca</td></tr>
+<tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente imposta i criteri secondo cui filtrare le statistiche: temporalmente o geograficamente può impostare un'area di grandezza variabile che comprenda diverse località<li style="list-style-type: decimal;">Il sistema mostra all'utente un report che soddisfi i criteri impostati</td></tr>
+<tr><td><b>Scenari alternativi</b> </td><td>Non vi sono statistiche che soddisfino i criteri da mostrare:<li style="list-style-type: decimal;">Il sistema notifica all'utente di non poter proseguire l'azione</td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td></td></tr>
+</table>
 
 <P style='page-break-before: always'>
 
 ## Analisi del rischio
--   `TABELLA VALUTAZIONE DEI BENI`
--   `TABELA DELLE MINACCE/CONTROLLI`
--   `ANALISI TECNOLOGICA DELLA SICUREZZA`
--   `SECURITY USE CASE E MISUSE CASE CON RELATIVI SCENARI`
+
+### Valutazione dei beni
+Bene | Valore | Esposizione
+-|-|-|
+Evento | Alto <br> La perdita di un evento non permette la ricostruzione esatta dello storico dei dati, e comporta una vera e propria perdita di informazioni | Alta <br>Danni d'immagine: mancato inserimento nei database di un evento più o meno significativo. 
+Informazioni relative alla stazione meteo | Alto <br> Impossibilità di determinare la località dell'evento registrato; dati quindi inutilizzabili| Media/Alta <br> A seconda del motivo per il quale la stazione non è riuscita a comunicare la sua posizione; un errore interno, facilmente risolvibile o errori di comunicazione più gravi
+Sistema informativo | Alto <br> Il sistema informativo essendo il componente principale per l'utente finale deve sempre essere funzionante, pena l'impossibilità di visualizzare dati e grafici| Alta <br> Sito totalmente non funzionante, danni d'immagine e alti costi di ripristino di sistema
+Stazione meteo | Basso <br> Nel caso di malfunzionamento o di una perdita di una stazione meteo, non si riceveranno più eventi| Bassa <br> Data l'architettura del sistema, si possono rimuovere e aggiungere stazioni senza danneggiare il sistema stesso
+
+### Analisi minacce e controlli
+Minaccia | Probabilità | Controllo | Fattibilità
+-|-|-|-|
+Alterazione dei dati remoti | Bassa | Utilizzo di protocolli sicuri di comunicazione (HTTPS) | Costo basso/medio
+DDoS (Distributed Denial of Service) | Media | Limitazione degli accessi | Costo basso in quanto difficile difendersi da questo tipo di attacchi
+Invio di dati fake | Media | Autenticazione della stazione prima di poter comunicare | Costo alto, necessità di definire un sistema di accesso/registrazione per le varie stazioni. Perdita inoltre del concetto di sistema aperto a tutti 
+Man in the middle | Bassa | Utilizzo di certificati di autenticità delle parti comunicanti | Costo basso/medio a seconda dell'utilizzo di un protocollo di comunicazione più o meno sicuro
+Manomissione delle stazioni meteo | Media | Nessun controllo dato che ogni tipo di hardware capace di utilizzare dei sensori e trasmettere dati può essere una stazione | -
+
+### Analisi della tecnologia dal punto di vista della sicurezza
+Tecnologia | Vulnerabilità
+-|-|
+Architettura Client/Server | <li> Attacco DDoS<br><li> Man in the middle
+Cifratura delle comunicazioni | Utilizzo di cifratura simmetrica e asimmetrica. Non strettamente necessaria in quanto i dati trasmessi non sono dati sensibili.
+Stazione meteo | <li>Alterazione dei sensori<br> <li>Alterazione della posizione geografica della stazione<br> <li>Manomissione e blocco delle trasmissioni
+
+### Security use case e Misuse case
+
+![](resources/SecuritycaseMisusecase.svg)
+
+<table>
+<tr><td colspan=4><b>Caso d'uso:</b> integrità</td> </tr>
+<tr><td colspan=4><b>Percorso del caso d'uso:</b> integrità nella trasmissione dei dati un sensore</td> </tr>
+<tr><td colspan=4><b>Misuse case:</b> Man in the middle </td></tr>
+<tr><td colspan=4><b>Rischi alla sicurezza:</b> Un malintenzionato può modificare i dati inviati da una stazione remota prima che arrivino al server </td></tr>
+<tr><td colspan=4><b>Precondizioni:</b> L'hacker attaccante può intercettare i dati e modificarli, per poi ritrasmetterli al server</td> </tr>
+<tr>
+    <td rowspan=2><b>Interazioni dell'utente</b></td>
+    <td rowspan=2><b>Interazioni dell'attaccante</b></td>
+    <td colspan=2><b><center>Requisiti del sistema</center></b></td>
+    <tr><td><b>Interazioni del sistema</b></td> <td><b>Azioni del sistema</b></td>
+</tr>
+<tr><td></td><td></td><td>La stazione meteo dovrebbe inviare i dati corretti al server</td><td>Il sistema deve impedire che i dati vengano manomessi da qualcuno senza che l'utente se ne accorga</td></tr>
+<tr><td></td><td>L'attaccante intercetta e modifica i dati per poi ritrasmetterli al server</td><td></td><td></td></tr>
+<tr><td>L'utente riceve dei dati corrotti</td><td></td><td></td><td>Il sistema rileva la corruzzione da parte dell'attaccante</td></tr>
+<tr><td></td><td></td><td>Il sistema dovrebbe notificare all'utente la <i>non</i> correttezza dei dati e provvedere ad invalidare o sospendere la ricezione dati dalla stazione meteo</td><td></td></tr>
+<tr><td colspan=4><b>Postcondizioni:</b> Il sistema deve aver notificato all'utente l'accaduto e deve aver bloccato la stazione</td></tr>
+</table>
+
+<table>
+<tr><td colspan=4><b>Caso d'uso:</b> integrità</td> </tr>
+<tr><td colspan=4><b>Percorso del caso d'uso:</b>Corretto funzionamento del sistema</td> </tr>
+<tr><td colspan=4><b>Misuse case:</b>Attacco DDoS </td></tr>
+<tr><td colspan=4><b>Rischi alla sicurezza:</b>Un malintenzionato potrebbe tentare di sovraccaricare le risorse del sistema con conseguente malfunzionamento dello stesso</td></tr>
+<tr><td colspan=4><b>Precondizioni:</b>Il sistema non può gestire un numero molto elevato di richieste in contemporanea</td> </tr>
+<tr>
+    <td rowspan=2><b>Interazioni dell'utente</b></td>
+    <td rowspan=2><b>Interazioni dell'attaccante</b></td>
+    <td colspan=2><b><center>Requisiti del sistema</center></b></td>
+    <tr><td><b>Interazioni del sistema</b></td> <td><b>Azioni del sistema</b></td>
+</tr>
+<tr><td></td><td>L'attaccante effettua un numero molto alto di richieste al sistema in modo da sovraccaricarlo</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>Il sistema deve bloccare l'attaccante nel caso in cui rilevi un numero molto elevato di tentativi di trasmissione o di richieste</td></tr>
+<tr><td></td><td></td><td>Il sistema dovrebbe registrare l'attacco avvenuto per poter poi essere analizzato dall'amministratore</td><td></td></tr>
+<tr><td colspan=4><b>Postcondizioni:</b> Il sistema deve aver notificato nei log l'avvenuto</td></tr>
+</table>
+
+<table>
+<tr><td colspan=4><b>Caso d'uso:</b> Integrità</td> </tr>
+<tr><td colspan=4><b>Percorso del caso d'uso:</b> integrità dei dati salvati dal sistema</td> </tr>
+<tr><td colspan=4><b>Misuse case:</b> Operazione vietata</td></tr>
+<tr><td colspan=4><b>Rischi alla sicurezza:</b> Un malintenzionato può modificare i dati già salvati sul database, modificando lo storico degli eventi</td></tr>
+<tr><td colspan=4><b>Precondizioni:</b> Il sistema ha in memoria dei dati che non possono e non devono essere modificati in quanto invaliderebbero lo storico degli eventi</td> </tr>
+<tr>
+    <td rowspan=2><b>Interazioni dell'utente</b></td>
+    <td rowspan=2><b>Interazioni dell'attaccante</b></td>
+    <td colspan=2><b><center>Requisiti del sistema</center></b></td>
+    <tr><td><b>Interazioni del sistema</b></td> <td><b>Azioni del sistema</b></td>
+</tr>
+<tr><td></td><td>L'attaccante tenta di modificare i dati salvati dal sistema</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>Il sistema deve impedire che i dati vengano manomessi una volta memorizzati</td></tr>
+<tr><td></td><td></td><td>Il sistema dovrebbe registrare il tentativo di attacco per poter poi essere analizzato dall'amministratore</td><td></td></tr>
+<tr><td colspan=4><b>Postcondizioni:</b> Il sistema deve verificare la correttezza dei dati memorizzati</td></tr>
+</table>
+
+### Requisiti di Protezione
+Dopo l'analisi dei rischi, vi è quindi il bisogno di nuovi requisiti riguardanti la protezione del sistema e dei dati:
+1. Un sistema di log che permetta all'amministratore di visualizzare tutte le azioni avvenute sul sistema, registrate in modo permanente; nel caso di attacchi esterni come ManInTheMiddle, DDoS o di tentativi di corruzione dei dati, è possibile risalire alla causa e analizzare nel dettaglio quanto avvenuto. I log verranno visualizzati e gestiti con un editor di testo esterno, non rilevante e non implementato per il progetto.
+2. I dati sismici trasmessi in remoto devono essere protetti da attacchi di tipo man in the middle, eventualmente adottando una cifratura dei dati in transito.
 
 <P style='page-break-before: always'>
 
 ## Interfacce grafiche
-### HOMEPAGE
--   Lista ultimi 10 rilevamenti. La tabella avrà i seguenti valori:
-    -   Nome località
-    -   Temperatura
-    -   Umidità
-    -   Pressione
-    -   Velocita' del vento
-    -   Data
-
-- Alla pressione di un valore della tabella si andrà nella pagina specifica della località (
- `GLI ENDPOINT SARANNO DEFINITI DOPO`)
-
- - `ALTRI DATI EVENTUALMENTE LI AGGIUNGIAMO DOPO`
-  
--   Barra di ricerca
-
-### PAGINA SPECIFICA DELLA LOCALITA'
--   Nome località
--   Tutti i valori che il sensore ha avviato
--   Stream in tempo reale con i valori ricevuti
--   `Possibilità di modellare i dati secondi diversi criteri quali data e/o altri`
-
 
 <P style='page-break-before: always'>
 
