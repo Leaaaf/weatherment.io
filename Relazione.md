@@ -14,6 +14,7 @@
   - [Requisiti del sistema](#requisiti-del-sistema)
   - [Analisi del dominio](#analisi-del-dominio)
   - [Analisi dei requisiti](#analisi-dei-requisiti-1)
+    - [Casi D'uso](#casi-duso)
   - [Analisi del rischio](#analisi-del-rischio)
   - [Interfacce grafiche](#interfacce-grafiche)
     - [HOMEPAGE](#homepage)
@@ -77,8 +78,16 @@ D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *part
 
 ## Analisi dei requisiti
 
+### Casi D'uso
+
+![](resources/ScenaryCase.svg)
+
+La stazione è considerata un attore in quanto è un sistema esterno con un ruolo attivo. Interviene nell’applicativo generando continuamente dati in ingresso che verranno utilizzati da Gestione Eventi solo nel caso in cui vengano rilevati dei cambiamenti.
+
+L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultaizone.
+
 <table>
-<thead>Scenari d'uso</thead>
+<thead><h3>Scenari d'uso</h3></thead>
 <tr><td><b>Titolo</b></td> <td>Gestione Evento</td></tr>
 <tr><td><b>Descrizione</b></td><td>Lettura dati dalla stazione meteo, validazione dei dati, scrittura su sistema</td></tr>
 <tr><td><b>Attori</b></td><td>Evento, Stazione Meteo</td></tr>

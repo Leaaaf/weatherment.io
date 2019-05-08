@@ -24,6 +24,9 @@ Architettura Client/Server | <li> Attacco DDoS<br><li> Man in the middle
 Cifratura delle comunicazioni | Utilizzo di cifratura simmetrica e asimmetrica. Non strettamente necessaria in quanto i dati trasmessi non sono dati sensibili.
 Stazione meteo | <li>Alterazione dei sensori<br> <li>Alterazione della posizione geografica della stazione<br> <li>Manomissione e blocco delle trasmissioni
 
+### Security use case e Misuse case
+
+![](resources/SecuritycaseMisusecase.svg)
 
 <table>
 <tr><td colspan=4><b>Caso d'uso:</b> integrità</td> </tr>
