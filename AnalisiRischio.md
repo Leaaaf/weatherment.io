@@ -65,6 +65,7 @@ Stazione meteo | <li>Alterazione dei sensori<br> <li>Alterazione della posizione
 <table>
 <tr><td colspan=4><b>Caso d'uso:</b> Integrità</td> </tr>
 <tr><td colspan=4><b>Percorso del caso d'uso:</b> integrità dei dati salvati dal sistema</td> </tr>
+<tr><td colspan=4><b>Misuse case:</b> Operazione vietata</td></tr>
 <tr><td colspan=4><b>Rischi alla sicurezza:</b> Un malintenzionato può modificare i dati già salvati sul database, modificando lo storico degli eventi</td></tr>
 <tr><td colspan=4><b>Precondizioni:</b> Il sistema ha in memoria dei dati che non possono e non devono essere modificati in quanto invaliderebbero lo storico degli eventi</td> </tr>
 <tr>
