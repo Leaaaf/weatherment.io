@@ -59,7 +59,7 @@ F.6 | L'interfaccia web deve permettere la consultazione di grafici riassuntivi.
 F.7 | Ogni evento generato dalla stazione meteo appartiene ad uno specifico topic. | Funzionale
 F.8 | Per ogni topic ci sono determinati tipi di evento. | Funzionale
 F.9 | Per ogni tipo di evento è definito un preciso schema che il payload deve rispettare. | Funzionale
-F.10 | Ogni volta che una nuova riga viene scritta sul database postgres viene emessa, in modo asincrono, una notifica contenente i dati ai server in ascolto. | Funzionale 
+F.10 | Ogni volta che viene aggiunto un evento sul database si notifica ai server in ascolto. | Funzionale 
 N.1 | Le frequenze di campionamento dei vari sensori possono variare a seconda del modello. | Non Funzionale
 N.2 | Le nuove stazioni meteo prima di poter trasmettere i dati dovranno essere autenticate per garantire l'affidabilità del sistema. | Non Funzionale
 D.1 | La temperatura inviata dai sensori deve essere misurata in *gradi Celsius (°C)*. | Dominio
@@ -76,9 +76,43 @@ D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *part
 <P style='page-break-before: always'>
 
 ## Analisi dei requisiti
-`MODELLO DEI CASI D'USO E RELATIVI SCENARI`
-- Se il server non risponde e la scheda ha degli eventi riempie un buffer che svuota evento per evento appena il server torna Online.
-- Il sensore elimina l'evento soltanto se il server risponde con esito positivo.
+
+<table>
+<thead>Scenari d'uso</thead>
+<tr><td><b>Titolo</b></td> <td>Gestione Evento</td></tr>
+<tr><td><b>Descrizione</b></td><td>Lettura dati dalla stazione meteo, validazione dei dati, scrittura su sistema</td></tr>
+<tr><td><b>Attori</b></td><td>Evento, Stazione Meteo</td></tr>
+<tr><td><b>Relazioni</b></td> <td></td></tr>
+<tr><td><b>Precondizioni</b></td> <td>Si è verificato un evento registrato dalla stazione meteo (i.e. un cambio di temperatura, di pressione atmosferica etc)</td></tr>
+<tr><td><b>Postcondizioni</b></td><td>Il sistema ha rilevato l'evento, controllato la sua validità e scritto in maniera persistente sul sistema</td></tr>
+<tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;"> La stazione meteo invia i dati dell'evento a Gestione Evento <li style="list-style-type: decimal;"> Gestione Evento controlla che l'evento ricevuto sia valido secondo uno schema preciso, definito internamente al sistema<li style="list-style-type: decimal;">Gestione Evento registra in maniera persistente l'evento sul sistema<li style="list-style-type: decimal;">Il sistema prosegue la sua normale esecuzione, in attesa di ricevere altri eventi</td></tr>
+<tr><td><b>Scenari alternativi</b> </td><td>La connessione con la stazione meteo viene persa o è molto lenta: <li style="list-style-type: decimal;">La stazione meteo nel caso in cui il server smetta di rispondere riempie un buffer<li style="list-style-type: decimal;">Appena il server torna a rispondere la stazione svuota il buffer inviando gli eventi memorizzati<li style="list-style-type: decimal;">La stazione meteo elimina localmente in via definitiva l'evento solo ed esclusivamente se il server ne conferma la ricezione, per evitare una perdita di eventi</td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati letti dal sensore <br> Velocità nella validazione dell'evento <br> Efficienza nella scrittura persisente sul sistema <br> Efficienza della stazione meteo nell'invio dei dati e nell'utilizzo di memoria cache</td></tr>
+</table>
+
+<table>
+<tr><td><b>Titolo</b></td> <td>Storico</td></tr>
+<tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di visualizzare l'elenco degli eventi registrati</td></tr>
+<tr><td><b>Attori</b></td><td>Utente</td></tr>
+<tr><td><b>Relazioni</b></td> <td>Filtro Grafici</td></tr>
+<tr><td><b>Precondizioni</b></td> <td></td></tr>
+<tr><td><b>Postcondizioni</b></td><td>Il sistema ha mostrato all'utente gli eventi registrati</td></tr>
+<tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;"> L'utente ricerca la città di cui vuole visualizzare i dati<li style="list-style-type: decimal;"> Viene mostrata una schermata contenente tutti gli eventi relativi a quella città (registrati in base al cap della stazione meteo)<li style="list-style-type: decimal;">L'utente può decidere di filtrare attraverso Filtro Grafici per decidere la visualizzazione secondo criteri di tempo e di dato</td></tr>
+<tr><td><b>Scenari alternativi</b> </td><td>La città ricercata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente e ridireziona alla schermata di ricerca</td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td>Semplicità nell'utilizzo e immediatezza nella lettura</td></tr>
+</table>
+
+<table>
+<tr><td><b>Titolo</b></td> <td>Filtro Grafici</td></tr>
+<tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di filtrare gli eventi da visualizzare</td></tr>
+<tr><td><b>Attori</b></td><td>Utente</td></tr>
+<tr><td><b>Relazioni</b></td> <td>Storico</td></tr>
+<tr><td><b>Precondizioni</b></td> <td></td></tr>
+<tr><td><b>Postcondizioni</b></td><td>Il sistema ha mostrato all'utente gli eventi registrati filtrati a seconda dei criteri specificati</td></tr>
+<tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente imposta i criteri secondo cui filtrare gli eventi: temporali, oppure legati al dato da visualizzare: pressione, inquinamento aria, temperatura, vento e l'umidità<li style="list-style-type: decimal;">Il sistema effettua la ricerca e mostra all'utente gli eventi risultanti</td></tr>
+<tr><td><b>Scenari alternativi</b> </td><td>La ricerca effettuata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente</td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td></td></tr>
+</table>
 
 <P style='page-break-before: always'>
 
