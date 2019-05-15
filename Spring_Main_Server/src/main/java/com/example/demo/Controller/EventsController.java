@@ -30,3 +30,4 @@ public class EventsController {
         return "{success : true}";
     }
 }
+

@@ -1,5 +1,6 @@
 package com.example.demo.Validator;
 
+import com.example.demo.Model.Event;
 import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
 
 import java.util.Map;
@@ -24,7 +25,14 @@ public class PayloadValidator {
     private PayloadValidator() {
     }
 
-    public JsonSchema getSchema(UUID topic, String type, int version) {
+    public boolean validateEvent(Event event) {
+        //////
+        // MOCKED VALIDATOR ALWAYS RETURN TRUE
+        //////
+        return true;
+    }
+
+    public JsonSchema validateSchema(UUID topic, String type, int version) {
         try {
             JsonSchema result = validatorMap.get(topic).get(type)[version - 1];
             return result;

@@ -35,7 +35,7 @@ public final class Event {
     }
 
     public static Event fromJson(UUID topic, String type, int version, JsonNode data) throws MyException {
-        if (PayloadValidator.getInstance().getSchema(topic, type, version) != null)
+        if (PayloadValidator.getInstance().validateSchema(topic, type, version) != null)
             return new Event(data);
         else throw new MyException();
     }
