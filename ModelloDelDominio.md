@@ -10,4 +10,6 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 
 ### Struttura
 
-Diagramma dei package
+#### Diagramma dei package
+
+![](resources/StrutturaPackage.svg)
