@@ -13,6 +13,7 @@
             logo.classList.add('animated', 'fadeOutUp', 'delay-1s');
             logo.addEventListener('animationend', function () {
                 logo.style.display = "none";
+                document.querySelector('.splash').style.display = "none";
                 document.querySelector('.chart-container').style.display = "flex";
                 createChart();
             })
@@ -76,10 +77,7 @@
 </head>
 
 <body>
-    <div class="content">
-        <div class="chart-container" style="width: 90%; height: 90%; display: none;">
-            <canvas id="myChart"></canvas>
-        </div>
+    <div class="splash">
         <img id="logo" class="animated fadeInDown slow delay-1s" src="/resources/WEATHERMENT.svg">
         <div id="bar" class="bottom animated fadeInUp delay-2s">
             <form onsubmit="event.preventDefault(); onSearch();">
@@ -87,5 +85,8 @@
                 <i class="fa fa-search"></i>
             </form>
         </div>
+    </div>
+    <div class="chart-container" style="width: 90%; height: 90%; display: none;">
+        <canvas id="myChart"></canvas>
     </div>
 </body>
