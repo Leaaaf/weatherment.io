@@ -23,11 +23,25 @@
     - [Requisiti di Protezione](#requisiti-di-protezione)
   - [Interfacce grafiche](#interfacce-grafiche)
 - [Analisi del problema](#analisi-del-problema)
-  - [Modello del dominio](#modello-del-dominio)
+  - [Analisi del documento dei requisiti](#analisi-del-documento-dei-requisiti)
+    - [Analisi delle funzionalità](#analisi-delle-funzionalit%C3%A0)
+    - [Analisi dei vincoli](#analisi-dei-vincoli)
+    - [Analisi delle interazioni](#analisi-delle-interazioni)
+  - [Analisi dei ruoli e delle responsabilità](#analisi-dei-ruoli-e-delle-responsabilit%C3%A0)
+  - [Creazione modello del dominio](#creazione-modello-del-dominio)
   - [Architettura logica](#architettura-logica)
     - [Struttura](#struttura)
+      - [Diagramma dei package](#diagramma-dei-package)
+      - [Diagramma delle classi](#diagramma-delle-classi)
     - [Interazione](#interazione)
+      - [Diagramma di sequenza: Lettura dati dai diversi sensori](#diagramma-di-sequenza-lettura-dati-dai-diversi-sensori)
+      - [Diagramma di sequenza: Trasmissione dei dati](#diagramma-di-sequenza-trasmissione-dei-dati)
+      - [Diagramma di sequenza: Gestione dell'evento](#diagramma-di-sequenza-gestione-dellevento)
+      - [Diagramma di sequenza: Proiezione](#diagramma-di-sequenza-proiezione)
     - [Comportamento](#comportamento)
+      - [Diagramma di stato Trasmissione](#diagramma-di-stato-trasmissione)
+    - [Piano del Lavoro](#piano-del-lavoro)
+    - [Piano di Collaudo](#piano-di-collaudo)
 
 <P style='page-break-before: always'>
 
@@ -271,26 +285,256 @@ Dopo l'analisi dei rischi, vi è quindi il bisogno di nuovi requisiti riguardant
 <P style='page-break-before: always'>
 
 # Analisi del problema
-`ANALISI DOCUMENTO DEI REQUISITI: ANALISI DELLE FUNZIONALITÀ`
+## Analisi del documento dei requisiti
+### Analisi delle funzionalità
 
-<P style='page-break-before: always'>
+**Tabella Funzionalità** 
 
-## Modello del dominio
+Funzionalità | Tipo | Grado Complessità
+|-|-|-
+Gestione Eventi | Gestione e memorizzazione dei dati, interazione con l'esterno | Complessa
+Scrittura Log | Memorizzazione dati | Semplice
+Statistiche | Visualizzazione report generali filtrabili | Semplice
+Storico | Visualizzazione eventi filtrabili | Semplice
 
-<P style='page-break-before: always'>
+**Gestione Evento: Tabella Informazioni/ Flusso**
+
+Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
+|-|-|-|-|-
+Dato sensore Hardware | Semplice | Media | Input | |
+Event | Composto | Alta | Output | |
+Data | Semplice | Media | Input | |
+Ora | Semplice | Media | Input | |
+Stazione D'origine | Composto | Media | Input | |
+
+**Scrittura Log: Tabella Informazioni/ Flusso** 
+
+Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
+|-|-|-|-|-
+IP | Semplice | Alta | Input | |
+Azione | Semplice | Alta | Input | |
+Ora | Semplice | Media | Input | |
+Data | Semplice | Media | Input | |
+
+**Statistiche: Tabella Informazioni/ Flusso** 
+
+Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
+|-|-|-|-|-
+**Event** composto da: | Composto | Alta | Input | |
+Topic | Semplice | Media | Input | Stringa |
+Type | Semplice | Media | Input | Stringa |Version | Semplice | Media | Input | Intero maggiore di zero
+Payload | Composto | Media | Input | |
+
+**VistaCitta: Tabella Informazioni/ Flusso** 
+
+Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
+|-|-|-|-|-
+**Event** composto da: | Composto | Alta | Input | |
+Topic | Semplice | Media | Input | Stringa |
+Type | Semplice | Media | Input | Stringa |Version | Semplice | Media | Input | Intero maggiore di zero
+Payload | Composto | Media | Input | |
+
+### Analisi dei vincoli
+
+**Tabella dei vincoli**
+
+Requisito | Categorie | Impatto | Funzionalità
+|-|-|-|-
+Integrità | Integrità | Rallentamento nella fase di scrittura e di validazione del dato; correttezza del dato assicurata dalla barriera | Gestione Evento, Statistiche, VistaCitta
+Efficienza scrittura | Performance | Maggiore efficienza nella fase di scrittura persistente del dato ed un tempo di risposta ridotto | Gestione Evento
+Velocità validazione | Performance | Maggiore efficienza nella validazione del dato ed un tempo di risposta ridotto | Gestione Evento
+Efficienza stazione meteo | Sistema esterno | Impatto sul sistema nullo; possibilità di elaborare velocemente i dati letti dai sensori |
+Rapidità di ricerca | Tempo di risposta | Maggiore efficienza nella fase di fetch dei dati all'interno del database | VistaCitta, Statistiche
+Velocità di lettura | Tempo di risposta | Maggiore efficienza nella fase di lettura del dato ed un tempo di risposta ridotto | VistaCitta, Statistiche
+Semplicità ed immediatezza nell'utilizzo |  Usabilità | Migliore usabilità da parte dell'utente finale; interfacce grafiche intuitive | VistaCitta, Statistiche
+
+### Analisi delle interazioni
+
+**Tabella maschere**
+
+Maschera | Informazioni | Funzionalità
+|-|-|-
+Homepage | Pagina iniziale con logo, barra di richerca della località d'interesse e relativo bottone per le statistiche generali | VistaCitta, Statistiche
+VistaCitta | Dati in tempo reale filtrabili e grafici degli eventi relativi alla località cercata | VistaCitta
+Schermata statistiche | Dati in tempo reale e report filtrabili relativi alla località cercata | Statistiche
+ 
+**Tabella sistemi esterni**
+
+Sistema | Descrizione | Protocollo di interazione | Livello di sicurezza
+|-|-|-|-
+Stazione meteo | Insieme di sensori e componenti hardware che formano una stazione meteo | La stazione invia al server gli eventi seguendo lo schema di default. Il sistema li convalida e li scrive in modo persistente sul database | Medio; la stazione può subire attacchi esterni sia dal punto di vista software che hardware
+
+## Analisi dei ruoli e delle responsabilità
+
+Ruolo | Responsabilità | Maschere | Riservatezza | Numerosità
+-|-|-|-|-|
+Utente | Consulta i dati in tempo reale delle stazioni meteo utilizzando i filtri offerti dall'applicazione e il relativo storico | Homepage, VistaCitta, Schermata statistiche | Bassa | Il numero di utenti non è limitato. Dipende dalla scalabilità del sistema
+
+**Utente : Tabella ruolo-informazioni**
+
+Informazione | Tipo di accesso
+-|-|
+VistaCitta | Lettura
+Statistiche | Lettura
+
+## Creazione modello del dominio
+
+Direction:<br>N; NNE; NE; ENE; E; ESE; SE; SSE; S; SSO; SO; OSO; O; ONO; NO; NNO
+
+State:<br>SUNNY; CLOUDY; RAINY; SNOWY
+
+![](resources/DominioStazione.svg)
+
+![](resources/ModelloDelDominio.svg)
 
 ## Architettura logica
 
-<P style='page-break-before: always'>
-
 ### Struttura
 
-<P style='page-break-before: always'>
+#### Diagramma dei package
+
+![](resources/StrutturaPackage.svg)
+
+#### Diagramma delle classi
+
+![](resources/DiagrammaClassiUtente.svg)
+
+**ViewHomePage** interroga la VistaCittàController per quanto riguarda la visualizzazione di una città specifica; altrimenti StatisticheController per avere dei report nazionali o della specifica città cercata. <br>
+**ViewCitta** oltre alla visualizzazione specifica della località cercata mostra all'utente i relativi dati in tempo reale. <br>
+**VistaCittaController** filtra per un determinato tipo di evento e per un determinato lasso di tempo. <br>
+**StatisticheController** filtra per città cercata e un determinato intervallo di tempo.
+
+![](resources/DiagrammaClassiSistema.svg)
+
+**LogController** scrive dei file di log a seconda delle azioni avvenute sul sistema. <br>
+**TrasmissioneController** si occupa della trasmissione dei dati dalla stazione meteo al server. <br>
+**EventoController** scrive in maniera persistente gli eventi dopo aver effettuato la validazione secondo lo schema predefinito. <br>
+**ProiezioniController** aggrega gli eventi letti da EventoController creando delle proiezioni a seconda degli eventi ricevuti. Le proiezioni così create verranno poi utilizzate da VistaCittaController e da StatisticheController.
 
 ### Interazione
 
-<P style='page-break-before: always'>
+#### Diagramma di sequenza: Lettura dati dai diversi sensori
+![](resources/InteractionLetturaSensori.svg)
+In maniera ciclica e parallela i sensori acquisiscono i dati che vengono poi inoltrati alla stazione meteo.
+
+#### Diagramma di sequenza: Trasmissione dei dati
+![](resources/InteractionTrasmissione.svg)
+I dati ricevuti dai sensori vengono elaborati da **StazioneController** il quale, se verifica un cambiamento, crea un evento da trasmettere all'apposito controller. In caso di errori nella trasmissione è previsto un sistema di backup e reinvio di dati per garantire l'integrità di tutti gli eventi.
+
+#### Diagramma di sequenza: Gestione dell'evento
+![](resources/InteractionGestioneEvento.svg)
+**EventoController** si occupa della validazione dell'evento ricevuto, superato tale controllo provvede alla scrittura persistente dell'evento.
+
+#### Diagramma di sequenza: Proiezione
+![](resources/InteractionProiezione.svg)
+Il **ProiezioniController** viene notificato [ `notify()` ] della scrittura di un nuovo evento, che subisce un ulteriore elaborazione per creare le diverse proiezioni del dato.
 
 ### Comportamento
 
-<P style='page-break-before: always'>
+#### Diagramma di stato Trasmissione
+
+Il seguente diagramma mostra l'algoritmo di reinvio e backup dei dati in caso di erorri di trasmissione.
+
+![](resources/StatoBuffer.svg)
+
+### Piano del Lavoro
+
+Il lavoro di progettazione e di sviluppo è stato suddiviso tra i vari membri del team come segue:
+
+Package | Progetto | Sviluppo
+-|-|-|
+InterfaceUtente | Foglia, Forcellese, Pomponii | Forcellese
+VistaCitta | Foglia, Forcellese  | Pomponii
+Statistiche | Foglia, Forcellese | Forcellese, Pomponii
+Proiezioni | Foglia, Forcellese, Pomponii | Foglia, Forcellese, Pomponii
+Log | Pomponii | Pomponii
+GestioneEvento | Foglia, Forcellese, Pomponii | Foglia, Forcellese, Pomponii
+Trasmissione | Foglia, Forcellese, Pomponii | Pomponii
+Dominio (*Records, Event, WeatherNow) | Foglia, Forcellese, Pomponii | Foglia, Forcellese, Pomponii
+
+Dopo aver valutato attentamente la mole di lavoro richiesta, i tempi previsti sono i seguenti:
+-   Progettazione: 3 settimane circa.
+-   Sviluppo dei vari package: entro 1/2 settimane dalla fine della progettazione.
+-   Test unitari e testing totale del sistema: entro una settimana dallo sviluppo di tutti i package.
+
+### Piano di Collaudo 
+
+Per garantire il corretto funzionamento del sistema sono necessari una diversi test unitari che permettono di verificare il corretto funzionamento delle diverse parti che lo compongono.
+
+```java
+@TestEvent
+ObjectMapper mapper = new ObjectMapper();
+JsonNode payload = null;
+try {
+    String json = "{\"boardId\": \"cafebafe-cafebabe-cafebabe\", \"boardOffset\": 3 , \"bar\": \"5\", \"zipcode\": \"\40125", \"emittedAt\": 857671257612 }";
+    payload = mapper.readTree(json);
+} catch (IOException e) {
+        Assertions.fail();
+}
+try {
+    Event sut = Event.fromJson(topic, type, version, payload);
+} catch (MyException e) {
+    Assertions.fail();
+}
+
+Assertions.assertEquals(sut.getBoardId(), "cafebafe-cafebabe-cafebabe");
+Assertions.assertEquals(sut.getBoardOffset(), 3);
+Assertions.assertEquals(sut.getPressure(), "5");
+Assertions.assertEquals(sut.getZipCode(), "40125");
+Assertions.assertEquals(sut.getEmittedAt(), "857671257612");
+```
+
+```js
+@Test
+describe('/GET mock boardstate', () => {
+  it('it should get the BoardState', (done) => {
+    server
+      .get('/mock/boardState')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.zipCode.should.equal(64100);
+        res.body.wind.speed.should.equal(10);
+        res.body.pollution.CO2.should.equal(10);
+        res.body.pressure.pressure.should.equal(10);
+        res.body.weatherState.state.should.equal("STATE_ENUM");
+        done();
+      });
+  });
+});
+
+describe('/GET mock temperature', () => {
+  it('it should get the temperatures of 64100 zipCode', (done) => {
+    server
+      .get('/mock/temperatures')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.temperatures.should.be.a('array');
+        res.body.zipCode.should.equal(64100);
+        res.body.temperatures[0].value.should.equal(18);
+        done();
+      });
+  });
+});
+
+describe('/GET generic error', () => {
+  it('it should return response with status 500', (done) => {
+    server
+      .get('/mock/error')
+      .end((err, res) => {
+        res.should.have.status(500);
+        done();
+      });
+  });
+});
+
+describe('/GET unauthorized error', () => {
+  it('it should return response with status 500', (done) => {
+    server
+      .get('/mock/unauthorized')
+      .end((err, res) => {
+        res.should.have.status(401);
+        done();
+      });
+  });
+});
+```
