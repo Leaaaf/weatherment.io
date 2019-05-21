@@ -14,16 +14,13 @@ public class TestMainServer {
     // INSERT JSON VALIDATION WITH JSON SCHEMA
     // SET CONTROL FLOW FOR topic/type/version
     ///////////////////////////////////////////////////////////////////////////
-    public TestMainServer() {
+
+    public static void main(String[] args) {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode payload = null;
         try {
-            payload = mapper.readTree("{\n" +
-                    "        \"board_id\": \"cafebafe-cafebabe-cafebabe\",\n" +
-                    "       \"board_offset\": 3\n" +
-                    "        \"bar\": 5,\n" +
-                    "        \"emitted_at\": 857671257612\n" +
-                    "    }");
+            String json = "{\"board_id\": \"cafebafe-cafebabe-cafebabe\", \"board_offset\": 3 , \"bar\": \"5\", \"emitted_at\": 857671257612 }";
+            payload = mapper.readTree(json);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("TEST ERROR");
@@ -54,8 +51,6 @@ public class TestMainServer {
         }
 
         System.out.println("JSON PAYLOAD VALIDATION OK");
-
         System.exit(1);
-
     }
 }
