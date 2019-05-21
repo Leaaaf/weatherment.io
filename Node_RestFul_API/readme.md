@@ -6,4 +6,6 @@
 ### _ HOST _/mock/temperatures
 
 # TESTING
-In main directory run the command 'mocha test.js'
+Before testing the app you have to start the server.
+- In the main directory run the command 'node app.js'
+- In the main directory run the command 'mocha test.js'
