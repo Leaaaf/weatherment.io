@@ -21,3 +21,13 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 ![](resources/DiagrammaClassiUtente.svg)
 
 ![](resources/DiagrammaClassiSistema.svg)
+
+### Interazione
+
+![](resources/InteractionLetturaSensori.svg)
+
+![](resources/InteractionTrasmissione.svg)
+
+![](resources/InteractionGestioneEvento.svg)
+
+![](resources/InteractionProiezione.svg)
