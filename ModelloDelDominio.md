@@ -17,3 +17,5 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 #### Diagramma delle classi
 
 ![](resources/DiagrammaClassiUtente.svg)
+
+![](resources/DiagrammaClassiSistema.svg)
