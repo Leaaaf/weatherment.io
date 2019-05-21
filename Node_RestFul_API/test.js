@@ -34,3 +34,30 @@ describe('/GET mock temperature', () => {
       });
   });
 });
+
+
+describe('/GET generic error', () => {
+  it('it should return response with status 500', (done) => {
+    server
+      .get('/mock/error')
+      .end((err, res) => {
+        res.should.have.status(500);
+        done();
+      });
+  });
+});
+
+
+
+
+describe('/GET unauthorized error', () => {
+  it('it should return response with status 500', (done) => {
+    server
+      .get('/mock/unauthorized')
+      .end((err, res) => {
+        res.should.have.status(401);
+        done();
+      });
+  });
+});
+

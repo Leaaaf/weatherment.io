@@ -43,7 +43,18 @@ const getBoardState = (request, response) => {
   })
 }
 
+
+const error = (request, response) => {
+  response.status(500).json({error : 'Something went wrong', status : 500});
+}
+
+const unauthorizedError = (request,response) => {
+  response.status(401).json({error : 'Unauthorized', status : 401});
+}
+
 module.exports = {
   getTemperatures,
-  getBoardState
+  getBoardState,
+  error,
+  unauthorizedError
 }
