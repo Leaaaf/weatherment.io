@@ -57,7 +57,7 @@ ID  | Requisito | Tipo
 F.1 | La stazione invia i dati al server solo quando avvengono cambiamenti nei valori letti dai sensori; così facendo non si generano eventi ridondanti  | Funzionale
 F.2 | Nel momento in cui si genera un evento da inviare al server, la stazione provvederà a determinare la sua posizione e aggiungerà nazione e ZIP Code prima di inoltrarlo | Funzionale
 F.3 | I dati raccolti dalle stazioni vengono validati dal server prima dell'inserimento sul database, assicurandone la correttezza all'utente finale | Funzionale
-F.4 | Attraverso il client è possibile visualizzare i dati in tempo reale, in un intervallo di tempo definito dall'utente o visualizzare lo storico di una stazione | Funzionale
+F.4 | Attraverso il client è possibile visualizzare i dati in tempo reale, in un intervallo di tempo definito dall'utente o visualizzare la vista città di una stazione | Funzionale
 F.5 | L'interfaccia web deve permettere la consultazione attraverso filtri e criteri di ricerca | Funzionale
 F.6 | L'interfaccia web deve permettere la consultazione di grafici riassuntivi | Funzionale
 F.7 | Ogni evento generato dalla stazione meteo appartiene ad uno specifico topic | Funzionale
@@ -66,9 +66,10 @@ F.9 | Per ogni tipo di evento è definito un preciso schema che il payload deve 
 F.10 | Ogni volta che viene aggiunto un evento sul database si notifica ai server in ascolto | Funzionale 
 D.1 | La temperatura inviata dai sensori deve essere misurata in *gradi Celsius (°C)* | Dominio
 D.2 | La pressione inviata dai sensori deve essere misurata in *ettopascal (hPa)* | Dominio
-D.3 | La velocità del vento inviata dai sensori deve essere misurata in *chilometri orari (km/h)* | Dominio
+D.3 | La velocità del vento inviata dai sensori deve essere misurata in *chilometri orari (km/h)*. Inoltre viene indicata anche la direzione | Dominio
 D.4 | L'umidità inviata dai sensori deve essere misurata in *percentuale (%)* | Dominio
 D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *parti per milione (ppm)* | Dominio 
+D.6 | Dalla stazione viene rilevato l'attuale stato metereologico | Dominio
 
 <P style='page-break-before: always'>
 
@@ -83,9 +84,8 @@ Append-Only | Tipologia di database che permette soltanto l'inserimento dei dati
 Barriera | Sistema di validazione dei dati inviati da una stazione secondo uno schema ben definito. Necessario per evitare di scrivere sul database dati non validi | Validazione
 Buffer | Memoria dedicata nella stazione meteo per il salvataggio dei dati nel caso in cui il server non fosse pronto a riceverli o se ci dovesse essere qualche problema nel sistema |  
 Database relazionale |  Modello logico di rappresentazione o strutturazione dei dati di un database implementato su sistemi di gestione di basi di dati |
-Evento | La stazione emette un evento per notificare all'intero sistema dei cambiamenti, necessari per la ricostruzione dello storico dei dati | Cambiamento
+Evento | La stazione emette un evento per notificare all'intero sistema dei cambiamenti, necessari per la ricostruzione della vista città | Cambiamento, Event
 Frequenza di campionamento | Numero di volte al secondo in cui un segnale analogico viene misurato e memorizzato in forma digitale |
-Modello | Indica la versione di una stazione 
 Notifica PostgreSQL | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres | Notify
 Payload | Pacchetto contenente tutti i dati raccolti dalla stazione | Carico 
 Proiezione | Interrogazione al database che fornisce all'utente soltanto i dati richiesti
@@ -94,9 +94,10 @@ Scheda | Unisce tutti i componenti elettrici ed i sensori e ne permette il funzi
 Schema | Definisce per ogni tipo di evento delle regole e dei formati necessari per la validazione | 
 Sensore | Dispositivo elettronico in grado di rilevare una grandezza fisica e di trasmettere le variazioni a un sistema di misurazione o di controllo | Strumento di misura
 Stazione | L'insieme dei sensori collegati alla scheda principale, situata in un determinato luogo, capace di comunicare con il sistema | 
-Storico | L'insieme di tutti i dati raccolti dalle diverse stazioni organizzati in base agli eventi a cui fanno riferimento | 
-Tipo evento | Definisce nello specifico il tipo di evento che riferisce il topic |
+Vista città | L'insieme di tutti i dati raccolti dalle diverse stazioni organizzati in base agli eventi a cui fanno riferimento | Stroico
+Type | Definisce nello specifico il tipo di evento che riferisce il topic | Tipo evento
 Topic | Definisce l'argomento a cui l'evento fa riferimento | Argomento
+Version | Indica la versione della stazione
 
 <P style='page-break-before: always'>
 
@@ -108,13 +109,13 @@ Topic | Definisce l'argomento a cui l'evento fa riferimento | Argomento
 
 La stazione è considerata un attore in quanto è un sistema esterno con un ruolo attivo. Interviene nell’applicativo generando continuamente dati in ingresso che verranno utilizzati da Gestione Eventi solo nel caso in cui vengano rilevati dei cambiamenti.
 
-L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultaizone.
+L’utente ha la possibilità di consultare la vista città di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultaizone.
 
 <table>
 <thead><h3>Scenari d'uso</h3></thead>
 <tr><td><b>Titolo</b></td> <td>Gestione Evento</td></tr>
 <tr><td><b>Descrizione</b></td><td>Lettura dati dalla stazione meteo, validazione dei dati, scrittura su sistema</td></tr>
-<tr><td><b>Attori</b></td><td>Evento, Stazione Meteo</td></tr>
+<tr><td><b>Attori</b></td><td>Event, Stazione Meteo</td></tr>
 <tr><td><b>Relazioni</b></td> <td></td></tr>
 <tr><td><b>Precondizioni</b></td> <td>Si è verificato un evento registrato dalla stazione meteo (i.e. un cambio di temperatura, di pressione atmosferica etc)</td></tr>
 <tr><td><b>Postcondizioni</b></td><td>Il sistema ha rilevato l'evento, controllato la sua validità e scritto in maniera persistente sul sistema</td></tr>
@@ -124,7 +125,7 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 </table>
 <br>
 <table>
-<tr><td><b>Titolo</b></td> <td>Storico</td></tr>
+<tr><td><b>Titolo</b></td> <td>Vista</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di visualizzare l'elenco degli eventi registrati</td></tr>
 <tr><td><b>Attori</b></td><td>Utente</td></tr>
 <tr><td><b>Relazioni</b></td> <td>Filtro Grafici</td></tr>
@@ -139,7 +140,7 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 <tr><td><b>Titolo</b></td> <td>Filtro Grafici</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di filtrare gli eventi da visualizzare</td></tr>
 <tr><td><b>Attori</b></td><td>Utente</td></tr>
-<tr><td><b>Relazioni</b></td> <td>Storico</td></tr>
+<tr><td><b>Relazioni</b></td> <td></td></tr>
 <tr><td><b>Precondizioni</b></td> <td></td></tr>
 <tr><td><b>Postcondizioni</b></td><td>Il sistema ha mostrato all'utente gli eventi registrati filtrati a seconda dei criteri specificati</td></tr>
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente imposta i criteri secondo cui filtrare gli eventi: temporali, oppure legati al dato da visualizzare: pressione, inquinamento aria, temperatura, vento e l'umidità<li style="list-style-type: decimal;">Il sistema effettua la ricerca e mostra all'utente gli eventi risultanti</td></tr>
@@ -178,7 +179,7 @@ L’utente ha la possibilità di consultare lo Storico di tutti i dati meteo e 
 ### Valutazione dei beni
 Bene | Valore | Esposizione
 -|-|-|
-Evento | Alto <br> La perdita di un evento non permette la ricostruzione esatta dello storico dei dati, e comporta una vera e propria perdita di informazioni | Alta <br>Danni d'immagine: mancato inserimento nei database di un evento più o meno significativo. 
+Event | Alto <br> La perdita di un evento non permette la ricostruzione esatta dei dati, e comporta una vera e propria perdita di informazioni | Alta <br>Danni d'immagine: mancato inserimento nei database di un evento più o meno significativo. 
 Informazioni relative alla stazione meteo | Alto <br> Impossibilità di determinare la località dell'evento registrato; dati quindi inutilizzabili| Media/Alta <br> A seconda del motivo per il quale la stazione non è riuscita a comunicare la sua posizione; un errore interno, facilmente risolvibile o errori di comunicazione più gravi
 Sistema informativo | Alto <br> Il sistema informativo essendo il componente principale per l'utente finale deve sempre essere funzionante, pena l'impossibilità di visualizzare dati e grafici| Alta <br> Sito totalmente non funzionante, danni d'immagine e alti costi di ripristino di sistema
 Stazione meteo | Basso <br> Nel caso di malfunzionamento o di una perdita di una stazione meteo, non si riceveranno più eventi| Bassa <br> Data l'architettura del sistema, si possono rimuovere e aggiungere stazioni senza danneggiare il sistema stesso

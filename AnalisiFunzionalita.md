@@ -11,12 +11,12 @@ Scrittura Log | Memorizzazione dati | Semplice
 Statistiche | Visualizzazione report generali filtrabili | Semplice
 Storico | Visualizzazione eventi filtrabili | Semplice
 
-**Gestione Eventi: Tabella Informazioni/ Flusso**
+**Gestione Evento: Tabella Informazioni/ Flusso**
 
 Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
 |-|-|-|-|-
 Dato sensore Hardware | Semplice | Media | Input | |
-Evento | Composto | Alta | Output | |
+Event | Composto | Alta | Output | |
 Data | Semplice | Media | Input | |
 Ora | Semplice | Media | Input | |
 Stazione D'origine | Composto | Media | Input | |
@@ -34,16 +34,16 @@ Data | Semplice | Media | Input | |
 
 Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
 |-|-|-|-|-
-**Evento** composto da: | Composto | Alta | Input | |
+**Event** composto da: | Composto | Alta | Input | |
 Topic | Semplice | Media | Input | Stringa |
 Type | Semplice | Media | Input | Stringa |Version | Semplice | Media | Input | Intero maggiore di zero
 Payload | Composto | Media | Input | |
 
-**Storico: Tabella Informazioni/ Flusso** 
+**VistaCitta: Tabella Informazioni/ Flusso** 
 
 Informazione | Tipo | Livello Protezione/ Privacy | Input/ Oputput | Vincoli
 |-|-|-|-|-
-**Evento** composto da: | Composto | Alta | Input | |
+**Event** composto da: | Composto | Alta | Input | |
 Topic | Semplice | Media | Input | Stringa |
 Type | Semplice | Media | Input | Stringa |Version | Semplice | Media | Input | Intero maggiore di zero
 Payload | Composto | Media | Input | |
@@ -54,13 +54,13 @@ Payload | Composto | Media | Input | |
 
 Requisito | Categorie | Impatto | Funzionalità
 |-|-|-|-
-Integrità | Integrità | Rallentamento nella fase di scrittura e di validazione del dato; correttezza del dato assicurata dalla barriera | Gestione Evento, Statistiche, Storico
+Integrità | Integrità | Rallentamento nella fase di scrittura e di validazione del dato; correttezza del dato assicurata dalla barriera | Gestione Evento, Statistiche, VistaCitta
 Efficienza scrittura | Performance | Maggiore efficienza nella fase di scrittura persistente del dato ed un tempo di risposta ridotto | Gestione Evento
 Velocità validazione | Performance | Maggiore efficienza nella validazione del dato ed un tempo di risposta ridotto | Gestione Evento
 Efficienza stazione meteo | Sistema esterno | Impatto sul sistema nullo; possibilità di elaborare velocemente i dati letti dai sensori |
-Rapidità di ricerca | Tempo di risposta | Maggiore efficienza nella fase di fetch dei dati all'interno del database | Storico, Statistiche
-Velocità di lettura | Tempo di risposta | Maggiore efficienza nella fase di lettura del dato ed un tempo di risposta ridotto | Storico, Statistiche
-Semplicità ed immediatezza nell'utilizzo |  Usabilità | Migliore usabilità da parte dell'utente finale; interfacce grafiche intuitive | Storico, Statistiche
+Rapidità di ricerca | Tempo di risposta | Maggiore efficienza nella fase di fetch dei dati all'interno del database | VistaCitta, Statistiche
+Velocità di lettura | Tempo di risposta | Maggiore efficienza nella fase di lettura del dato ed un tempo di risposta ridotto | VistaCitta, Statistiche
+Semplicità ed immediatezza nell'utilizzo |  Usabilità | Migliore usabilità da parte dell'utente finale; interfacce grafiche intuitive | VistaCitta, Statistiche
 
 ### Analisi delle interazioni
 
@@ -68,8 +68,8 @@ Semplicità ed immediatezza nell'utilizzo |  Usabilità | Migliore usabilità da
 
 Maschera | Informazioni | Funzionalità
 |-|-|-
-Homepage | Pagina iniziale con logo, barra di richerca della località d'interesse e relativo bottone per le statistiche generali | Storico, Statistiche
-Schermata storico | Dati in tempo reale filtrabili e grafici degli eventi relativi alla località cercata | Storico
+Homepage | Pagina iniziale con logo, barra di richerca della località d'interesse e relativo bottone per le statistiche generali | VistaCitta, Statistiche
+VistaCitta | Dati in tempo reale filtrabili e grafici degli eventi relativi alla località cercata | VistaCitta
 Schermata statistiche | Dati in tempo reale e report filtrabili relativi alla località cercata | Statistiche
  
 **Tabella sistemi esterni**
@@ -82,11 +82,11 @@ Stazione meteo | Insieme di sensori e componenti hardware che formano una stazio
 
 Ruolo | Responsabilità | Maschere | Riservatezza | Numerosità
 -|-|-|-|-|
-Utente | Consulta i dati in tempo reale delle stazioni meteo utilizzando i filtri offerti dall'applicazione e il relativo storico | Homepage, Schermata storico, Schermata statistiche | Bassa | Il numero di utenti non è limitato. Dipende dalla scalabilità del sistema
+Utente | Consulta i dati in tempo reale delle stazioni meteo utilizzando i filtri offerti dall'applicazione e il relativo storico | Homepage, VistaCitta, Schermata statistiche | Bassa | Il numero di utenti non è limitato. Dipende dalla scalabilità del sistema
 
 **Utente : Tabella ruolo-informazioni**
 
 Informazione | Tipo di accesso
 -|-|
-Storico | Lettura
+VistaCitta | Lettura
 Statistiche | Lettura
