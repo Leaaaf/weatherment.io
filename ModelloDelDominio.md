@@ -31,3 +31,9 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 ![](resources/InteractionGestioneEvento.svg)
 
 ![](resources/InteractionProiezione.svg)
+
+### Comportamento
+
+**Diagramma di stato Trasmissione**
+
+![](resources/StatoBuffer.svg)
