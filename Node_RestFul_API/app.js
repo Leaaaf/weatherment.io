@@ -4,6 +4,7 @@ const app = express()
 const port = 3000
 
 const temperatures = require("./routes/temperature")
+const mock = require("./routes/mock");
 
 app.use(bodyParser.json())
 app.use(
@@ -13,19 +14,33 @@ app.use(
 )
 
 app.get('/', (request, response) => {
-  response.json({ info: 'WeatherMent.IO get TEST' })
+  response.json({
+    info: 'WeatherMent.IO get TEST'
+  })
 })
 
-app.listen(port, () => {
-  console.log(`WatherMent.Io Application running on ${port}.`)
-})
+//////////
+// START MOCK ROUTING
+//////////
+
+app.get('/mock/temperatures', mock.getTemperatures);
+app.get('/mock/boardState', mock.getBoardState);
+
+//////////
+// END MOCK ROUTING
+//////////
 
 //////////
 // START TEMPERATURE ROUTING
 //////////
 
-app.get('/temperature/{zipcode}/{date}',temperatures.getTemperatures);
+app.get('/temperature/{zipcode}/{date}', temperatures.getTemperatures);
 
 //////////
 // END TEMPERATURE ROUTING
 //////////
+
+
+app.listen(port, () => {
+  console.log(`WatherMent.Io Application running on ${port}.`)
+})

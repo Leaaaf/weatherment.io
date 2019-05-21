@@ -1,10 +1,11 @@
 const Pool = require('pg').Pool
+const db = require('../config/database');
 const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432,
+  user: db.username,
+  host: db.host,
+  database: db.database,
+  password: db.password,
+  port: db.port,
 })
 
 const getTemperatures = (request, response) => {
