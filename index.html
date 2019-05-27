@@ -6,6 +6,27 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
     <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+</head>
+
+<body>
+    <div class="splash">
+        <img id="logo" class="animated fadeInDown slow delay-1s" src="/resources/WEATHERMENT.svg">
+        <div id="bar" class="bottom animated fadeInUp delay-2s">
+            <form onsubmit="event.preventDefault(); onSearch();">
+                <input type="search" placeholder="Ricerca località">
+                <i class="fa fa-search"></i>
+            </form>
+        </div>
+        <div class="stats animated fadeInUp delay-3s">
+            <div class="circleStats">
+                <a href=""><i class="far fa-file-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="chart-container" style="width: 90%; height: 90%; display: none;">
+        <canvas id="myChart"></canvas>
+    </div>
+
     <script type="text/javascript">
         function onSearch() {
             const logo = document.getElementById('logo');
@@ -74,19 +95,4 @@
             });
         }
     </script>
-</head>
-
-<body>
-    <div class="splash">
-        <img id="logo" class="animated fadeInDown slow delay-1s" src="/resources/WEATHERMENT.svg">
-        <div id="bar" class="bottom animated fadeInUp delay-2s">
-            <form onsubmit="event.preventDefault(); onSearch();">
-                <input type="search" placeholder="Ricerca località">
-                <i class="fa fa-search"></i>
-            </form>
-        </div>
-    </div>
-    <div class="chart-container" style="width: 90%; height: 90%; display: none;">
-        <canvas id="myChart"></canvas>
-    </div>
 </body>

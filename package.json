@@ -4,7 +4,7 @@
   "description": "A beatiful app for weather management",
   "main": "index.html",
   "scripts": {
-    "start": "parcel *.html"
+    "start": "parcel index.html"
   },
   "repository": {
     "type": "git",

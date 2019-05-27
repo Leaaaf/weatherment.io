@@ -25,6 +25,44 @@ body {
         position: absolute;
         bottom: 15%;
     }
+
+    .stats {
+        position: absolute;
+        bottom: 5%;
+
+        .circleStats {
+            margin-top: 25px;
+            margin-right: 2.5vw;
+            width: 50px;
+            height: 50px;
+            background: $white;
+            box-sizing: border-box;
+            border-radius: 25px;
+            border: 4px solid $light-blue;
+            padding: 5px;
+            transform: translate(0%, 0%);
+            transition: all 1s;
+
+            .far {
+                box-sizing: border-box;
+                padding: 10px 0px 5px 2px;
+                width: 42.5px;
+                height: 42.5px;
+                position: absolute;
+                top: 0;
+                right: 0;
+                border-radius: 50%;
+                color: $light-blue;
+                text-align: center;
+                font-size: 1.4em;
+                transition: all 1s;
+
+                &:hover {
+                    color: $main-blue;
+                }
+            }
+        }
+    }
 }
 
 form {
@@ -74,7 +112,7 @@ input {
 form:hover {
     width: 500px;
     cursor: pointer;
-    
+
     input {
         display: block;
         color: $light-blue;
