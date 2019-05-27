@@ -1,11 +1,10 @@
 {
   "name": "weatherment.io",
   "version": "1.0.0",
-  "description": "A beatiful ",
-  "main": "index.js",
+  "description": "A beatiful app for weather management",
+  "main": "index.html",
   "scripts": {
-    "start-graph": "parcel graph.html",
-    "start-home": "parcel home.html"
+    "start": "parcel *.html"
   },
   "repository": {
     "type": "git",
