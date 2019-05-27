@@ -4,7 +4,8 @@
   "description": "A beatiful ",
   "main": "index.js",
   "scripts": {
-    "start": "parcel *.html"
+    "start-graph": "parcel graph.html",
+    "start-home": "parcel home.html"
   },
   "repository": {
     "type": "git",
@@ -20,11 +21,8 @@
   },
   "homepage": "https://github.com/Leaaaf/weatherment.io#readme",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "chart.js": "^2.8.0",
-    "parcel-bundler": "^1.12.3",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "parcel-bundler": "^1.12.3"
   },
   "devDependencies": {
     "sass": "^1.18.0"

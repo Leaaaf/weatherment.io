@@ -1,0 +1,92 @@
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link href="css/home.scss" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+    <script type="text/javascript">
+        function onSearch() {
+            const logo = document.getElementById('logo');
+            logo.classList.remove('animated', 'fadeInDown', 'delay-1s');
+            logo.classList.add('animated', 'fadeOutUp', 'delay-1s');
+            logo.addEventListener('animationend', function () {
+                logo.style.display = "none";
+                document.querySelector('.splash').style.display = "none";
+                document.querySelector('.chart-container').style.display = "flex";
+                createChart();
+            })
+            const bar = document.getElementById('bar');
+            bar.classList.remove('animated', 'fadeInUp', 'delay-2s');
+            bar.classList.add('animated', 'fadeOutDown', 'delay-1s');
+            bar.addEventListener('animationend', function () {
+                bar.style.display = "none";
+            })
+        }
+
+        function createChart() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['11/01', '12/01', '13/01', '14/01', '15/01', '16/01'],
+                    datasets: [{
+                            label: 'MAX Temperature',
+                            data: [20, 22, 23, 25, 18, 20],
+                            borderColor: 'rgba(252, 60, 60, 1)',
+                            fill: false,
+                            borderWidth: 3
+                        },
+                        {
+                            label: 'MIN Temperature',
+                            data: [12, 13, 12, 15, 8, 10],
+                            borderColor: 'rgba(0, 75, 168, 1)',
+                            fill: false,
+                            borderWidth: 3
+                        }
+                    ]
+                },
+                options: {
+                    elements: {
+                        line: {
+                            tension: 0
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    legend: {
+                        labels: {
+                            boxWidth: 1,
+                        },
+                        position: 'right'
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuad'
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="splash">
+        <img id="logo" class="animated fadeInDown slow delay-1s" src="/resources/WEATHERMENT.svg">
+        <div id="bar" class="bottom animated fadeInUp delay-2s">
+            <form onsubmit="event.preventDefault(); onSearch();">
+                <input type="search" placeholder="Ricerca località">
+                <i class="fa fa-search"></i>
+            </form>
+        </div>
+    </div>
+    <div class="chart-container" style="width: 90%; height: 90%; display: none;">
+        <canvas id="myChart"></canvas>
+    </div>
+</body>
