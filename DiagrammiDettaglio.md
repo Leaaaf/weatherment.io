@@ -4,6 +4,10 @@
 
 Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la homepage. Nella schermata iniziale non vengono mostrati dati all'utente. Le uniche funzioni esposte sono: la possibilità di cercare una città e visualizzarne i suoi dettagli, oppure avere accesso ad un report nazionale.
 
+![](resources/screens/home1.png)
+
+![](resources/screens/home2.png)
+
 #### Diagramma di dettaglio - ViewCitta
 
 ![](resources/DiagrammaDettaglioViewCitta.svg)

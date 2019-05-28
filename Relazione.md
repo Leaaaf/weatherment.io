@@ -22,6 +22,8 @@
     - [Security use case e Misuse case](#security-use-case-e-misuse-case)
     - [Requisiti di Protezione](#requisiti-di-protezione)
   - [Interfacce grafiche](#interfacce-grafiche)
+    - [Struttura](#struttura)
+    - [Homepage](#homepage)
 - [Analisi del problema](#analisi-del-problema)
   - [Analisi del documento dei requisiti](#analisi-del-documento-dei-requisiti)
     - [Analisi delle funzionalità](#analisi-delle-funzionalit%C3%A0)
@@ -30,7 +32,7 @@
   - [Analisi dei ruoli e delle responsabilità](#analisi-dei-ruoli-e-delle-responsabilit%C3%A0)
   - [Creazione modello del dominio](#creazione-modello-del-dominio)
   - [Architettura logica](#architettura-logica)
-    - [Struttura](#struttura)
+    - [Struttura](#struttura-1)
       - [Diagramma dei package](#diagramma-dei-package)
       - [Diagramma delle classi](#diagramma-delle-classi)
     - [Interazione](#interazione)
@@ -289,6 +291,19 @@ Dopo l'analisi dei rischi, vi è quindi il bisogno di nuovi requisiti riguardant
 <P style='page-break-before: always'>
 
 ## Interfacce grafiche
+
+### Struttura
+Il sistema presenta due sezioni principali navigabili senza dover effettuare alcun tipo di registrazione/autenticazione. Una sezione, permette la visualizzazone dei dati meteorologici legati ad una specifica città, fornendo informazioni in tempo reale e grafici storici. L'altra sezione permette invece di visualizzare dei report statistici nazionali o specifici di una città, legati ad un intervallo temporale definito dall'utente.
+
+### Homepage
+
+Questa è la sezione di partenza del sistema; permette di spostarsi nelle due sezioni principali attraverso un form di ricerca per città e un bottone per le statistiche.
+
+![](resources/screens/home1.png)
+
+Una volta che viene selezionato il tasto di ricerca:
+
+![](resources/screens/home2.png)
 
 <P style='page-break-before: always'>
 
