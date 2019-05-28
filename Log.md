@@ -1,16 +1,27 @@
 ### Formato del file di log
 
-Il file di log deve contenere tutte le azioni che avvengono nelle componenti del sistema che si occupano di ricevere e salvare gli eventi, per le ragioni di sicurezza discusse nelle sezioni precedenti. Il file è formato in questo modo:
+Il file di log degli eventi deve contenere gli eventi che avvengono nelle componenti del sistema che si occupano di ricevere e salvare gli eventi, per le ragioni di sicurezza discusse nelle sezioni precedenti. Il file è formato in questo modo:
 
 ```json
 log: {
     timestamp: <timestamp>,
+    level: <level>,
     ip: <ip>,
-    action: <action>
+    message: <message>,
+    tag: <tag>
 }  
-<timestamp> <ip> <action>
-<timestamp> <ip> <action>
+```
 
+Il file di log relativo al server delle proiezioni, a cui i client effettuano le richieste, è così composto:
+
+```json
+log: {
+    timestamp: <timestamp>,
+    status: <status>,
+    method: <method>,
+    level: <level>,
+    endpoint: <endpoint>
+}
 ```
 
 #### Protezione dei file di log
