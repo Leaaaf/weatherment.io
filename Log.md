@@ -4,11 +4,11 @@ Il file di log degli eventi deve contenere gli eventi che avvengono nelle compon
 
 ```json
 log: {
-    timestamp: <timestamp>,
-    level: <level>,
-    ip: <ip>,
-    message: <message>,
-    tag: <tag>
+    "timestamp": "<timestamp>",
+    "level": "<level>",
+    "ip": "<ip>",
+    "message": "<message>",
+    "tag": "<tag>"
 }  
 ```
 
@@ -16,11 +16,11 @@ Il file di log relativo al server delle proiezioni, a cui i client effettuano le
 
 ```json
 log: {
-    timestamp: <timestamp>,
-    status: <status>,
-    method: <method>,
-    level: <level>,
-    endpoint: <endpoint>
+    "timestamp": "<timestamp>",
+    "status": "<status>",
+    "method": "<method>",
+    "level": "<level>",
+    "endpoint": "<endpoint>"
 }
 ```
 
