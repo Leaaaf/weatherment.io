@@ -54,6 +54,10 @@
     - [Trasmissione remota dei dati](#trasmissione-remota-dei-dati)
   - [Progettazione di Dettaglio](#progettazione-di-dettaglio)
     - [Struttura](#struttura-2)
+      - [Trasmissione](#trasmissione)
+      - [Log](#log)
+      - [GestioneEvento](#gestioneevento)
+      - [Proiezioni](#proiezioni)
     - [Diagrammi di Dettaglio](#diagrammi-di-dettaglio)
       - [Diagramma di dettaglio - Homepage](#diagramma-di-dettaglio---homepage)
       - [Diagramma di dettaglio - ViewCitta](#diagramma-di-dettaglio---viewcitta)
@@ -625,6 +629,27 @@ Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo
 
 ## Progettazione di Dettaglio
 ### Struttura
+
+![](resources/ProgettazioneDettaglio_TrasmissioneLog.svg)
+#### Trasmissione 
+- **TrasmissioneController**: si occupa della trasmissione dei dati letti dalla stazione all'EventoController. Il metodo `trasmetti` serializza ed invia l'evento in formato JSON. Il metodo `connetti` apre una connessione con l'indirzzo e la porta specificati. <br> Nel caso in cui la connessione non dovesse andare a buon fine, viene lanciata una eccezione *ConnectionFailed*. <br> Implementa l'interfaccia StazioneInterface che permette la lettura dei sensori e la verifica dei cambiamenti del dato, andando quindi ad inviare un evento solo nel caso in cui esso rappresenti una variazione.
+
+#### Log
+- **LogController**: si occupa della scrittura dei log di tutto il sistema, include quindi tutte le interazioni da parte dell'utente e tutte le interazioni da parte della stazione. Il metodo `scriviLog` permette di scrivere su file a partire da un JSON, che sarà formattato a seconda del log come specificato nel capitolo dedicato successivamente.
+- 
+<P style='page-break-before: always'>
+
+![](resources/ProgettazioneDettaglio_ProiezioniEvento.svg)
+
+#### GestioneEvento
+- **EventoController**: questo controller agisce da tramite tra la trasmissione della stazione meteo (TrasmissioneController) e il controller delle proiezioni. È un componente fondamentale del sistema in quanto gestisce la validazione degli eventi attraverso Validator e, tramite il repository pattern, delega la persistenza degli eventi all'EventoRepository.<br>A differenza della fase di analisi non abbiamo più bisogno del meodo notify per comunicare con ProiezioniController in quanto per scelte tecnologiche si utilizza il DBMS PostrgreSQL che fornisce l'apposita funzione standard `notify()`.
+- **Validator**: si occupa della validazione del payload, facendo riferimento al JSON Schema relativo al tipo di evento ricevuto. In caso di evento malformato o non valido lancia una eccezione *InvalidEvent*.
+- **EventoRepository**: attraverso il repository pattern viene disaccoppiata la logica di business e la logica di accesso ai dati; l'EventoRepository quindi permette la lettura e la scrittura degli eventi sulla persistenza. Per farlo implementa l'interfaccia EventoRepositoryInterface che definisce esattamente come salvare, trovare e filtrare gli eventi interfacciandosi direttamente con il DB.<br>I metodi `find` e `filter` servono per recuperare degli eventi avvenuti in passato nel caso in cui si voglia generare una nuova proiezione da zero, in quanto la funzione di notifica dell'EventoController viene richiamata solo una volta, appena ricevuto il dato.<br>Non espone, a differenza di un generico repository pattern, tutti i metodi CRUD (Create, Read, Update, Delete) per ogni entità del modello, in quanto la persistenza degli eventi viene gestita in APPEND-ONLY e quindi non può per nessun motivo permettere la modifica o l'eliminazione dei dati.
+
+#### Proiezioni
+- **ProiezioniController**: si occupa della creazione e dell'aggiornamento delle proiezioni attraverso il DataRepository a partire dalle notifiche degli eventi ricevuti dall'EventoController.<br>Il metodo `gestisciEvento`, dato l'evento in input,   
+
+<P style='page-break-before: always'>
 
 ### Diagrammi di Dettaglio
 
