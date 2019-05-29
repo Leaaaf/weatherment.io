@@ -144,9 +144,9 @@ Version | Indica la versione della stazione
 
 ![](resources/ScenaryCase.svg)
 
-La stazione è considerata un attore in quanto è un sistema esterno con un ruolo attivo. Interviene nell’applicativo generando continuamente dati in ingresso che verranno utilizzati da Gestione Eventi solo nel caso in cui vengano rilevati dei cambiamenti.
+La stazione è considerata un attore in quanto è un sistema esterno con un ruolo attivo. Interviene nell’applicativo generando continuamente dati in ingresso che verranno utilizzati da Gestione Eventi solo nel caso in cui vengano rilevati dei cambiamenti.
 
-L’utente ha la possibilità di consultare la vista città di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultaizone.
+L’utente ha la possibilità di consultare la vista città di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultaizone.
 
 <table>
 <thead><h3>Scenari d'uso</h3></thead>
@@ -614,11 +614,11 @@ Dopo aver effettuato l'analisi del sistema, le vulnerabilità tecnologiche princ
 
 ### Database
 
-| | |
--|-|
-| **Rischio** |Accesso al database non autorizzato e alterazione dei dati
-|**Descrizione**| L'accesso al database, sebbene protetto da password, può essere forzato da un possibile attaccante in diversi modi. Se un malintenzionato dovesse ottenere l'accesso al database, potrebbe modificare, cancellare i dati persistenti su tutto il sistema. 
-|**Possibili soluzioni**| <li>Una possibile soluzione al problema è la cifratura dei dati che renderebbe illeggibile il contenuto ad un possibile attaccante. PostgreSQL ha un supporto nativo sia alla crittografazione della comunicazione tramite protocollo **SSL**, sia alla criptazione del dato attraverso criptazione **simmetrica** e **asimmetrica**, rendendo di fatto l'intero database più sicuro. <li>Un altra possibile soluzione, che non esclude la precedente, è l'utilizzo di alcune meccaniche di **log** fornite da PostgreSQL per poter analizzare i vari tentativi di intrusione. <li> L'alterazione dei dati inoltre può essere controllata con backup periodici e controlli di integrità.
+<table>
+  <tr><td><b>Rischio</b></td><td>Accesso al database non autorizzato e alterazione dei dati</td></tr>
+  <tr><td><b>Descrizione</b></td><td>L'accesso al database, sebbene protetto da password, può essere forzato da un possibile attaccante in diversi modi. Se un malintenzionato dovesse ottenere l'accesso al database, potrebbe modificare, cancellare i dati persistenti su tutto il sistema.</td></tr>
+  <tr><td><b>Possibili soluzioni</b></td><td><li>Una possibile soluzione al problema è la cifratura dei dati che renderebbe illeggibile il contenuto ad un possibile attaccante. PostgreSQL ha un supporto nativo sia alla crittografazione della comunicazione tramite protocollo <b>SSL</b>, sia alla criptazione del dato attraverso criptazione <b>simmetrica</b> e <b>asimmetrica</b>, rendendo di fatto l'intero database più sicuro. <li>Un altra possibile soluzione, che non esclude la precedente, è l'utilizzo di alcune meccaniche di <b>log</b> fornite da PostgreSQL per poter analizzare i vari tentativi di intrusione. <li> L'alterazione dei dati inoltre può essere controllata con backup periodici e controlli di integrità.</td></tr>
+</table>
 
 ### Trasmissione remota dei dati
 Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo al sistema, è necessario creare una connessione sicura su cui operare. Questo canale deve garantire uno standard di qualità di servizio e sicurezza, per evitare una possibile lettura o corruzione dei dati in transito; questo avviene implementando il protocollo SSL TLS. 
