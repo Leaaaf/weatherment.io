@@ -12,7 +12,7 @@ log: {
 }  
 ```
 
-Il file di log relativo al server delle proiezioni, a cui i client effettuano le richieste, è così composto:
+Il file di log relativo alle proiezioni visualizzate dall'utente, è così composto:
 
 ```json
 log: {
