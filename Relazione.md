@@ -1,3 +1,8 @@
+<style>
+  div{ page-break-after: always; }
+  .firstRow {background-color: #457CBF; color:white}
+</style>
+
 ![](resources/logo.svg)
 
 ## Membri del team (Gruppo 38):
@@ -5,7 +10,7 @@
 -   Mattia Forcellese (0000788898)
 -   Federico Pomponii (0000803024)
   
-<P style='page-break-before: always'>
+<div></div>
 
 - [Abstract](#abstract)
   - [Descrizione del progetto](#descrizione-del-progetto)
@@ -69,8 +74,10 @@
     - [Diagramma ER - Proiezioni](#diagramma-er---proiezioni)
     - [Formato del file di log](#formato-del-file-di-log)
       - [Protezione dei file di log](#protezione-dei-file-di-log)
+- [Deployment](#deployment)
+  - [Deployment-type Level](#deployment-type-level)
 
-<P style='page-break-before: always'>
+<div></div>
 
 # Abstract
 ## Descrizione del progetto
@@ -88,7 +95,7 @@ Nello specifico i dati finali esposti all'utente sono organizzati rispetto all'e
 Il progetto mira ad essere facilmente scalabile sia orizzontalmente che verticalmente ed espandibile sia dal punto di vista di nuove stazioni che di nuovi tipi di dato. Le nuove stazioni meteo prima di poter trasmettere i dati dovranno essere autenticate per garantire l'affidabilità del sistema. 
 
 
-<P style='page-break-before: always'>
+<div></div>
 
 # Analisi dei requisiti
 
@@ -112,7 +119,7 @@ D.4 | L'umidità inviata dai sensori deve essere misurata in *percentuale (%)* |
 D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *parti per milione (ppm)* | Dominio 
 D.6 | Dalla stazione viene rilevato l'attuale stato metereologico | Dominio
 
-<P style='page-break-before: always'>
+<div></div>
 
 ## Analisi del dominio
 
@@ -140,7 +147,7 @@ Type | Definisce nello specifico il tipo di evento che riferisce il topic | Tipo
 Topic | Definisce l'argomento a cui l'evento fa riferimento | Argomento
 Version | Indica la versione della stazione
 
-<P style='page-break-before: always'>
+<div></div>
 
 ## Analisi dei requisiti
 
@@ -152,9 +159,11 @@ La stazione è considerata un attore in quanto è un sistema esterno con un ruol
 
 L’utente ha la possibilità di consultare la vista città di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultaizone.
 
+<div></div>
+
 <table>
 <thead><h3>Scenari d'uso</h3></thead>
-<tr><td><b>Titolo</b></td> <td>Gestione Evento</td></tr>
+<tr class="firstRow"><td><b>Titolo</b></td> <td>Gestione Evento</td></tr>
 <tr><td><b>Descrizione</b></td><td>Lettura dati dalla stazione meteo, validazione dei dati, scrittura su sistema</td></tr>
 <tr><td><b>Attori</b></td><td>Event, Stazione Meteo</td></tr>
 <tr><td><b>Relazioni</b></td> <td></td></tr>
@@ -164,9 +173,9 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Scenari alternativi</b> </td><td>La connessione con la stazione meteo viene persa o è molto lenta: <li style="list-style-type: decimal;">La stazione meteo nel caso in cui il server smetta di rispondere riempie un buffer<li style="list-style-type: decimal;">Appena il server torna a rispondere la stazione svuota il buffer inviando gli eventi memorizzati<li style="list-style-type: decimal;">La stazione meteo elimina localmente in via definitiva l'evento solo ed esclusivamente se il server ne conferma la ricezione, per evitare una perdita di eventi</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati letti dal sensore <br> Velocità nella validazione dell'evento <br> Efficienza nella scrittura persisente sul sistema <br> Efficienza della stazione meteo nell'invio dei dati e nell'utilizzo di memoria cache</td></tr>
 </table>
-<br>
+<div></div>
 <table>
-<tr><td><b>Titolo</b></td> <td>Vista</td></tr>
+<tr class="firstRow"><td><b>Titolo</b></td> <td>Vista Citta</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di visualizzare l'elenco degli eventi registrati</td></tr>
 <tr><td><b>Attori</b></td><td>Utente</td></tr>
 <tr><td><b>Relazioni</b></td> <td>Filtro Grafici</td></tr>
@@ -178,7 +187,7 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 </table>
 <br>
 <table>
-<tr><td><b>Titolo</b></td> <td>Filtro Grafici</td></tr>
+<tr class="firstRow"><td><b>Titolo</b></td> <td>Filtro Grafici</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di filtrare gli eventi da visualizzare</td></tr>
 <tr><td><b>Attori</b></td><td>Utente</td></tr>
 <tr><td><b>Relazioni</b></td> <td></td></tr>
@@ -188,9 +197,9 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Scenari alternativi</b> </td><td>La ricerca effettuata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Rapidità ricerca</td></tr>
 </table>
-<br>
+<div></div>
 <table>
-<tr><td><b>Titolo</b></td> <td>Statistiche</td></tr>
+<tr class="firstRow"><td><b>Titolo</b></td> <td>Statistiche</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di visualizzare dei rapporti statistici sugli eventi relativi alle varie località </td></tr>
 <tr><td><b>Attori</b></td><td>Utente</td></tr>
 <tr><td><b>Relazioni</b></td> <td>Filtro Statistiche</td></tr>
@@ -200,9 +209,9 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Scenari alternativi</b> </td><td>Non vi sono statistiche da mostrare:<li style="list-style-type: decimal;">Il sistema notifica all'utente di non poter proseguire l'azione</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati<br>Velocità in lettura <br>Immediatezza e semplicità di utilizzo e di consultazione</td></tr>
 </table>
-<br>
+<div></div>
 <table>
-<tr><td><b>Titolo</b></td> <td>Filtro Statistiche</td></tr>
+<tr class="firstRow"><td><b>Titolo</b></td> <td>Filtro Statistiche</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di filtrare i rapporti statistici sugli eventi relativi alle varie località a seconda di diversi criteri </td></tr>
 <tr><td><b>Attori</b></td><td>Utente</td></tr>
 <tr><td><b>Relazioni</b></td> <td>Statistiche</td></tr>
@@ -213,7 +222,7 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Requisiti non funzionali</b></td><td>Rapidità ricerca</td></tr>
 </table>
 
-<P style='page-break-before: always'>
+<div></div>
 
 ## Analisi del rischio
 
@@ -241,12 +250,16 @@ Architettura Client/Server | <li> Attacco DDoS<br><li> Man in the middle
 Cifratura delle comunicazioni | Utilizzo di cifratura simmetrica e asimmetrica. Non strettamente necessaria in quanto i dati trasmessi non sono dati sensibili.
 Stazione meteo | <li>Alterazione dei sensori<br> <li>Alterazione della posizione geografica della stazione<br> <li>Manomissione e blocco delle trasmissioni
 
+<div></div>
+
 ### Security use case e Misuse case
 
 ![](resources/SecuritycaseMisusecase.svg)
 
+<div></div>
+
 <table>
-<tr><td colspan=4><b>Caso d'uso:</b> integrità</td> </tr>
+<tr class="firstRow"><td colspan=4><b>Caso d'uso:</b> integrità</td> </tr>
 <tr><td colspan=4><b>Percorso del caso d'uso:</b> integrità nella trasmissione dei dati un sensore</td> </tr>
 <tr><td colspan=4><b>Misuse case:</b> Man in the middle </td></tr>
 <tr><td colspan=4><b>Rischi alla sicurezza:</b> Un malintenzionato può modificare i dati inviati da una stazione remota prima che arrivino al server </td></tr>
@@ -264,8 +277,10 @@ Stazione meteo | <li>Alterazione dei sensori<br> <li>Alterazione della posizione
 <tr><td colspan=4><b>Postcondizioni:</b> Il sistema deve aver notificato all'utente l'accaduto e deve aver bloccato la stazione</td></tr>
 </table>
 
+<div></div>
+
 <table>
-<tr><td colspan=4><b>Caso d'uso:</b> integrità</td> </tr>
+<tr class="firstRow"><td colspan=4><b>Caso d'uso:</b> integrità</td> </tr>
 <tr><td colspan=4><b>Percorso del caso d'uso:</b>Corretto funzionamento del sistema</td> </tr>
 <tr><td colspan=4><b>Misuse case:</b>Attacco DDoS </td></tr>
 <tr><td colspan=4><b>Rischi alla sicurezza:</b>Un malintenzionato potrebbe tentare di sovraccaricare le risorse del sistema con conseguente malfunzionamento dello stesso</td></tr>
@@ -282,8 +297,10 @@ Stazione meteo | <li>Alterazione dei sensori<br> <li>Alterazione della posizione
 <tr><td colspan=4><b>Postcondizioni:</b> Il sistema deve aver notificato nei log l'avvenuto</td></tr>
 </table>
 
+<div></div>
+
 <table>
-<tr><td colspan=4><b>Caso d'uso:</b> Integrità</td> </tr>
+<tr class="firstRow"><td colspan=4><b>Caso d'uso:</b> Integrità</td> </tr>
 <tr><td colspan=4><b>Percorso del caso d'uso:</b> integrità dei dati salvati dal sistema</td> </tr>
 <tr><td colspan=4><b>Misuse case:</b> Operazione vietata</td></tr>
 <tr><td colspan=4><b>Rischi alla sicurezza:</b> Un malintenzionato può modificare i dati già salvati sul database, modificando lo storico degli eventi</td></tr>
@@ -305,12 +322,13 @@ Dopo l'analisi dei rischi, vi è quindi il bisogno di nuovi requisiti riguardant
 1. Un sistema di log che permetta all'amministratore di visualizzare tutte le azioni avvenute sul sistema, registrate in modo permanente; nel caso di attacchi esterni come ManInTheMiddle, DDoS o di tentativi di corruzione dei dati, è possibile risalire alla causa e analizzare nel dettaglio quanto avvenuto. I log verranno visualizzati e gestiti con un editor di testo esterno, non rilevante e non implementato per il progetto.
 2. I dati sismici trasmessi in remoto devono essere protetti da attacchi di tipo man in the middle, eventualmente adottando una cifratura dei dati in transito.
 
-<P style='page-break-before: always'>
+<div></div>
 
 ## Interfacce grafiche
 
 ### Struttura
 Il sistema presenta due sezioni principali navigabili senza dover effettuare alcun tipo di registrazione/autenticazione. Una sezione, permette la visualizzazone dei dati meteorologici legati ad una specifica città, fornendo informazioni in tempo reale e grafici storici. L'altra sezione permette invece di visualizzare dei report statistici nazionali o specifici di una città, legati ad un intervallo temporale definito dall'utente.
+<div></div>
 
 ### Homepage
 
@@ -322,7 +340,7 @@ Una volta che viene selezionato il tasto di ricerca:
 
 ![](resources/screens/home2.png)
 
-<P style='page-break-before: always'>
+<div></div>
 
 # Analisi del problema
 ## Analisi del documento dei requisiti
@@ -374,6 +392,8 @@ Topic | Semplice | Media | Input | Stringa |
 Type | Semplice | Media | Input | Stringa |Version | Semplice | Media | Input | Intero maggiore di zero
 Payload | Composto | Media | Input | |
 
+<div></div>
+
 ### Analisi dei vincoli
 
 **Tabella dei vincoli**
@@ -387,6 +407,8 @@ Efficienza stazione meteo | Sistema esterno | Impatto sul sistema nullo; possibi
 Rapidità di ricerca | Tempo di risposta | Maggiore efficienza nella fase di fetch dei dati all'interno del database | VistaCitta, Statistiche
 Velocità di lettura | Tempo di risposta | Maggiore efficienza nella fase di lettura del dato ed un tempo di risposta ridotto | VistaCitta, Statistiche
 Semplicità ed immediatezza nell'utilizzo |  Usabilità | Migliore usabilità da parte dell'utente finale; interfacce grafiche intuitive | VistaCitta, Statistiche
+
+<div></div>
 
 ### Analisi delle interazioni
 
@@ -404,6 +426,8 @@ Sistema | Descrizione | Protocollo di interazione | Livello di sicurezza
 |-|-|-|-
 Stazione meteo | Insieme di sensori e componenti hardware che formano una stazione meteo | La stazione invia al server gli eventi seguendo lo schema di default. Il sistema li convalida e li scrive in modo persistente sul database | Medio; la stazione può subire attacchi esterni sia dal punto di vista software che hardware
 
+<div></div>
+
 ## Analisi dei ruoli e delle responsabilità
 
 Ruolo | Responsabilità | Maschere | Riservatezza | Numerosità
@@ -417,6 +441,8 @@ Informazione | Tipo di accesso
 VistaCitta | Lettura
 Statistiche | Lettura
 
+<div></div>
+
 ## Creazione modello del dominio
 
 Direction:<br>N; NNE; NE; ENE; E; ESE; SE; SSE; S; SSO; SO; OSO; O; ONO; NO; NNO
@@ -425,7 +451,11 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 
 ![](resources/DominioStazione.svg)
 
+<div></div>
+
 ![](resources/ModelloDelDominio.svg)
+
+<div></div>
 
 ## Architettura logica
 
@@ -434,6 +464,8 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 #### Diagramma dei package
 
 ![](resources/StrutturaPackage.svg)
+
+<div></div>
 
 #### Diagramma delle classi
 
@@ -451,23 +483,32 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 **EventoController** scrive in maniera persistente gli eventi dopo aver effettuato la validazione secondo lo schema predefinito. <br>
 **ProiezioniController** aggrega gli eventi letti da EventoController creando delle proiezioni a seconda degli eventi ricevuti. Le proiezioni così create verranno poi utilizzate da VistaCittaController e da StatisticheController.
 
+<div></div>
+
 ### Interazione
 
 #### Diagramma di sequenza: Lettura dati dai diversi sensori
 ![](resources/InteractionLetturaSensori.svg)
-In maniera ciclica e parallela i sensori acquisiscono i dati che vengono poi inoltrati alla stazione meteo.
+In maniera ciclica e parallela i sensori acquisiscono i dati che vengono poi inoltrati alla stazione meteo. 
+
+<div></div>
 
 #### Diagramma di sequenza: Trasmissione dei dati
 ![](resources/InteractionTrasmissione.svg)
 I dati ricevuti dai sensori vengono elaborati da **StazioneController** il quale, se verifica un cambiamento, crea un evento da trasmettere all'apposito controller. In caso di errori nella trasmissione è previsto un sistema di backup e reinvio di dati per garantire l'integrità di tutti gli eventi.
 
+<div></div>
+
 #### Diagramma di sequenza: Gestione dell'evento
 ![](resources/InteractionGestioneEvento.svg)
 **EventoController** si occupa della validazione dell'evento ricevuto, superato tale controllo provvede alla scrittura persistente dell'evento.
+<div></div>
 
 #### Diagramma di sequenza: Proiezione
 ![](resources/InteractionProiezione.svg)
 Il **ProiezioniController** viene notificato [ `notify()` ] della scrittura di un nuovo evento, che subisce un ulteriore elaborazione per creare le diverse proiezioni del dato.
+
+<div></div>
 
 ### Comportamento
 
@@ -476,6 +517,8 @@ Il **ProiezioniController** viene notificato [ `notify()` ] della scrittura di u
 Il seguente diagramma mostra l'algoritmo di reinvio e backup dei dati in caso di erorri di trasmissione.
 
 ![](resources/StatoBuffer.svg)
+
+<div></div>
 
 ### Piano del Lavoro
 
@@ -496,6 +539,8 @@ Dopo aver valutato attentamente la mole di lavoro richiesta, i tempi previsti so
 -   Progettazione: 3 settimane circa.
 -   Sviluppo dei vari package: entro 1/2 settimane dalla fine della progettazione.
 -   Test unitari e testing totale del sistema: entro una settimana dallo sviluppo di tutti i package.
+
+<div></div>
 
 ### Piano di Collaudo 
 
@@ -541,7 +586,9 @@ describe('/GET mock boardstate', () => {
       });
   });
 });
+```
 
+```js
 describe('/GET mock temperature', () => {
   it('it should get the temperatures of 64100 zipCode', (done) => {
     server
@@ -555,7 +602,9 @@ describe('/GET mock temperature', () => {
       });
   });
 });
+```
 
+```js
 describe('/GET generic error', () => {
   it('it should return response with status 500', (done) => {
     server
@@ -566,7 +615,9 @@ describe('/GET generic error', () => {
       });
   });
 });
+```
 
+```js
 describe('/GET unauthorized error', () => {
   it('it should return response with status 500', (done) => {
     server
@@ -578,6 +629,8 @@ describe('/GET unauthorized error', () => {
   });
 });
 ```
+
+<div></div>
 
 # Progetto
 
@@ -608,9 +661,13 @@ Il server delegato alla gestione degli eventi comunica in modo sicuro tramite l'
 Il sistema si basa su più database , la persistenza avviene su di un database postgreSQL, adibito alla sola scrittura dei dati provenienti dalle diverse stazioni.
 Gli altri database sono generati a partire dalle proiezioni del dato per consentire una maggiore facilità di utilizzo nella fase di aggregazione.
 
+<div></div>
+
 #### Architettura del sistema:
 
 ![](resources/ArchitetturaSistema.svg)
+
+<div></div>
 
 ## Considerazioni sulla sicurezza relative alle tecnologie utilizzate
 
@@ -619,13 +676,15 @@ Dopo aver effettuato l'analisi del sistema, le vulnerabilità tecnologiche princ
 ### Database
 
 <table>
-  <tr><td><b>Rischio</b></td><td>Accesso al database non autorizzato e alterazione dei dati</td></tr>
+  <tr class="firstRow"><td><b>Rischio</b></td><td>Accesso al database non autorizzato e alterazione dei dati</td></tr>
   <tr><td><b>Descrizione</b></td><td>L'accesso al database, sebbene protetto da password, può essere forzato da un possibile attaccante in diversi modi. Se un malintenzionato dovesse ottenere l'accesso al database, potrebbe modificare, cancellare i dati persistenti su tutto il sistema.</td></tr>
   <tr><td><b>Possibili soluzioni</b></td><td><li>Una possibile soluzione al problema è la cifratura dei dati che renderebbe illeggibile il contenuto ad un possibile attaccante. PostgreSQL ha un supporto nativo sia alla crittografazione della comunicazione tramite protocollo <b>SSL</b>, sia alla criptazione del dato attraverso criptazione <b>simmetrica</b> e <b>asimmetrica</b>, rendendo di fatto l'intero database più sicuro. <li>Un altra possibile soluzione, che non esclude la precedente, è l'utilizzo di alcune meccaniche di <b>log</b> fornite da PostgreSQL per poter analizzare i vari tentativi di intrusione. <li> L'alterazione dei dati inoltre può essere controllata con backup periodici e controlli di integrità.</td></tr>
 </table>
 
 ### Trasmissione remota dei dati
 Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo al sistema, è necessario creare una connessione sicura su cui operare. Questo canale deve garantire uno standard di qualità di servizio e sicurezza, per evitare una possibile lettura o corruzione dei dati in transito; questo avviene implementando il protocollo SSL TLS. 
+
+<div></div>
 
 ## Progettazione di Dettaglio
 ### Struttura
@@ -637,7 +696,7 @@ Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo
 #### Log
 - **LogController**: si occupa della scrittura dei log di tutto il sistema, include quindi tutte le interazioni da parte dell'utente e tutte le interazioni da parte della stazione. Il metodo `scriviLog` permette di scrivere su file a partire da un JSON, che sarà formattato a seconda del log come specificato nel capitolo dedicato successivamente.
 
-<P style='page-break-before: always'>
+<div></div>
 
 ![](resources/ProgettazioneDettaglio_ProiezioniEvento.svg)
 
@@ -652,7 +711,7 @@ Dopo un'attenta riflessione, sono stati apportati dei cambiamenti rispetto alla 
 - **ProiezioniController**: si occupa della creazione e dell'aggiornamento delle proiezioni attraverso il DataRepository a partire dalle notifiche degli eventi ricevuti dall'EventoController.<br>Il metodo `gestisciEvento`, dato l'evento in input, lo trasforma a seconda del tipo dell'evento in una classe specifica.
 - **DataRepository**: è un componente fondamentale del sistema; sempre attraverso il repository pattern, permette di separare la business logic dall'accesso ai dati, permettendo inoltre di poter avere diverse implementazioni a seconda del caso d'uso.<br>Essendo l'unico responsabile della persistenza delle proiezioni, viene utilizzato sia in scrittura, in quanto permette di creare ed aggiornare le proiezioni, sia in lettura poichè viene utilizzato direttamente dalle interfacce utente.<br>Implementa un numero di interfacce pari al numero di proiezioni di cui il sistema ha bisogno; proprio per questo motivo il repository pattern è facilmente mantenibile ed espandibile nel futuro. Ogni interfaccia quindi espone i metodi per la scrittura e la lettura del dato a seconda di come esso è definito nel DB. I metodi `save` di ogni interfaccia consentono la scrittura permanente del dato, mentre i vari metodi `get` permettono di recuperare i dati compresi in un certo intervallo temporale dato un detterminato zipCode.
 
-<P style='page-break-before: always'>
+<div></div>
 
 ### Diagrammi di Dettaglio
 
@@ -662,9 +721,13 @@ Dopo un'attenta riflessione, sono stati apportati dei cambiamenti rispetto alla 
 
 Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la homepage. Nella schermata iniziale non vengono mostrati dati all'utente. Le uniche funzioni esposte sono: la possibilità di cercare una città e visualizzarne i suoi dettagli, oppure avere accesso ad un report nazionale.
 
+<div></div>
+
 ![](resources/screens/home1.png)
 
 ![](resources/screens/home2.png)
+
+<div></div>
 
 #### Diagramma di dettaglio - ViewCitta
 
@@ -673,6 +736,7 @@ Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce dispo
 Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la vista città.
 Nello specifico verrà mostrato all'utente una situazione real-time ed un grafico relativo alla località cercata. Tale grafico può mostrare diversi dati in base alle scelte effettuate attraverso un opportuno filtro. <br> Tramite questa interfaccia è possibilie accedere anche al report della città cercata in precedenza.
 
+<div></div>
 
 #### Diagramma di dettaglio - ViewStatistiche
 
@@ -680,12 +744,16 @@ Nello specifico verrà mostrato all'utente una situazione real-time ed un grafic
 
 Nel diagrama sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la vista statistiche. Tale vista offre all'utente un report annuo, il quale può essere nazionale o della località cercata, riguardo tutti i dati raccolti. Inoltre attraverso un opportuno filtro è possibile cambiare l'intervallo di tempo di cui si vuole avere il report. <br> Tramite questa view è possibile accedervi alla vista città per avere dei grafici più dettagliati della città cercata in precedenza. <br> Nel caso si sta visualizzando il report nazionale, tale grafico, mostrerà un report mese per mese dell'evento selezionato.
 
+<div></div>
+
 ## Interazione
 
 ### Comportamento
 Come nella parte di analisi del problema, non è stato necessario descrivere entità con uno stato o diagrammi di interazione specifici; ciononostante si è deciso di riportare il diagramma di interazione del controllo e della validazione di un evento, a partire dai sensori della stazione meteo alla scrittura persistente effettuata dal server.
 
 ![](resources/ValidazioneEvento.svg)
+
+<div></div>
 
 ## Persistenza
 
@@ -712,6 +780,8 @@ Gli ID (primary key e non) sono degli interi AUTO-INCREMENT.
 - Event (0..N) - (1..1) Type: ogni Event riferisce un solo Type; un Type può riferire da 0 ad N Event.
 - Event (0..N) - (1..1) Revision: ogni Event riferisce un solo Revision; un Revision può riferire da 0 ad N Event.
 
+<div></div>
+
 ### Diagramma ER - Proiezioni
 Il seguente diagramma ER rappresenta le entità e le relazioni appartenenti alla persistenza delle proiezioni.
 
@@ -734,6 +804,8 @@ Gli zipCode (primary key e non) sono delle stringhe composte da 5 caratteri.
 - WeatherNow (0..N) - (1..1) WindDirection: ogni WeatherNow riferisce un solo WindDirection; un WindDirection può riferire da 0 ad N WeatherNow.
 - WindRecords (0..N) - (1..1) WindDirection: ogni WindRecords riferisce un solo WindDirection; un WindDirection può riferire da 0 ad N WindDirection.
 - WeatherStateRecords (0..N) - (1..1) WeatherState: ogni WeatherStateRecords riferisce un solo WeatherState; un WeatherState può riferire un solo WeatherStateRecords.
+
+<div></div>
 
 ### Formato del file di log
 
@@ -764,3 +836,12 @@ log: {
 #### Protezione dei file di log
 
 I file di log possono essere crittografati per avere una maggiore sicurezza nel caso in cui un attaccante riesca ad accedervi, non potendo ottenere quindi informazioni. Questo influisce in modo abbastanza significativo sulle performance del sistema, quindi a seconda dell'esigenza può essere abilitata o meno. Vengono inoltre eseguiti backup periodici in un server remoto in maniera da garantirne la disponibilità anche dopo molto tempo.
+
+<div></div>
+
+# Deployment
+
+## Deployment-type Level
+Di seguito il diagramma di deployment fisico nel quale sono indicati su quali nodi fisici sono allocate le diverse parti del sistema. **Proiezioni Server** e **Proiezioni DBMS** possono essere replicati e distribuiti, a seconda delle esigenze. Ad esempio, si può pensare ad una soluzione dove per ogni tipo di proiezioni vi sia un server dedicato, in modo tale da ottimizzare e partizionare lettura e scrittura, rendendo di fatto tutto il sistema più performante.
+
+![](resources/DiagrammaDeployment.svg)
