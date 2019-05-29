@@ -636,7 +636,7 @@ Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo
 
 #### Log
 - **LogController**: si occupa della scrittura dei log di tutto il sistema, include quindi tutte le interazioni da parte dell'utente e tutte le interazioni da parte della stazione. Il metodo `scriviLog` permette di scrivere su file a partire da un JSON, che sarà formattato a seconda del log come specificato nel capitolo dedicato successivamente.
-- 
+
 <P style='page-break-before: always'>
 
 ![](resources/ProgettazioneDettaglio_ProiezioniEvento.svg)
@@ -647,7 +647,8 @@ Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo
 - **EventoRepository**: attraverso il repository pattern viene disaccoppiata la logica di business e la logica di accesso ai dati; l'EventoRepository quindi permette la lettura e la scrittura degli eventi sulla persistenza. Per farlo implementa l'interfaccia EventoRepositoryInterface che definisce esattamente come salvare, trovare e filtrare gli eventi interfacciandosi direttamente con il DB.<br>I metodi `find` e `filter` servono per recuperare degli eventi avvenuti in passato nel caso in cui si voglia generare una nuova proiezione da zero, in quanto la funzione di notifica dell'EventoController viene richiamata solo una volta, appena ricevuto il dato.<br>Non espone, a differenza di un generico repository pattern, tutti i metodi CRUD (Create, Read, Update, Delete) per ogni entità del modello, in quanto la persistenza degli eventi viene gestita in APPEND-ONLY e quindi non può per nessun motivo permettere la modifica o l'eliminazione dei dati.
 
 #### Proiezioni
-- **ProiezioniController**: si occupa della creazione e dell'aggiornamento delle proiezioni attraverso il DataRepository a partire dalle notifiche degli eventi ricevuti dall'EventoController.<br>Il metodo `gestisciEvento`, dato l'evento in input,   
+- **ProiezioniController**: si occupa della creazione e dell'aggiornamento delle proiezioni attraverso il DataRepository a partire dalle notifiche degli eventi ricevuti dall'EventoController.<br>Il metodo `gestisciEvento`, dato l'evento in input, lo trasforma a seconda del tipo dell'evento in una classe specifica.
+- **DataRepository**: è un componente fondamentale del sistema; sempre attraverso il repository pattern, permette di separare la business logic dall'accesso ai dati, permettendo inoltre di poter avere diverse implementazioni a seconda del caso d'uso.<br>Essendo l'unico responsabile della persistenza delle proiezioni, viene utilizzato sia in scrittura, in quanto permette di creare ed aggiornare le proiezioni, sia in lettura poichè viene utilizzato direttamente dalle interfacce utente.<br>Implementa un numero di interfacce pari al numero di proiezioni di cui il sistema ha bisogno; proprio per questo motivo il repository pattern è facilmente mantenibile ed espandibile nel futuro. Ogni interfaccia quindi espone i metodi per la scrittura e la lettura del dato a seconda di come esso è definito nel DB. I metodi `save` di ogni interfaccia consentono la scrittura permanente del dato, mentre i vari metodi `get` permettono di recuperare i dati compresi in un certo intervallo temporale dato un detterminato zipCode.
 
 <P style='page-break-before: always'>
 
