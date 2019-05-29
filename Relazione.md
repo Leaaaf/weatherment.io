@@ -52,6 +52,19 @@
   - [Considerazioni sulla sicurezza relative alle tecnologie utilizzate](#considerazioni-sulla-sicurezza-relative-alle-tecnologie-utilizzate)
     - [Database](#database)
     - [Trasmissione remota dei dati](#trasmissione-remota-dei-dati)
+  - [Progettazione di Dettaglio](#progettazione-di-dettaglio)
+    - [Struttura](#struttura-2)
+    - [Diagrammi di Dettaglio](#diagrammi-di-dettaglio)
+      - [Diagramma di dettaglio - Homepage](#diagramma-di-dettaglio---homepage)
+      - [Diagramma di dettaglio - ViewCitta](#diagramma-di-dettaglio---viewcitta)
+      - [Diagramma di dettaglio - ViewStatistiche](#diagramma-di-dettaglio---viewstatistiche)
+  - [Interazione](#interazione-1)
+    - [Comportamento](#comportamento-1)
+  - [Persistenza](#persistenza)
+    - [Diagramma ER - Event Driven persistence](#diagramma-er---event-driven-persistence)
+    - [Diagramma ER - Proiezioni](#diagramma-er---proiezioni)
+    - [Formato del file di log](#formato-del-file-di-log)
+      - [Protezione dei file di log](#protezione-dei-file-di-log)
 
 <P style='page-break-before: always'>
 
@@ -609,3 +622,117 @@ Dopo aver effettuato l'analisi del sistema, le vulnerabilità tecnologiche princ
 
 ### Trasmissione remota dei dati
 Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo al sistema, è necessario creare una connessione sicura su cui operare. Questo canale deve garantire uno standard di qualità di servizio e sicurezza, per evitare una possibile lettura o corruzione dei dati in transito; questo avviene implementando il protocollo SSL TLS. 
+
+## Progettazione di Dettaglio
+### Struttura
+
+### Diagrammi di Dettaglio
+
+#### Diagramma di dettaglio - Homepage
+
+![](resources/DiagrammaDettaglioHomepage.svg)
+
+Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la homepage. Nella schermata iniziale non vengono mostrati dati all'utente. Le uniche funzioni esposte sono: la possibilità di cercare una città e visualizzarne i suoi dettagli, oppure avere accesso ad un report nazionale.
+
+![](resources/screens/home1.png)
+
+![](resources/screens/home2.png)
+
+#### Diagramma di dettaglio - ViewCitta
+
+![](resources/DiagrammaDettaglioViewCitta.svg)
+
+Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la vista città.
+Nello specifico verrà mostrato all'utente una situazione real-time ed un grafico relativo alla località cercata. Tale grafico può mostrare diversi dati in base alle scelte effettuate attraverso un opportuno filtro. <br> Tramite questa interfaccia è possibilie accedere anche al report della città cercata in precedenza.
+
+
+#### Diagramma di dettaglio - ViewStatistiche
+
+![](resources/DiagrammaDettaglioStatistiche.svg)
+
+Nel diagrama sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la vista statistiche. Tale vista offre all'utente un report annuo, il quale può essere nazionale o della località cercata, riguardo tutti i dati raccolti. Inoltre attraverso un opportuno filtro è possibile cambiare l'intervallo di tempo di cui si vuole avere il report. <br> Tramite questa view è possibile accedervi alla vista città per avere dei grafici più dettagliati della città cercata in precedenza. <br> Nel caso si sta visualizzando il report nazionale, tale grafico, mostrerà un report mese per mese dell'evento selezionato.
+
+## Interazione
+
+### Comportamento
+Come nella parte di analisi del problema, non è stato necessario descrivere entità con uno stato o diagrammi di interazione specifici; ciononostante si è deciso di riportare il diagramma di interazione del controllo e della validazione di un evento, a partire dai sensori della stazione meteo alla scrittura persistente effettuata dal server.
+
+![](resources/ValidazioneEvento.svg)
+
+## Persistenza
+
+### Diagramma ER - Event Driven persistence
+Il seguente diagramma ER rappresenta le entità e le relazioni appartenenti alla persistenza degli eventi.
+![](resources/ER_EventStore.svg)
+
+**Entità:**
+- Topic: ogni topic è identificato da un ID (primary key) e presenta un solo attributo, il nome. Tale coppia deve essere unica all'interno del sistema.
+- Type: ogni type è identificato da un ID (primary key) e presenta un solo attributo, il nome. La coppia name e chiave esterna che riferisce l'ID della tabella topic devono essere univoci all'interno del sistema.
+- Revision: ogni revision è identificata da un ID (primary key) e presenta l'attributo version, il quale identifica il numero di versione e, l'attributo schema di tipo JSON. La coppia version e chiave esterna che riferisce l'ID della tabella Type devono essere univoci all'interno del sistema.
+- TopicHeight: tiene traccia del numero di eventi relativi a quel topic, la primary key è rappresentata dalla chiave esterna che riferisce l'ID della tabella Topic.
+- TypeRevision: tiene traccia dell'ultima version per ogni type, la primary key è data dalla chiave esterna che riferisce l'ID della tabella Type.
+- Event: rappresenta l'evento emesso dalla stazione, la primary key viene identificata dalla coppia topicHeight e dalla Foreign Key del topic relativo all'evento scritto. Inoltre abbiamo l'attributo receivedAt il quale indica in formato timestamp il momento in cui è stata scritta la riga sul database e l'attributo Payload.
+
+Gli ID (primary key e non) sono degli interi AUTO-INCREMENT.
+
+**Relazioni:**
+- Topic (1..1) - (1..N) Type: ogni type riferisce un solo Topic; un Topic può riferire da 1 ad N Type.
+- Type (1..1) - (1..N) Revision: ogni Revision riferisce un solo Type; un Type può riferire da 1 ad N Revision.
+- TopicHeight (1..1) - (1..N) Topic: ogni Topic riferisce un solo TopicHeight; un TopicHeight può riferire da 1 ad N Topic.
+- TypeRevision (1..1) - (1..N) Type: ogni Type riferisce un solo TypeRevision; un TypeRevision può riferire da 1 ad N Type.
+- Event (0..N) - (1..1) Topic: ogni Event riferisce un solo Topic; un Topic può riferire da 0 ad N Event.
+- Event (0..N) - (1..1) Type: ogni Event riferisce un solo Type; un Type può riferire da 0 ad N Event.
+- Event (0..N) - (1..1) Revision: ogni Event riferisce un solo Revision; un Revision può riferire da 0 ad N Event.
+
+### Diagramma ER - Proiezioni
+Il seguente diagramma ER rappresenta le entità e le relazioni appartenenti alla persistenza delle proiezioni.
+
+![](resources/ER_Proiezioni.svg)
+
+**Entità**
+- WeatherNow: zipCode rappresenta la primary key della tabella in questione, la quale espone all'utente i relativi attributi in tempo reale.
+- WindRecords: raccoglie tutti gli eventi inerenti alla velocità e direzione del vento, i cui valori sono espressi dall'attributo speed per quanto riguarda la velocità e dalla chiave esterna per quanto riguarda la direzione. L'attributo emittedAt è dato dalla scheda che ha registrato il cambiamento, in formato timestamp. La primary key è data dallo zipCode.
+- WeatherState: raccoglie tutti gli eventi inerenti allo stato del meteo, il cui valore viene espresso dalla chiave esterna. L'attributo emittedAt è dato dalla scheda che ha registrato il cambiamento, in formato timestamp. La primary key è data dallo zipCode.
+- PollutionRecords: raccoglie tutti gli eventi inerenti all'inquinamento atmosferico, il cui valore viene espresso dall'attributo CO2. L'attributo emittedAt è dato dalla scheda che ha registrato il cambiamento, in formato timestamp. La primary key è data dallo zipCode.
+- UmidityRecords: raccoglie tutti gli eventi inerenti all'umidità presente nell'aria, il cui valore viene espresso dall'attributo umidity. L'attributo emittedAt è dato dalla scheda che ha registrato il cambiamento, in formato timestamp. La primary key è data dallo zipCode.
+- TemperatureRecords: raccoglie tutti gli eventi inerenti alla temperatura ambientale, il cui valore viene espresso dall'attributo temperature. L'attributo emittedAt è dato dalla scheda che ha registrato il cambiamento, in formato timestamp. La primary key è data dallo zipCode.
+- WeatherState: è una tabella di dettaglio dove, attraverso l'attributo state, vengono espressi tutti i possibili stati.
+- WindDirection: è una tabella di dettaglio dove, attraverso l'attributo direction, vengono espresse tutte le possibili direzioni del vento.
+
+Gli zipCode (primary key e non) sono delle stringhe composte da 5 caratteri.
+
+**Relazioni**
+- WeatherNow (0..N) - (1..1) WeatherState: ogni WeatherNow riferisce un solo WeatherState; un WeatherState può riferire da 0 ad N WeatherNow.
+- WeatherNow (0..N) - (1..1) WindDirection: ogni WeatherNow riferisce un solo WindDirection; un WindDirection può riferire da 0 ad N WeatherNow.
+- WindRecords (0..N) - (1..1) WindDirection: ogni WindRecords riferisce un solo WindDirection; un WindDirection può riferire da 0 ad N WindDirection.
+- WeatherStateRecords (0..N) - (1..1) WeatherState: ogni WeatherStateRecords riferisce un solo WeatherState; un WeatherState può riferire un solo WeatherStateRecords.
+
+### Formato del file di log
+
+Il file di log degli eventi deve contenere gli eventi che avvengono nelle componenti del sistema che si occupano di ricevere e salvare gli eventi, per le ragioni di sicurezza discusse nelle sezioni precedenti. Il file è formato in questo modo:
+
+```json
+log: {
+    "timestamp": "<timestamp>",
+    "level": "<level>",
+    "ip": "<ip>",
+    "message": "<message>",
+    "tag": "<tag>"
+}  
+```
+
+Il file di log relativo alle proiezioni visualizzate dall'utente, è così composto:
+
+```json
+log: {
+    "timestamp": "<timestamp>",
+    "status": "<status>",
+    "method": "<method>",
+    "level": "<level>",
+    "endpoint": "<endpoint>"
+}
+```
+
+#### Protezione dei file di log
+
+I file di log possono essere crittografati per avere una maggiore sicurezza nel caso in cui un attaccante riesca ad accedervi, non potendo ottenere quindi informazioni. Questo influisce in modo abbastanza significativo sulle performance del sistema, quindi a seconda dell'esigenza può essere abilitata o meno. Vengono inoltre eseguiti backup periodici in un server remoto in maniera da garantirne la disponibilità anche dopo molto tempo.
