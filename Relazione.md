@@ -641,6 +641,8 @@ Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo
 
 ![](resources/ProgettazioneDettaglio_ProiezioniEvento.svg)
 
+Dopo un'attenta riflessione, sono stati apportati dei cambiamenti rispetto alla struttura dei package definiti nella fase di analisi. I due controller, **VistaCittaController** e **StatisticheController**, sono stati ritenuti superflui e sono stati accorpati in **ProiezioniController**. Questo per permettere di mantenere la logica di business in un unico posto, non dovendo così definire più controller per la lettura e la scrittura dei dati. Inoltre, utilizzando un repository pattern, non è necessario specificare come sia effettivamente l'implementazione, che può utilizzare diversi approcci (DAO etc..). 
+
 #### GestioneEvento
 - **EventoController**: questo controller agisce da tramite tra la trasmissione della stazione meteo (TrasmissioneController) e il controller delle proiezioni. È un componente fondamentale del sistema in quanto gestisce la validazione degli eventi attraverso Validator e, tramite il repository pattern, delega la persistenza degli eventi all'EventoRepository.<br>A differenza della fase di analisi non abbiamo più bisogno del meodo notify per comunicare con ProiezioniController in quanto per scelte tecnologiche si utilizza il DBMS PostrgreSQL che fornisce l'apposita funzione standard `notify()`.
 - **Validator**: si occupa della validazione del payload, facendo riferimento al JSON Schema relativo al tipo di evento ricevuto. In caso di evento malformato o non valido lancia una eccezione *InvalidEvent*.
