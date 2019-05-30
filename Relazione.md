@@ -75,6 +75,7 @@
     - [Formato del file di log](#formato-del-file-di-log)
       - [Protezione dei file di log](#protezione-dei-file-di-log)
 - [Deployment](#deployment)
+  - [Artefatti](#artefatti)
   - [Deployment-type Level](#deployment-type-level)
 
 <div></div>
@@ -840,6 +841,10 @@ I file di log possono essere crittografati per avere una maggiore sicurezza nel 
 <div></div>
 
 # Deployment
+
+## Artefatti
+
+![](resources/DeployManifest.svg)
 
 ## Deployment-type Level
 Di seguito il diagramma di deployment fisico nel quale sono indicati su quali nodi fisici sono allocate le diverse parti del sistema. **Proiezioni Server** e **Proiezioni DBMS** possono essere replicati e distribuiti, a seconda delle esigenze. Ad esempio, si può pensare ad una soluzione dove per ogni tipo di proiezioni vi sia un server dedicato, in modo tale da ottimizzare e partizionare lettura e scrittura, rendendo di fatto tutto il sistema più performante.
