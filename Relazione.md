@@ -71,7 +71,9 @@
     - [Comportamento](#comportamento-1)
   - [Persistenza](#persistenza)
     - [Diagramma ER - Event Driven persistence](#diagramma-er---event-driven-persistence)
+      - [Scelte progettuali](#scelte-progettuali)
     - [Diagramma ER - Proiezioni](#diagramma-er---proiezioni)
+      - [Scelte progettuali](#scelte-progettuali-1)
     - [Formato del file di log](#formato-del-file-di-log)
       - [Protezione dei file di log](#protezione-dei-file-di-log)
 - [Deployment](#deployment)
@@ -759,7 +761,13 @@ Come nella parte di analisi del problema, non è stato necessario descrivere ent
 ## Persistenza
 
 ### Diagramma ER - Event Driven persistence
+
+#### Scelte progettuali
+
+Sono state applicate diverse selte progettuali che, seppur aumentando la complessità della persistenza, permettono una ricostruzione per stazione meteo temporalmente corretta e garantiscono l'integrità degli eventi anche solo grazie al modo in cui essi sono modellati. Per questo motivo invece di ricostruirla tramite data (timestamp) necessitiamo di una sequenza numerica *gapless* che identifichi gli eventi temporalmente nel momento in cui vengono salvati.<br>La tabella TopicHeight identifica per ogni singolo topic la lista di eventi registrati nell'ordine in cui essi vengono scritti.<br>Inoltre ogni evento inviato da una stazione meteo, ha nel suo payload un *numero incrementale* (boardOffset) che permette di avere una sequenza corretta per tale scheda.<br>Per quanto rigurda invece la tabella Revision, nell fase di validazione dei dati, si fa riferimento allo schema definito per quella version. La tabella TypeRevision invece serve a tenere traccia dell'ultima version relativa ad ogni Type.<br>Inoltre l'intera persistenza del sistema è stata progettata in modo da poter essere adattiva a nuovi tipi di dato (nuovi event di type diversi, o nuovi event di topic diversi) senza dover rimodellare l'intero schema.
+
 Il seguente diagramma ER rappresenta le entità e le relazioni appartenenti alla persistenza degli eventi.
+
 ![](resources/ER_EventStore.svg)
 
 **Entità:**
@@ -784,6 +792,10 @@ Gli ID (primary key e non) sono degli interi AUTO-INCREMENT.
 <div></div>
 
 ### Diagramma ER - Proiezioni
+
+#### Scelte progettuali 
+Utilizzando un sistema ad eventi si definisce una tabella per ogni proiezione che si vuole utilizzare nel sistema. In questo modo il DB così strutturato è facilmente espandibile a nuovi tipi di proiezioni.
+
 Il seguente diagramma ER rappresenta le entità e le relazioni appartenenti alla persistenza delle proiezioni.
 
 ![](resources/ER_Proiezioni.svg)
