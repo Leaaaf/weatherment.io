@@ -550,27 +550,149 @@ Dopo aver valutato attentamente la mole di lavoro richiesta, i tempi previsti so
 Per garantire il corretto funzionamento del sistema sono necessari una diversi test unitari che permettono di verificare il corretto funzionamento delle diverse parti che lo compongono.
 
 ```java
-@TestEvent
-ObjectMapper mapper = new ObjectMapper();
-JsonNode payload = null;
-try {
-    String json = "{\"boardId\": \"cafebafe-cafebabe-cafebabe\", \"boardOffset\": 3 , \"bar\": \"5\", \"zipcode\": \"\40125", \"emittedAt\": 857671257612 }";
-    payload = mapper.readTree(json);
-} catch (IOException e) {
-        Assertions.fail();
+
+public class TestValidationEvent {
+    @Test
+    public void validationEventTest() {
+        // TEST OF A NOT VALID EVENT
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode payload = null;
+
+        String json = "{\"boardId\": \"cafebafe-cafebabe-cafebabe\", \"boardOffset\": 3 , \"bar\": \"5\", \"zipcode\": \"\40125, \"emittedAt\": 857671257612 }";
+        payload = mapper.readTree(json);
+
+        try {
+            Event sut = Event.fromJson(UUID.fromString("cafebabe-cafebabe-cafebabe-cafebabe"),"eventType",0, payload);
+        } catch (EventNotValidException e) {
+            Assertions.fail("Event is not valid");
+        }
+
+        // TEST OF A VALID EVENT
+        try {
+            Event validEvent = Event.fromJson(UUID.fromString("0000-0000-0000-0000"),"validType",1,payload)
+            Assert.assertEquals(true,validEvent.isValid());
+        } catch (EventNotValidException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals(validEvent.getUUID(),"0000-0000-0000-0000");
+        Assert.assertEquals(validEvent.getType(),"validType");
+        Assert.assertEquals(validEvent.getVersion(),1);
+        Assert.assertEquals(validEvent.isValidPayload(),true);
+    }
 }
-try {
-    Event sut = Event.fromJson(topic, type, version, payload);
-} catch (MyException e) {
-    Assertions.fail();
+```
+
+
+``` java
+public class TestBoard() {
+
+    @Test
+    public void testBoardValues() {
+        // TEST VALUES OF THE BOARD
+        Board board = new Board();
+        board.setZipCode("40125");
+        board.setBoardId(UUID.fromString("0000-0000-0000-0000"));
+
+        WeatherNow wNow = new WeatherNow();
+        Pressure pressure = new Pressure(5,new Date().getTime());
+        Temperature temperature = new Temperature(18,new Date().getTime());
+        wNow.setPressure(pressure);
+        wNow.setTemperature(temperature);
+
+        board.setWeatherNow(wNow);
+
+        Assert.assertEquals(board.getBoardId(),UUID.fromString("0000-0000-0000-0000"));
+        Assert.assertEquals(board.getZipCode(),"40125");
+        Assert.assertEquals(board.getWeatherNow.getPressure().getValue(),5);
+        Assert.assertEquals(board.getWeatherNow.getTemperature().getValue(),18);
+    }
+
+}
+```
+
+``` java
+
+public class TestPostgresNotification {
+    public static void main(String args[]) throws Exception {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://localhost:5432/test";
+        Connection lConn = DriverManager.getConnection(url, "test", "");
+        Connection nConn = DriverManager.getConnection(url, "test", "");
+        ListenerTest listener = new ListenerTest(lConn);
+        NotifierTest notifier = new NotifierTest(nConn);
+        listener.start();
+        notifier.start();
+    }
+
 }
 
-Assertions.assertEquals(sut.getBoardId(), "cafebafe-cafebabe-cafebabe");
-Assertions.assertEquals(sut.getBoardOffset(), 3);
-Assertions.assertEquals(sut.getPressure(), "5");
-Assertions.assertEquals(sut.getZipCode(), "40125");
-Assertions.assertEquals(sut.getEmittedAt(), "857671257612");
+class ListenerTest extends Thread {
+
+    private Connection conn;
+    private org.postgresql.PGConnection pgconn;
+
+    ListenerTest(Connection conn) throws SQLException {
+        this.conn = conn;
+        this.pgconn = (org.postgresql.PGConnection) conn;
+        Statement stmt = conn.createStatement();
+        stmt.execute("LISTEN mymessage");
+        stmt.close();
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT 1");
+                rs.close();
+                stmt.close();
+
+                org.postgresql.PGNotification notifications[] = pgconn.getNotifications();
+                if (notifications != null) {
+                    for (int i = 0; i < notifications.length; i++) {
+                        System.out.println("Got notification: " + notifications[i].getName());
+                    }
+                }
+                Thread.sleep(500);
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+        }
+    }
+
+}
+
+class NotifierTest extends Thread {
+
+    private Connection conn;
+
+    public NotifierTest(Connection conn) {
+        this.conn = conn;
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                Statement stmt = conn.createStatement();
+                stmt.execute("NOTIFY mymessage");
+                stmt.close();
+                Thread.sleep(2000);
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+        }
+    }
+
+}
 ```
+
+Qui di seguito sono riportati i test per la REST API.
+I test eseguono delle chiamate HTTP per testare il corretto funzionamento delle proiezionis
 
 ```js
 @Test
