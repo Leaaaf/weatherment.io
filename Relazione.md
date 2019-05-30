@@ -88,14 +88,14 @@
 WeatherMent.IO nasce con l'idea di creare un database con informazioni raccolte da diverse stazioni metereologiche.
 
 
-Il progetto è strutturato in modo tale da permettere la consultazione e visualizzazione dei dati grazie ad una interfaccia web che espone all'utente finale grafici dettagliati di dati relativi ad un preciso luogo ed in base a determinati intervalli temporali.
+Il progetto è strutturato in modo tale da permettere la consultazione e la visualizzazione delle informazioni grazie ad una interfaccia web, che espone all'utente finale, grafici dettagliati di dati relativi ad un preciso luogo ed in base a determinati intervalli temporali.
 
 
 L'architettura è quella di un sistema ad eventi, distruibuito su diversi server e database per avere una maggiore efficienza, scalabilità e affidabilità.
-Nello specifico i dati finali esposti all'utente sono organizzati rispetto all'evento che rappresentano su database documentali, mentre quelli raccolti direttamente dalle stazioni vengono processati ed immagazzinati da un server dedicato, che si appoggia invece su di un database relazionale. In questo modo viene garantita una maggiore efficienza su grandi quantità di informazioni, in quanto principali operazioni di lettura e scrittura avvengono in modo del tutto scorrelato.
+Nello specifico i dati finali esposti all'utente sono organizzati rispetto all'evento che rappresentano, su opportune proiezioni. I dati raccolti direttamente dalle stazioni, invece, vengono processati ed immagazzinati da un server dedicato, che si appoggia su di un database relazionale. In questo modo viene garantita una maggiore efficienza su grandi quantità di informazioni, in quanto principali operazioni di lettura e scrittura avvengono in modo del tutto scorrelato.
 
 
-Il progetto mira ad essere facilmente scalabile sia orizzontalmente che verticalmente ed espandibile sia dal punto di vista di nuove stazioni che di nuovi tipi di dato. Le nuove stazioni meteo prima di poter trasmettere i dati dovranno essere autenticate per garantire l'affidabilità del sistema. 
+Il progetto mira ad essere facilmente scalabile sia orizzontalmente che verticalmente ed espandibile sia dal punto di vista di nuove stazioni che di nuovi tipi di dato.
 
 
 <div></div>
@@ -492,23 +492,27 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 
 #### Diagramma di sequenza: Lettura dati dai diversi sensori
 ![](resources/InteractionLetturaSensori.svg)
+
 In maniera ciclica e parallela i sensori acquisiscono i dati che vengono poi inoltrati alla stazione meteo. 
 
 <div></div>
 
 #### Diagramma di sequenza: Trasmissione dei dati
 ![](resources/InteractionTrasmissione.svg)
+
 I dati ricevuti dai sensori vengono elaborati da **StazioneController** il quale, se verifica un cambiamento, crea un evento da trasmettere all'apposito controller. In caso di errori nella trasmissione è previsto un sistema di backup e reinvio di dati per garantire l'integrità di tutti gli eventi.
 
 <div></div>
 
 #### Diagramma di sequenza: Gestione dell'evento
 ![](resources/InteractionGestioneEvento.svg)
+
 **EventoController** si occupa della validazione dell'evento ricevuto, superato tale controllo provvede alla scrittura persistente dell'evento.
 <div></div>
 
 #### Diagramma di sequenza: Proiezione
 ![](resources/InteractionProiezione.svg)
+
 Il **ProiezioniController** viene notificato [ `notify()` ] della scrittura di un nuovo evento, che subisce un ulteriore elaborazione per creare le diverse proiezioni del dato.
 
 <div></div>
