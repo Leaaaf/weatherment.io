@@ -76,6 +76,7 @@
       - [Scelte progettuali](#scelte-progettuali-1)
     - [Formato del file di log](#formato-del-file-di-log)
       - [Protezione dei file di log](#protezione-dei-file-di-log)
+    - [Progettazione del collaudo](#progettazione-del-collaudo)
 - [Deployment](#deployment)
   - [Artefatti](#artefatti)
   - [Deployment-type Level](#deployment-type-level)
@@ -551,7 +552,7 @@ Dopo aver valutato attentamente la mole di lavoro richiesta, i tempi previsti so
 
 ### Piano di Collaudo 
 
-Per garantire il corretto funzionamento del sistema sono necessari una diversi test unitari che permettono di verificare il corretto funzionamento delle diverse parti che lo compongono.
+Per garantire il corretto funzionamento del sistema sono necessari diversi test unitari che permettono di verificare il corretto funzionamento delle diverse parti che lo compongono.
 
 ```java
 
@@ -613,150 +614,6 @@ public class TestBoard() {
     }
 
 }
-```
-
-``` java
-
-public class TestPostgresNotification {
-    public static void main(String args[]) throws Exception {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://localhost:5432/test";
-        Connection lConn = DriverManager.getConnection(url, "test", "");
-        Connection nConn = DriverManager.getConnection(url, "test", "");
-        ListenerTest listener = new ListenerTest(lConn);
-        NotifierTest notifier = new NotifierTest(nConn);
-        listener.start();
-        notifier.start();
-    }
-
-}
-
-class ListenerTest extends Thread {
-
-    private Connection conn;
-    private org.postgresql.PGConnection pgconn;
-
-    ListenerTest(Connection conn) throws SQLException {
-        this.conn = conn;
-        this.pgconn = (org.postgresql.PGConnection) conn;
-        Statement stmt = conn.createStatement();
-        stmt.execute("LISTEN mymessage");
-        stmt.close();
-    }
-
-    public void run() {
-        while (true) {
-            try {
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT 1");
-                rs.close();
-                stmt.close();
-
-                org.postgresql.PGNotification notifications[] = pgconn.getNotifications();
-                if (notifications != null) {
-                    for (int i = 0; i < notifications.length; i++) {
-                        System.out.println("Got notification: " + notifications[i].getName());
-                    }
-                }
-                Thread.sleep(500);
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
-            }
-        }
-    }
-
-}
-
-class NotifierTest extends Thread {
-
-    private Connection conn;
-
-    public NotifierTest(Connection conn) {
-        this.conn = conn;
-    }
-
-    public void run() {
-        while (true) {
-            try {
-                Statement stmt = conn.createStatement();
-                stmt.execute("NOTIFY mymessage");
-                stmt.close();
-                Thread.sleep(2000);
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
-            }
-        }
-    }
-
-}
-```
-
-Qui di seguito sono riportati i test per la REST API.
-I test eseguono delle chiamate HTTP per testare il corretto funzionamento delle proiezionis
-
-```js
-@Test
-describe('/GET mock boardstate', () => {
-  it('it should get the BoardState', (done) => {
-    server
-      .get('/mock/boardState')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.zipCode.should.equal(64100);
-        res.body.wind.speed.should.equal(10);
-        res.body.pollution.CO2.should.equal(10);
-        res.body.pressure.pressure.should.equal(10);
-        res.body.weatherState.state.should.equal("STATE_ENUM");
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET mock temperature', () => {
-  it('it should get the temperatures of 64100 zipCode', (done) => {
-    server
-      .get('/mock/temperatures')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.temperatures.should.be.a('array');
-        res.body.zipCode.should.equal(64100);
-        res.body.temperatures[0].value.should.equal(18);
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET generic error', () => {
-  it('it should return response with status 500', (done) => {
-    server
-      .get('/mock/error')
-      .end((err, res) => {
-        res.should.have.status(500);
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET unauthorized error', () => {
-  it('it should return response with status 500', (done) => {
-    server
-      .get('/mock/unauthorized')
-      .end((err, res) => {
-        res.should.have.status(401);
-        done();
-      });
-  });
-});
 ```
 
 <div></div>
@@ -975,6 +832,155 @@ log: {
 #### Protezione dei file di log
 
 I file di log possono essere crittografati per avere una maggiore sicurezza nel caso in cui un attaccante riesca ad accedervi, non potendo ottenere quindi informazioni. Questo influisce in modo abbastanza significativo sulle performance del sistema, quindi a seconda dell'esigenza può essere abilitata o meno. Vengono inoltre eseguiti backup periodici in un server remoto in maniera da garantirne la disponibilità anche dopo molto tempo.
+
+### Progettazione del collaudo
+
+Partendo dal piano di collaudo, sono stati implementati, dei nuovi test.
+Lo scopo di questi test è la verifica del corretto funzionamento delle parti del sistema. Qui di seguito sono riportati soltanti alcuni dei principali test.
+
+``` java
+
+public class TestPostgresNotification {
+    public static void main(String args[]) throws Exception {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://localhost:5432/test";
+        Connection lConn = DriverManager.getConnection(url, "test", "");
+        Connection nConn = DriverManager.getConnection(url, "test", "");
+        ListenerTest listener = new ListenerTest(lConn);
+        NotifierTest notifier = new NotifierTest(nConn);
+        listener.start();
+        notifier.start();
+    }
+
+}
+
+class ListenerTest extends Thread {
+
+    private Connection conn;
+    private org.postgresql.PGConnection pgconn;
+
+    ListenerTest(Connection conn) throws SQLException {
+        this.conn = conn;
+        this.pgconn = (org.postgresql.PGConnection) conn;
+        Statement stmt = conn.createStatement();
+        stmt.execute("LISTEN mymessage");
+        stmt.close();
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT 1");
+                rs.close();
+                stmt.close();
+
+                org.postgresql.PGNotification notifications[] = pgconn.getNotifications();
+                if (notifications != null) {
+                    for (int i = 0; i < notifications.length; i++) {
+                        System.out.println("Got notification: " + notifications[i].getName());
+                    }
+                }
+                Thread.sleep(500);
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+        }
+    }
+
+}
+
+class NotifierTest extends Thread {
+
+    private Connection conn;
+
+    public NotifierTest(Connection conn) {
+        this.conn = conn;
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                Statement stmt = conn.createStatement();
+                stmt.execute("NOTIFY mymessage");
+                stmt.close();
+                Thread.sleep(2000);
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+        }
+    }
+
+}
+```
+
+Qui di seguito sono riportati i test per la REST API.
+I test eseguono delle chiamate HTTP per testare il corretto funzionamento delle proiezioni
+
+```js
+@Test
+describe('/GET mock boardstate', () => {
+  it('it should get the BoardState', (done) => {
+    server
+      .get('/mock/boardState')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.zipCode.should.equal(64100);
+        res.body.wind.speed.should.equal(10);
+        res.body.pollution.CO2.should.equal(10);
+        res.body.pressure.pressure.should.equal(10);
+        res.body.weatherState.state.should.equal("STATE_ENUM");
+        done();
+      });
+  });
+});
+```
+
+```js
+describe('/GET mock temperature', () => {
+  it('it should get the temperatures of 64100 zipCode', (done) => {
+    server
+      .get('/mock/temperatures')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.temperatures.should.be.a('array');
+        res.body.zipCode.should.equal(64100);
+        res.body.temperatures[0].value.should.equal(18);
+        done();
+      });
+  });
+});
+```
+
+```js
+describe('/GET generic error', () => {
+  it('it should return response with status 500', (done) => {
+    server
+      .get('/mock/error')
+      .end((err, res) => {
+        res.should.have.status(500);
+        done();
+      });
+  });
+});
+```
+
+```js
+describe('/GET unauthorized error', () => {
+  it('it should return response with status 500', (done) => {
+    server
+      .get('/mock/unauthorized')
+      .end((err, res) => {
+        res.should.have.status(401);
+        done();
+      });
+  });
+});
+```
 
 <div></div>
 
