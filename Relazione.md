@@ -592,65 +592,9 @@ Dopo aver valutato attentamente la mole di lavoro richiesta, i tempi previsti so
 
 Per garantire il corretto funzionamento del sistema sono necessari diversi test unitari che permettono di verificare il corretto funzionamento delle diverse parti che lo compongono.
 
-```java
-public class TestValidationEvent {
+![](resources/codeScreens/TestValidationEvent.png)
 
-    @Test
-    public void validationEventTest() {
-        // TEST OF A NOT VALID EVENT
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode payload = null;
-
-        String json = "{\"boardId\": \"cafebafe-cafebabe-cafebabe\", \"boardOffset\": 3 , \"bar\": \"5\", \"zipcode\": \"\40125, \"emittedAt\": 857671257612 }";
-        payload = mapper.readTree(json);
-
-        try {
-            Event sut = Event.fromJson(UUID.fromString("cafebabe-cafebabe-cafebabe-cafebabe"),"eventType",0, payload);
-        } catch (EventNotValidException e) {
-            Assertions.fail("Event is not valid");
-        }
-
-        // TEST OF A VALID EVENT
-        try {
-            Event validEvent = Event.fromJson(UUID.fromString("0000-0000-0000-0000"),"validType",1,payload)
-            Assert.assertEquals(true,validEvent.isValid());
-        } catch (EventNotValidException e) {
-            e.printStackTrace();
-        }
-
-        Assert.assertEquals(validEvent.getUUID(),"0000-0000-0000-0000");
-        Assert.assertEquals(validEvent.getType(),"validType");
-        Assert.assertEquals(validEvent.getVersion(),1);
-        Assert.assertEquals(validEvent.isValidPayload(),true);
-    }
-}
-```
-
-``` java
-public class TestBoard() {
-
-    @Test
-    public void testBoardValues() {
-        // TEST VALUES OF THE BOARD
-        Board board = new Board();
-        board.setZipCode("40125");
-        board.setBoardId(UUID.fromString("0000-0000-0000-0000"));
-
-        WeatherNow wNow = new WeatherNow();
-        Pressure pressure = new Pressure(5,new Date().getTime());
-        Temperature temperature = new Temperature(18,new Date().getTime());
-        wNow.setPressure(pressure);
-        wNow.setTemperature(temperature);
-
-        board.setWeatherNow(wNow);
-
-        Assert.assertEquals(board.getBoardId(),UUID.fromString("0000-0000-0000-0000"));
-        Assert.assertEquals(board.getZipCode(),"40125");
-        Assert.assertEquals(board.getWeatherNow.getPressure().getValue(),5);
-        Assert.assertEquals(board.getWeatherNow.getTemperature().getValue(),18);
-    }
-}
-```
+![](resources/codeScreens/TestBoard.png)
 
 # Progetto
 
@@ -841,27 +785,11 @@ Gli zipCode (primary key e non) sono delle stringhe composte da 5 caratteri.
 
 Il file di log degli eventi deve contenere gli eventi che avvengono nelle componenti del sistema che si occupano di ricevere e salvare gli eventi, per le ragioni di sicurezza discusse nelle sezioni precedenti. Il file è formato in questo modo:
 
-```json
-log: {
-    "timestamp": "<timestamp>",
-    "level": "<level>",
-    "ip": "<ip>",
-    "message": "<message>",
-    "tag": "<tag>"
-}  
-```
+![](resources/codeScreens/Log.png)
 
 Il file di log relativo alle proiezioni visualizzate dagli utenti è così composto:
 
-```json
-log: {
-    "timestamp": "<timestamp>",
-    "status": "<status>",
-    "method": "<method>",
-    "level": "<level>",
-    "endpoint": "<endpoint>"
-}
-```
+![](resources/codeScreens/Log-2.png)
 
 #### Protezione dei file di log
 
@@ -872,149 +800,17 @@ I file di log possono essere crittografati per avere una maggiore sicurezza nel 
 Partendo dal piano di collaudo, sono stati implementati, dei nuovi test.
 Lo scopo di questi test è la verifica del corretto funzionamento delle parti del sistema. Qui di seguito sono riportati soltanti alcuni dei principali test.
 
-``` java
+![](resources/codeScreens/ProgettazioneCollaudo.png)
 
-public class TestPostgresNotification {
-    public static void main(String args[]) throws Exception {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://localhost:5432/test";
-        Connection lConn = DriverManager.getConnection(url, "test", "");
-        Connection nConn = DriverManager.getConnection(url, "test", "");
-        ListenerTest listener = new ListenerTest(lConn);
-        NotifierTest notifier = new NotifierTest(nConn);
-        listener.start();
-        notifier.start();
-    }
-
-}
-
-class ListenerTest extends Thread {
-
-    private Connection conn;
-    private org.postgresql.PGConnection pgconn;
-
-    ListenerTest(Connection conn) throws SQLException {
-        this.conn = conn;
-        this.pgconn = (org.postgresql.PGConnection) conn;
-        Statement stmt = conn.createStatement();
-        stmt.execute("LISTEN mymessage");
-        stmt.close();
-    }
-
-    public void run() {
-        while (true) {
-            try {
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT 1");
-                rs.close();
-                stmt.close();
-
-                org.postgresql.PGNotification notifications[] = pgconn.getNotifications();
-                if (notifications != null) {
-                    for (int i = 0; i < notifications.length; i++) {
-                        System.out.println("Got notification: " + notifications[i].getName());
-                    }
-                }
-                Thread.sleep(500);
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
-            }
-        }
-    }
-
-}
-
-class NotifierTest extends Thread {
-
-    private Connection conn;
-
-    public NotifierTest(Connection conn) {
-        this.conn = conn;
-    }
-
-    public void run() {
-        while (true) {
-            try {
-                Statement stmt = conn.createStatement();
-                stmt.execute("NOTIFY mymessage");
-                stmt.close();
-                Thread.sleep(2000);
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
-            }
-        }
-    }
-
-}
-```
+![](resources/codeScreens/ProgettazioneCollaudo-2.png)
 
 Qui di seguito sono riportati i test per la REST API.
 I test eseguono delle chiamate HTTP per testare il corretto funzionamento delle proiezioni
 
-```js
-@Test
-describe('/GET mock boardstate', () => {
-  it('it should get the BoardState', (done) => {
-    server
-      .get('/mock/boardState')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.zipCode.should.equal(64100);
-        res.body.wind.speed.should.equal(10);
-        res.body.pollution.CO2.should.equal(10);
-        res.body.pressure.pressure.should.equal(10);
-        res.body.weatherState.state.should.equal("STATE_ENUM");
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET mock temperature', () => {
-  it('it should get the temperatures of 64100 zipCode', (done) => {
-    server
-      .get('/mock/temperatures')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.temperatures.should.be.a('array');
-        res.body.zipCode.should.equal(64100);
-        res.body.temperatures[0].value.should.equal(18);
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET generic error', () => {
-  it('it should return response with status 500', (done) => {
-    server
-      .get('/mock/error')
-      .end((err, res) => {
-        res.should.have.status(500);
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET unauthorized error', () => {
-  it('it should return response with status 500', (done) => {
-    server
-      .get('/mock/unauthorized')
-      .end((err, res) => {
-        res.should.have.status(401);
-        done();
-      });
-  });
-});
-```
+![](resources/codeScreens/TestRESTAPI.png)
+![](resources/codeScreens/TestRESTAPI-2.png)
+![](resources/codeScreens/TestRESTAPI-3.png)
+![](resources/codeScreens/TestRESTAPI-4.png)
 
 <div></div>
 
