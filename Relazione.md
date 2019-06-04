@@ -76,6 +76,7 @@
       - [Scelte progettuali](#scelte-progettuali-1)
     - [Formato del file di log](#formato-del-file-di-log)
       - [Protezione dei file di log](#protezione-dei-file-di-log)
+    - [Progettazione del collaudo](#progettazione-del-collaudo)
 - [Deployment](#deployment)
   - [Artefatti](#artefatti)
   - [Deployment-type Level](#deployment-type-level)
@@ -88,14 +89,14 @@
 WeatherMent.IO nasce con l'idea di creare un database con informazioni raccolte da diverse stazioni metereologiche.
 
 
-Il progetto è strutturato in modo tale da permettere la consultazione e visualizzazione dei dati grazie ad una interfaccia web che espone all'utente finale grafici dettagliati di dati relativi ad un preciso luogo ed in base a determinati intervalli temporali.
+Il progetto è strutturato in modo tale da permettere la consultazione e la visualizzazione delle informazioni grazie ad una interfaccia web che espone all'utente finale grafici dettagliati di dati relativi ad un preciso luogo ed in base a determinati intervalli temporali.
 
 
 L'architettura è quella di un sistema ad eventi, distruibuito su diversi server e database per avere una maggiore efficienza, scalabilità e affidabilità.
-Nello specifico i dati finali esposti all'utente sono organizzati rispetto all'evento che rappresentano su database documentali, mentre quelli raccolti direttamente dalle stazioni vengono processati ed immagazzinati da un server dedicato, che si appoggia invece su di un database relazionale. In questo modo viene garantita una maggiore efficienza su grandi quantità di informazioni, in quanto principali operazioni di lettura e scrittura avvengono in modo del tutto scorrelato.
+Nello specifico i dati finali esposti all'utente sono organizzati rispetto all'evento che rappresentano su opportune proiezioni. I dati raccolti direttamente dalle stazioni, invece, vengono processati ed immagazzinati da un server dedicato, che si appoggia su di un database relazionale. In questo modo viene garantita una maggiore efficienza su grandi quantità di informazioni, in quanto principali operazioni di lettura e scrittura avvengono in modo del tutto scorrelato.
 
 
-Il progetto mira ad essere facilmente scalabile sia orizzontalmente che verticalmente ed espandibile sia dal punto di vista di nuove stazioni che di nuovi tipi di dato. Le nuove stazioni meteo prima di poter trasmettere i dati dovranno essere autenticate per garantire l'affidabilità del sistema. 
+Il progetto mira ad essere facilmente scalabile sia orizzontalmente che verticalmente ed espandibile sia dal punto di vista di nuove stazioni che di nuovi tipi di dato.
 
 
 <div></div>
@@ -492,23 +493,27 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 
 #### Diagramma di sequenza: Lettura dati dai diversi sensori
 ![](resources/InteractionLetturaSensori.svg)
+
 In maniera ciclica e parallela i sensori acquisiscono i dati che vengono poi inoltrati alla stazione meteo. 
 
 <div></div>
 
 #### Diagramma di sequenza: Trasmissione dei dati
 ![](resources/InteractionTrasmissione.svg)
+
 I dati ricevuti dai sensori vengono elaborati da **StazioneController** il quale, se verifica un cambiamento, crea un evento da trasmettere all'apposito controller. In caso di errori nella trasmissione è previsto un sistema di backup e reinvio di dati per garantire l'integrità di tutti gli eventi.
 
 <div></div>
 
 #### Diagramma di sequenza: Gestione dell'evento
 ![](resources/InteractionGestioneEvento.svg)
+
 **EventoController** si occupa della validazione dell'evento ricevuto, superato tale controllo provvede alla scrittura persistente dell'evento.
 <div></div>
 
 #### Diagramma di sequenza: Proiezione
 ![](resources/InteractionProiezione.svg)
+
 Il **ProiezioniController** viene notificato [ `notify()` ] della scrittura di un nuovo evento, che subisce un ulteriore elaborazione per creare le diverse proiezioni del dato.
 
 <div></div>
@@ -547,90 +552,68 @@ Dopo aver valutato attentamente la mole di lavoro richiesta, i tempi previsti so
 
 ### Piano di Collaudo 
 
-Per garantire il corretto funzionamento del sistema sono necessari una diversi test unitari che permettono di verificare il corretto funzionamento delle diverse parti che lo compongono.
+Per garantire il corretto funzionamento del sistema sono necessari diversi test unitari che permettono di verificare il corretto funzionamento delle diverse parti che lo compongono.
 
 ```java
-@TestEvent
-ObjectMapper mapper = new ObjectMapper();
-JsonNode payload = null;
-try {
-    String json = "{\"boardId\": \"cafebafe-cafebabe-cafebabe\", \"boardOffset\": 3 , \"bar\": \"5\", \"zipcode\": \"\40125", \"emittedAt\": 857671257612 }";
-    payload = mapper.readTree(json);
-} catch (IOException e) {
-        Assertions.fail();
+
+public class TestValidationEvent {
+    @Test
+    public void validationEventTest() {
+        // TEST OF A NOT VALID EVENT
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode payload = null;
+
+        String json = "{\"boardId\": \"cafebafe-cafebabe-cafebabe\", \"boardOffset\": 3 , \"bar\": \"5\", \"zipcode\": \"\40125, \"emittedAt\": 857671257612 }";
+        payload = mapper.readTree(json);
+
+        try {
+            Event sut = Event.fromJson(UUID.fromString("cafebabe-cafebabe-cafebabe-cafebabe"),"eventType",0, payload);
+        } catch (EventNotValidException e) {
+            Assertions.fail("Event is not valid");
+        }
+
+        // TEST OF A VALID EVENT
+        try {
+            Event validEvent = Event.fromJson(UUID.fromString("0000-0000-0000-0000"),"validType",1,payload)
+            Assert.assertEquals(true,validEvent.isValid());
+        } catch (EventNotValidException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals(validEvent.getUUID(),"0000-0000-0000-0000");
+        Assert.assertEquals(validEvent.getType(),"validType");
+        Assert.assertEquals(validEvent.getVersion(),1);
+        Assert.assertEquals(validEvent.isValidPayload(),true);
+    }
 }
-try {
-    Event sut = Event.fromJson(topic, type, version, payload);
-} catch (MyException e) {
-    Assertions.fail();
+```
+
+
+``` java
+public class TestBoard() {
+
+    @Test
+    public void testBoardValues() {
+        // TEST VALUES OF THE BOARD
+        Board board = new Board();
+        board.setZipCode("40125");
+        board.setBoardId(UUID.fromString("0000-0000-0000-0000"));
+
+        WeatherNow wNow = new WeatherNow();
+        Pressure pressure = new Pressure(5,new Date().getTime());
+        Temperature temperature = new Temperature(18,new Date().getTime());
+        wNow.setPressure(pressure);
+        wNow.setTemperature(temperature);
+
+        board.setWeatherNow(wNow);
+
+        Assert.assertEquals(board.getBoardId(),UUID.fromString("0000-0000-0000-0000"));
+        Assert.assertEquals(board.getZipCode(),"40125");
+        Assert.assertEquals(board.getWeatherNow.getPressure().getValue(),5);
+        Assert.assertEquals(board.getWeatherNow.getTemperature().getValue(),18);
+    }
+
 }
-
-Assertions.assertEquals(sut.getBoardId(), "cafebafe-cafebabe-cafebabe");
-Assertions.assertEquals(sut.getBoardOffset(), 3);
-Assertions.assertEquals(sut.getPressure(), "5");
-Assertions.assertEquals(sut.getZipCode(), "40125");
-Assertions.assertEquals(sut.getEmittedAt(), "857671257612");
-```
-
-```js
-@Test
-describe('/GET mock boardstate', () => {
-  it('it should get the BoardState', (done) => {
-    server
-      .get('/mock/boardState')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.zipCode.should.equal(64100);
-        res.body.wind.speed.should.equal(10);
-        res.body.pollution.CO2.should.equal(10);
-        res.body.pressure.pressure.should.equal(10);
-        res.body.weatherState.state.should.equal("STATE_ENUM");
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET mock temperature', () => {
-  it('it should get the temperatures of 64100 zipCode', (done) => {
-    server
-      .get('/mock/temperatures')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.temperatures.should.be.a('array');
-        res.body.zipCode.should.equal(64100);
-        res.body.temperatures[0].value.should.equal(18);
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET generic error', () => {
-  it('it should return response with status 500', (done) => {
-    server
-      .get('/mock/error')
-      .end((err, res) => {
-        res.should.have.status(500);
-        done();
-      });
-  });
-});
-```
-
-```js
-describe('/GET unauthorized error', () => {
-  it('it should return response with status 500', (done) => {
-    server
-      .get('/mock/unauthorized')
-      .end((err, res) => {
-        res.should.have.status(401);
-        done();
-      });
-  });
-});
 ```
 
 <div></div>
@@ -849,6 +832,155 @@ log: {
 #### Protezione dei file di log
 
 I file di log possono essere crittografati per avere una maggiore sicurezza nel caso in cui un attaccante riesca ad accedervi, non potendo ottenere quindi informazioni. Questo influisce in modo abbastanza significativo sulle performance del sistema, quindi a seconda dell'esigenza può essere abilitata o meno. Vengono inoltre eseguiti backup periodici in un server remoto in maniera da garantirne la disponibilità anche dopo molto tempo.
+
+### Progettazione del collaudo
+
+Partendo dal piano di collaudo, sono stati implementati, dei nuovi test.
+Lo scopo di questi test è la verifica del corretto funzionamento delle parti del sistema. Qui di seguito sono riportati soltanti alcuni dei principali test.
+
+``` java
+
+public class TestPostgresNotification {
+    public static void main(String args[]) throws Exception {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://localhost:5432/test";
+        Connection lConn = DriverManager.getConnection(url, "test", "");
+        Connection nConn = DriverManager.getConnection(url, "test", "");
+        ListenerTest listener = new ListenerTest(lConn);
+        NotifierTest notifier = new NotifierTest(nConn);
+        listener.start();
+        notifier.start();
+    }
+
+}
+
+class ListenerTest extends Thread {
+
+    private Connection conn;
+    private org.postgresql.PGConnection pgconn;
+
+    ListenerTest(Connection conn) throws SQLException {
+        this.conn = conn;
+        this.pgconn = (org.postgresql.PGConnection) conn;
+        Statement stmt = conn.createStatement();
+        stmt.execute("LISTEN mymessage");
+        stmt.close();
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT 1");
+                rs.close();
+                stmt.close();
+
+                org.postgresql.PGNotification notifications[] = pgconn.getNotifications();
+                if (notifications != null) {
+                    for (int i = 0; i < notifications.length; i++) {
+                        System.out.println("Got notification: " + notifications[i].getName());
+                    }
+                }
+                Thread.sleep(500);
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+        }
+    }
+
+}
+
+class NotifierTest extends Thread {
+
+    private Connection conn;
+
+    public NotifierTest(Connection conn) {
+        this.conn = conn;
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                Statement stmt = conn.createStatement();
+                stmt.execute("NOTIFY mymessage");
+                stmt.close();
+                Thread.sleep(2000);
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+        }
+    }
+
+}
+```
+
+Qui di seguito sono riportati i test per la REST API.
+I test eseguono delle chiamate HTTP per testare il corretto funzionamento delle proiezioni
+
+```js
+@Test
+describe('/GET mock boardstate', () => {
+  it('it should get the BoardState', (done) => {
+    server
+      .get('/mock/boardState')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.zipCode.should.equal(64100);
+        res.body.wind.speed.should.equal(10);
+        res.body.pollution.CO2.should.equal(10);
+        res.body.pressure.pressure.should.equal(10);
+        res.body.weatherState.state.should.equal("STATE_ENUM");
+        done();
+      });
+  });
+});
+```
+
+```js
+describe('/GET mock temperature', () => {
+  it('it should get the temperatures of 64100 zipCode', (done) => {
+    server
+      .get('/mock/temperatures')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.temperatures.should.be.a('array');
+        res.body.zipCode.should.equal(64100);
+        res.body.temperatures[0].value.should.equal(18);
+        done();
+      });
+  });
+});
+```
+
+```js
+describe('/GET generic error', () => {
+  it('it should return response with status 500', (done) => {
+    server
+      .get('/mock/error')
+      .end((err, res) => {
+        res.should.have.status(500);
+        done();
+      });
+  });
+});
+```
+
+```js
+describe('/GET unauthorized error', () => {
+  it('it should return response with status 500', (done) => {
+    server
+      .get('/mock/unauthorized')
+      .end((err, res) => {
+        res.should.have.status(401);
+        done();
+      });
+  });
+});
+```
 
 <div></div>
 
