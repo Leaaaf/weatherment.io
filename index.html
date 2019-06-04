@@ -5,6 +5,7 @@
     <link href="css/home.scss" type="text/css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/019efa71b1.js"></script>
     <script src="node_modules/chart.js/dist/Chart.min.js"></script>
 </head>
 
@@ -17,14 +18,40 @@
                 <i class="fa fa-search"></i>
             </form>
         </div>
-        <div class="stats animated fadeInUp delay-3s">
+        <div id="stats" class="stats animated fadeInUp delay-3s">
             <div class="circleStats">
                 <a href=""><i class="far fa-file-alt"></i></a>
             </div>
         </div>
     </div>
-    <div class="chart-container" style="width: 90%; height: 90%; display: none;">
-        <canvas id="myChart"></canvas>
+    <div class="city-view" style="display: none">
+        <div class="sidenav">
+            <img id="logo" class="icon animated jello slow delay-1s" src="/resources/WEATHERMENT-small.svg">
+            <form style="margin-left: 0.5vw" onsubmit="event.preventDefault(); onSearch();">
+                <input type="search" placeholder="Ricerca località">
+                <i class="fa fa-search"></i>
+            </form>
+            <a href="#" onclick="createChart();"><i class="fas fa-tachometer-alt"></i></a>
+            <a href="#" onclick="createChart();"><i id="selected" class="fa fa-thermometer-half"></i></a>
+            <a href="#" onclick="createChart();"><i class="fas fa-wind"></i></a>
+            <a href="#" onclick="createChart();"><i class="fas fa-tint"></i></a>
+            <a href="#" onclick="createChart();"><i class="fas fa-smog"></i></a>
+            <a href="#" onclick="createChart();"><i class="fas fa-cloud-sun-rain"></i></a>
+        </div>
+        <div class="main">
+            <div class="title">
+                <h1>BOLOGNA</h1>
+                <p>31° <i class="fa fa-thermometer-three-quarters"></i></p>
+                <p>450hPA <i class="fa fa-tachometer-alt"></i></p>
+                <p>S/SE 15km/h <i class="fa fa-wind"></i></p>
+                <p>58% <i class="fa fa-tint"></i></p>
+                <p>200ppm <i class="fa fa-smog"></i></p>
+                <p>SUNNY<i class="fa fa-sun"></i></p>
+            </div>
+            <div class="chart-container" style="display: none;">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -35,33 +62,44 @@
             logo.addEventListener('animationend', function () {
                 logo.style.display = "none";
                 document.querySelector('.splash').style.display = "none";
-                document.querySelector('.chart-container').style.display = "flex";
+                document.querySelector('.city-view').style.display = "flex";
+                document.querySelector('.sidenav').classList.add('animated', 'fadeInLeft');
+                document.querySelector('.title').classList.add('animated', 'fadeInDown', 'delay-1s');
                 createChart();
             })
             const bar = document.getElementById('bar');
             bar.classList.remove('animated', 'fadeInUp', 'delay-2s');
-            bar.classList.add('animated', 'fadeOutDown', 'delay-1s');
+            bar.classList.add('animated', 'fadeOutDown', 'delay-1s', 'slow');
             bar.addEventListener('animationend', function () {
                 bar.style.display = "none";
+            })
+            const stats = document.getElementById('stats');
+            stats.classList.remove('animated', 'fadeInUp', 'delay-3s');
+            stats.classList.add('animated', 'fadeOutDown', 'slower');
+            stats.addEventListener('animationend', function () {
+                stats.style.display = "none";
             })
         }
 
         function createChart() {
+            chartContainer = document.querySelector('.chart-container');
+            chartContainer.style.display = "flex";
+            chartContainer.classList.add('animated', 'fadeInUp', 'slow')
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['11/01', '12/01', '13/01', '14/01', '15/01', '16/01'],
+                    labels: ['11/01', '12/01', '13/01', '14/01', '15/01', '16/01','17/01', '18/01', '19/01', '20/01', '21/01', '22/01','23/01', '24/01', '25/01', '26/01', '27/01', '28/01','29/01', '30/01', '31/01', '01/02', '02/02', '03/02'],
                     datasets: [{
                             label: 'MAX Temperature',
-                            data: [20, 22, 23, 25, 18, 20],
+                            data: [20, 22, 23, 25, 18, 20, 20, 21, 20, 18, 18, 22, 20, 22, 15, 17, 18, 20, 23, 26, 27, 24, 26, 18],
                             borderColor: 'rgba(252, 60, 60, 1)',
                             fill: false,
                             borderWidth: 3
                         },
                         {
                             label: 'MIN Temperature',
-                            data: [12, 13, 12, 15, 8, 10],
+                            data: [12, 13, 12, 15, 8, 10, 12, 12, 9, 12, 11, 11, 10, 13, 7, 8, 7, 9, 11, 16, 19, 22, 20, 14],
                             borderColor: 'rgba(0, 75, 168, 1)',
                             fill: false,
                             borderWidth: 3
