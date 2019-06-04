@@ -29,6 +29,7 @@
   - [Interfacce grafiche](#interfacce-grafiche)
     - [Struttura](#struttura)
     - [Homepage](#homepage)
+    - [Vista città](#vista-citt%C3%A0)
 - [Analisi del problema](#analisi-del-problema)
   - [Analisi del documento dei requisiti](#analisi-del-documento-dei-requisiti)
     - [Analisi delle funzionalità](#analisi-delle-funzionalit%C3%A0)
@@ -340,9 +341,23 @@ Questa è la sezione di partenza del sistema; permette di spostarsi nelle due se
 
 ![](resources/screens/home1.png)
 
-Una volta che viene selezionato il tasto di ricerca:
+Una volta che viene utilizzato il tasto di ricerca:
 
 ![](resources/screens/home2.png)
+
+### Vista città
+
+In questa sezione del sistema visualizziamo i dati in tempo reale della città cercata (a destra del nome della città stessa) e a sinistra le varie icone che permettono di visualizzare i grafici dettagliati per ogni singolo tipo di dato.
+
+![](resources/screens/detail1.png)
+
+La barra di ricerca, presente anche in questa schermata, che permette di cercare altre città
+
+![](resources/screens/detail2.png)
+
+Vi è inoltre la possibilità di evidenziare nel grafico, uno specifico punto di nostro interesse
+
+![](resources/screens/detail3.png)
 
 <div></div>
 
