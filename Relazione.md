@@ -71,6 +71,7 @@
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#comportamento">Comportamento</a></td><td class="right"> pag. 1 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-di-stato-trasmissione">Diagramma di stato: Trasmissione</a></td><td class="right"> pag. 1 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#piano-del-lavoro">Piano del Lavoro</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sviluppi-futuri">Sviluppi futuri</a></td><td class="right"> pag. 1 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#piano-di-collaudo">Piano di Collaudo</a></td><td class="right"> pag. 1 </td></tr>
 <tr><td><a href="#progetto"><b>Progetto</b></a></td><td class="right"> pag. 1 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#progettazione-architetturale">Progettazione architetturale</a></td><td class="right"> pag. 1 </td></tr>
@@ -586,6 +587,10 @@ Dopo aver valutato attentamente la mole di lavoro richiesta, i tempi previsti so
 -   Sviluppo dei vari package: entro 1/2 settimane dalla fine della progettazione.
 -   Test unitari e testing totale del sistema: entro una settimana dallo sviluppo di tutti i package.
 
+#### Sviluppi futuri
+
+Il sistema è progettato in modo da permettere un'ampia espansione: in qualsiasi momento, senza alcuna difficoltà, si possono aggiungere nuovi tipi di sensori, eventi registrabili e proiezioni da mostrare all'utente. Inoltre il sistema permette grazie alla sua natura distribuita di essere espanso anche a livello di risorse, senza dover modificare in alcun modo l'architettura.
+
 <div></div>
 
 ### Piano di Collaudo 
@@ -595,6 +600,8 @@ Per garantire il corretto funzionamento del sistema sono necessari diversi test 
 ![](resources/codeScreens/TestValidationEvent.png)
 
 ![](resources/codeScreens/TestBoard.png)
+
+<div></div>
 
 # Progetto
 
@@ -803,13 +810,22 @@ Lo scopo di questi test è la verifica del corretto funzionamento delle parti de
 ![](resources/codeScreens/ProgettazioneCollaudo.png)
 
 ![](resources/codeScreens/ProgettazioneCollaudo-2.png)
-
+<div></div>
 Qui di seguito sono riportati i test per la REST API.
 I test eseguono delle chiamate HTTP per testare il corretto funzionamento delle proiezioni
 
 ![](resources/codeScreens/TestRESTAPI.png)
+
+<br>
+
 ![](resources/codeScreens/TestRESTAPI-2.png)
+
+<br>
+
 ![](resources/codeScreens/TestRESTAPI-3.png)
+
+<br>
+
 ![](resources/codeScreens/TestRESTAPI-4.png)
 
 <div></div>
