@@ -1,6 +1,26 @@
 <style>
+  * {
+    font-family: "Seravek";
+  }
   div{ page-break-after: always; }
   .firstRow {background-color: #457CBF; color:white}
+
+  table {
+    width: 100%;
+  }
+
+  #indice tr, #indice td{
+    border-collapse: collapse; border: none;
+    padding-bottom: 0px;
+  }
+
+  a {
+    color: black;
+  }
+
+  #indice .right{
+    text-align: right;
+  }
 </style>
 
 ![](resources/logo.svg)
@@ -12,75 +32,78 @@
   
 <div></div>
 
-- [Abstract](#abstract)
-  - [Descrizione del progetto](#descrizione-del-progetto)
-- [Analisi dei requisiti](#analisi-dei-requisiti)
-  - [Requisiti del sistema](#requisiti-del-sistema)
-  - [Analisi del dominio](#analisi-del-dominio)
-    - [Vocabolario](#vocabolario)
-  - [Analisi dei requisiti](#analisi-dei-requisiti-1)
-    - [Casi D'uso](#casi-duso)
-  - [Analisi del rischio](#analisi-del-rischio)
-    - [Valutazione dei beni](#valutazione-dei-beni)
-    - [Analisi minacce e controlli](#analisi-minacce-e-controlli)
-    - [Analisi della tecnologia dal punto di vista della sicurezza](#analisi-della-tecnologia-dal-punto-di-vista-della-sicurezza)
-    - [Security use case e Misuse case](#security-use-case-e-misuse-case)
-    - [Requisiti di Protezione](#requisiti-di-protezione)
-  - [Interfacce grafiche](#interfacce-grafiche)
-    - [Struttura](#struttura)
-    - [Homepage](#homepage)
-    - [Vista città](#vista-citt%C3%A0)
-- [Analisi del problema](#analisi-del-problema)
-  - [Analisi del documento dei requisiti](#analisi-del-documento-dei-requisiti)
-    - [Analisi delle funzionalità](#analisi-delle-funzionalit%C3%A0)
-    - [Analisi dei vincoli](#analisi-dei-vincoli)
-    - [Analisi delle interazioni](#analisi-delle-interazioni)
-  - [Analisi dei ruoli e delle responsabilità](#analisi-dei-ruoli-e-delle-responsabilit%C3%A0)
-  - [Creazione modello del dominio](#creazione-modello-del-dominio)
-  - [Architettura logica](#architettura-logica)
-    - [Struttura](#struttura-1)
-      - [Diagramma dei package](#diagramma-dei-package)
-      - [Diagramma delle classi](#diagramma-delle-classi)
-    - [Interazione](#interazione)
-      - [Diagramma di sequenza: Lettura dati dai diversi sensori](#diagramma-di-sequenza-lettura-dati-dai-diversi-sensori)
-      - [Diagramma di sequenza: Trasmissione dei dati](#diagramma-di-sequenza-trasmissione-dei-dati)
-      - [Diagramma di sequenza: Gestione dell'evento](#diagramma-di-sequenza-gestione-dellevento)
-      - [Diagramma di sequenza: Proiezione](#diagramma-di-sequenza-proiezione)
-    - [Comportamento](#comportamento)
-      - [Diagramma di stato Trasmissione](#diagramma-di-stato-trasmissione)
-    - [Piano del Lavoro](#piano-del-lavoro)
-    - [Piano di Collaudo](#piano-di-collaudo)
-- [Progetto](#progetto)
-  - [Progettazione architetturale](#progettazione-architetturale)
-    - [Requisiti non funzionali](#requisiti-non-funzionali)
-    - [Scelta dell'architettura](#scelta-dellarchitettura)
-      - [Architettura del sistema:](#architettura-del-sistema)
-  - [Considerazioni sulla sicurezza relative alle tecnologie utilizzate](#considerazioni-sulla-sicurezza-relative-alle-tecnologie-utilizzate)
-    - [Database](#database)
-    - [Trasmissione remota dei dati](#trasmissione-remota-dei-dati)
-  - [Progettazione di Dettaglio](#progettazione-di-dettaglio)
-    - [Struttura](#struttura-2)
-      - [Trasmissione](#trasmissione)
-      - [Log](#log)
-      - [GestioneEvento](#gestioneevento)
-      - [Proiezioni](#proiezioni)
-    - [Diagrammi di Dettaglio](#diagrammi-di-dettaglio)
-      - [Diagramma di dettaglio - Homepage](#diagramma-di-dettaglio---homepage)
-      - [Diagramma di dettaglio - ViewCitta](#diagramma-di-dettaglio---viewcitta)
-      - [Diagramma di dettaglio - ViewStatistiche](#diagramma-di-dettaglio---viewstatistiche)
-  - [Interazione](#interazione-1)
-    - [Comportamento](#comportamento-1)
-  - [Persistenza](#persistenza)
-    - [Diagramma ER - Event Driven persistence](#diagramma-er---event-driven-persistence)
-      - [Scelte progettuali](#scelte-progettuali)
-    - [Diagramma ER - Proiezioni](#diagramma-er---proiezioni)
-      - [Scelte progettuali](#scelte-progettuali-1)
-    - [Formato del file di log](#formato-del-file-di-log)
-      - [Protezione dei file di log](#protezione-dei-file-di-log)
-    - [Progettazione del collaudo](#progettazione-del-collaudo)
-- [Deployment](#deployment)
-  - [Artefatti](#artefatti)
-  - [Deployment-type Level](#deployment-type-level)
+<table id="indice">
+<thead> <h1><b>INDICE</b></h1></thead>
+<tr><td><b><a href=#abstract>Abstract</a></b></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#descrizione-del-progetto">Descrizione del progetto</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td><b><a href=#analisi-dei-requisiti>Analisi dei requisiti</a></b></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#requisiti-del-sistema">Requisiti del sistema</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-dominio">Analisi del dominio</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#vocabolario">Vocabolario</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-requisiti-1">Analisi dei requisiti</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#casi-duso">Casi d'uso</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-rischio">Analisi del rischio</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#valutazione-dei-beni">Valutazione dei beni</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-minacce-e-controlli">Analisi minacce e controlli</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-della-tecnologia-dal-punto-di-vista-della-sicurezza">Analisi della tecnologia dal punto di vista della sicurezza</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#security-use-case-e-misuse-case">Security use case e Misuse case</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#requisiti-di-protezione">Requisiti di protezione</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#interfacce-grafiche">Interfacce grafiche</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#struttura">Struttura</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#homepage">Homepage</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#vista-citt%C3%A0">Vista città</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td><b><a href=#analisi-del-problema>Analisi del problema</a></b></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-documento-dei-requisiti">Analisi del documento dei requisiti</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-delle-funzionalit%C3%A0">Analisi delle funzionalità</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-vincoli">Analisi dei vincoli</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-delle-interazioni">Analisi delle interazioni</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-ruoli-e-delle-responsabilit%C3%A0">Analisi dei ruoli e delle responsabilità</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#creazione-modello-del-dominio">Creazione modello del dominio</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#architettura-logica">Architettura logica</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#struttura-1">Struttura</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-dei-package">Diagramma dei package</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-delle-classi">Diagramma delle classi</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#interazione">Interazione</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-di-sequenza-lettura-dati-dai-diversi-sensori">Diagramma di sequenza: Lettura dati dai diversi sensori</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-di-sequenza-trasmissione-dei-dati">Diagramma di sequenza: Trasmissione dei dati</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-di-sequenza-gestione-dellevento">Diagramma di sequenza: Gestione dell'evento</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-di-sequenza-proiezione">Diagramma di sequenza: Proiezione</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#comportamento">Comportamento</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-di-stato-trasmissione">Diagramma di stato: Trasmissione</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#piano-del-lavoro">Piano del Lavoro</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#piano-di-collaudo">Piano di Collaudo</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td><a href="#progetto"><b>Progetto</b></a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#progettazione-architetturale">Progettazione architetturale</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#requisiti-non-funzionali">Requisiti non funzionali</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#scelte-dellarchitettura">Scelta dell'architettura</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#architettura-del-sistema">Architettura del sistema</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#considerazioni-sulla-sicurezza-relative-alle-tecnologie-utilizzate">Considerazioni sulla sicurezza relative alle tecnologie utilizzate</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#database">Database</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#trasmissione-remota-dei-dati">Trasmissione remota dei dati</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#progettazione-di-dettaglio">Progettazione di dettaglio</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#struttura-2">Struttura</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#trasmissione">Trasmissione</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#log">Log</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#gestioneevento">GestioneEvento</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#proiezioni">Proiezioni</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagrammi-di-dettaglio">Diagrammi di dettaglio</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagrammi-di-dettaglio---homepage">Diagramma di dettaglio - Homepage</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagrammi-di-dettaglio---viewcitta">Diagramma di dettaglio - ViewCitta </a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagrammi-di-dettaglio---viewstatistiche">Diagramma di dettaglio - ViewStatistiche</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#interazione-1">Interazione</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#comportamento-1">Comportamento</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#persistenza">Persistenza</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-er---event-driven-persistence">Diagramma ER - Event Driven persistence</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#scelte-progettuali">Scelte progettuali</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#diagramma-er---proiezioni">Diagramma ER - Proiezioni</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#scelte-progettuali-1">Scelte progettuali</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#formato-del-file-di-log">Formato del file di log</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#protezione-dei-file-di-log">Protezione dei file di log</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#progettazione-del-collaudo">Progettazione del collaudo</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td><a href="#deployment"><b>Deployment</b></a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#artefatti">Artefatti</a></td><td class="right"> pag. 1 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#deplyment-type-level">Deployment-type Level</a></td><td class="right"> pag. 1 </td></tr>
+</table>
 
 <div></div>
 
@@ -162,7 +185,7 @@ Version | Indica la versione della stazione
 
 La stazione viene considerata un attore in quanto è un sistema esterno con un ruolo attivo. Interviene nell’applicativo generando continuamente dati in ingresso che verranno utilizzati da Gestione Eventi solo nel caso in cui vengano rilevati dei cambiamenti.
 
-L’utente ha la possibilità di consultare la vista città di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultaizone.
+L’utente ha la possibilità di consultare la vista città di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultazione.
 
 <div></div>
 
@@ -214,7 +237,6 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Scenari alternativi</b> </td><td>Non vi sono statistiche da mostrare:<li style="list-style-type: decimal;">Il sistema notifica all'utente di non poter proseguire l'azione</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati<br>Velocità in lettura <br>Immediatezza e semplicità di utilizzo e di consultazione</td></tr>
 </table>
-<div></div>
 <table>
 <tr class="firstRow"><td><b>Titolo</b></td> <td>Filtro Statistiche</td></tr>
 <tr><td><b>Descrizione</b></td><td>Il sistema permette all'utente di filtrare i rapporti statistici sugli eventi relativi alle varie località a seconda di diversi criteri </td></tr>
@@ -333,13 +355,14 @@ Dopo l'analisi dei rischi, vi è quindi il bisogno di nuovi requisiti riguardant
 
 ### Struttura
 Il sistema presenta due sezioni principali navigabili senza dover effettuare alcun tipo di registrazione/autenticazione. Una sezione, permette la visualizzazone dei dati meteorologici legati ad una specifica città, fornendo informazioni in tempo reale e grafici storici. L'altra sezione permette invece di visualizzare dei report statistici nazionali o specifici di una città, legati ad un intervallo temporale definito dall'utente.
-<div></div>
 
 ### Homepage
 
 Questa è la sezione di partenza del sistema; permette di spostarsi nelle due sezioni principali attraverso un form di ricerca per città e un bottone per le statistiche.
 
 ![](resources/screens/home1.png)
+
+<div></div>
 
 Una volta che viene utilizzato il tasto di ricerca:
 
@@ -570,8 +593,8 @@ Dopo aver valutato attentamente la mole di lavoro richiesta, i tempi previsti so
 Per garantire il corretto funzionamento del sistema sono necessari diversi test unitari che permettono di verificare il corretto funzionamento delle diverse parti che lo compongono.
 
 ```java
-
 public class TestValidationEvent {
+
     @Test
     public void validationEventTest() {
         // TEST OF A NOT VALID EVENT
@@ -603,7 +626,6 @@ public class TestValidationEvent {
 }
 ```
 
-
 ``` java
 public class TestBoard() {
 
@@ -627,11 +649,8 @@ public class TestBoard() {
         Assert.assertEquals(board.getWeatherNow.getPressure().getValue(),5);
         Assert.assertEquals(board.getWeatherNow.getTemperature().getValue(),18);
     }
-
 }
 ```
-
-<div></div>
 
 # Progetto
 
@@ -661,8 +680,6 @@ Il server delegato alla gestione degli eventi comunica in modo sicuro tramite l'
 
 Il sistema si basa su più database , la persistenza avviene su di un database postgreSQL, adibito alla sola scrittura dei dati provenienti dalle diverse stazioni.
 Gli altri database sono generati a partire dalle proiezioni del dato per consentire una maggiore facilità di utilizzo nella fase di aggregazione.
-
-<div></div>
 
 #### Architettura del sistema:
 
@@ -722,9 +739,9 @@ Dopo un'attenta riflessione, sono stati apportati dei cambiamenti rispetto alla 
 
 Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la homepage. Nella schermata iniziale non vengono mostrati dati all'utente. Le uniche funzioni esposte sono: la possibilità di cercare una città e visualizzarne i suoi dettagli, oppure avere accesso ad un report nazionale.
 
-<div></div>
-
 ![](resources/screens/home1.png)
+
+<div></div>
 
 ![](resources/screens/home2.png)
 
@@ -736,6 +753,8 @@ Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce dispo
 
 Nel diagramma sopra rappresentato, vengono evidenziate tutte le interfacce disponibili riguardanti la vista città.
 Nello specifico verrà mostrato all'utente una situazione real-time ed un grafico relativo alla località cercata. Tale grafico può mostrare diversi dati in base alle scelte effettuate attraverso un opportuno filtro. <br> Tramite questa interfaccia è possibilie accedere anche al report della città cercata in precedenza.
+
+![](resources/screens/detail1.png)
 
 <div></div>
 
