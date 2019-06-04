@@ -107,15 +107,15 @@ Il progetto mira ad essere facilmente scalabile sia orizzontalmente che vertical
 ID  | Requisito | Tipo
 -|-|-
 F.1 | La stazione invia i dati al server solo quando avvengono cambiamenti nei valori letti dai sensori; così facendo non si generano eventi ridondanti  | Funzionale
-F.2 | Nel momento in cui si genera un evento da inviare al server, la stazione provvederà a determinare la sua posizione e aggiungerà nazione e ZIP Code prima di inoltrarlo | Funzionale
+F.2 | Nel momento in cui si genera un evento da inviare al server, la stazione provvederà a determinare la sua posizione e aggiungerà lo ZIP Code prima di inoltrarlo | Funzionale
 F.3 | I dati raccolti dalle stazioni vengono validati dal server prima dell'inserimento sul database, assicurandone la correttezza all'utente finale | Funzionale
-F.4 | Attraverso il client è possibile visualizzare i dati in tempo reale, in un intervallo di tempo definito dall'utente o visualizzare la vista città di una stazione | Funzionale
+F.4 | Attraverso il client è possibile visualizzare i dati in tempo reale o in un intervallo di tempo definito dall'utente di una specifica città (dati di più stazioni aventi lo stesso cap) | Funzionale
 F.5 | L'interfaccia web deve permettere la consultazione attraverso filtri e criteri di ricerca | Funzionale
-F.6 | L'interfaccia web deve permettere la consultazione di grafici riassuntivi | Funzionale
+F.6 | L'interfaccia web deve permettere la consultazione di grafici e report riassuntivi | Funzionale
 F.7 | Ogni evento generato dalla stazione meteo appartiene ad uno specifico topic | Funzionale
 F.8 | Per ogni topic ci sono determinati tipi di evento | Funzionale
 F.9 | Per ogni tipo di evento è definito un preciso schema che il payload deve rispettare | Funzionale
-F.10 | Ogni volta che viene aggiunto un evento sul database si notifica ai server in ascolto | Funzionale 
+F.10 | Ogni volta che viene aggiunto un evento sul database si notifica alle componenti del sistema che si occupano di creare le proiezioni | Funzionale 
 D.1 | La temperatura inviata dai sensori deve essere misurata in *gradi Celsius (°C)* | Dominio
 D.2 | La pressione inviata dai sensori deve essere misurata in *ettopascal (hPa)* | Dominio
 D.3 | La velocità del vento inviata dai sensori deve essere misurata in *chilometri orari (km/h)*. Inoltre viene indicata anche la direzione | Dominio
@@ -140,7 +140,7 @@ Evento | La stazione emette un evento per notificare all'intero sistema dei camb
 Frequenza di campionamento | Numero di volte al secondo in cui un segnale analogico viene misurato e memorizzato in forma digitale |
 Notifica PostgreSQL | Viene segnalata l'immissione di una nuova riga all'interno del database relazionale postgres | Notify
 Payload | Pacchetto contenente tutti i dati raccolti dalla stazione | Carico 
-Proiezione | Interrogazione al database che fornisce all'utente soltanto i dati richiesti
+Proiezione | Aggregazione degli eventi che permettono di creare delle "viste" su determinati dati
 Scalabilità | In informatica, la caratteristica di un sistema software o hardware facilmente modificabile nel caso di variazioni notevoli della mole o della tipologia dei dati trattati | Espandibilità
 Scheda | Unisce tutti i componenti elettrici ed i sensori e ne permette il funzionamento | 
 Schema | Definisce per ogni tipo di evento delle regole e dei formati necessari per la validazione | 
@@ -159,7 +159,7 @@ Version | Indica la versione della stazione
 
 ![](resources/ScenaryCase.svg)
 
-La stazione è considerata un attore in quanto è un sistema esterno con un ruolo attivo. Interviene nell’applicativo generando continuamente dati in ingresso che verranno utilizzati da Gestione Eventi solo nel caso in cui vengano rilevati dei cambiamenti.
+La stazione viene considerata un attore in quanto è un sistema esterno con un ruolo attivo. Interviene nell’applicativo generando continuamente dati in ingresso che verranno utilizzati da Gestione Eventi solo nel caso in cui vengano rilevati dei cambiamenti.
 
 L’utente ha la possibilità di consultare la vista città di tutti i dati meteo e le Statistiche. Entrambe le schermate dispongono di appositi filtri per la consultaizone.
 
@@ -817,7 +817,7 @@ log: {
 }  
 ```
 
-Il file di log relativo alle proiezioni visualizzate dall'utente, è così composto:
+Il file di log relativo alle proiezioni visualizzate dagli utenti è così composto:
 
 ```json
 log: {
