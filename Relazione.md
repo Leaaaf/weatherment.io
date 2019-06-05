@@ -37,11 +37,13 @@
 <tr><td><b><a href=#abstract>Abstract</a></b></td><td class="right"> pag. 4 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#descrizione-del-progetto">Descrizione del progetto</a></td><td class="right"> pag. 4 </td></tr>
 <tr><td><b><a href=#analisi-dei-requisiti>Analisi dei requisiti</a></b></td><td class="right"> pag. 5 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#raccolta-requisiti">Raccolta requisiti</a></td><td class="right"> pag. 5 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#requisiti-del-sistema">Requisiti del sistema</a></td><td class="right"> pag. 5 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-requisiti-1">Analisi dei requisiti</a></td><td class="right"> pag. 5 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-dominio">Analisi del dominio</a></td><td class="right"> pag. 6 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#vocabolario">Vocabolario</a></td><td class="right"> pag. 6 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sistemi-esterni">Sistemi Esterni</a></td><td class="right"> pag. 6 </td></tr>
-<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-requisiti-1">Analisi dei requisiti</a></td><td class="right"> pag. 8 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-requisiti-2">Analisi dei requisiti</a></td><td class="right"> pag. 8 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#casi-duso">Casi d'uso</a></td><td class="right"> pag. 8 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-rischio">Analisi del rischio</a></td><td class="right"> pag. 12 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#valutazione-dei-beni">Valutazione dei beni</a></td><td class="right"> pag. 12 </td></tr>
@@ -129,6 +131,17 @@ Il progetto mira ad essere facilmente scalabile sia orizzontalmente che vertical
 
 # Analisi dei requisiti
 
+## Raccolta Requisiti
+
+- Tramite l'applicazione gli utenti devono poter visualizzare i dati metereologici relativi alla località cercata
+- La visualizzazione dei dati, relativi alla città cercata, prevede due tipi di viste: la prima mostra all'utente dati in tempo reale e dei grafici filtrabili sia per dato metereologico, sia per un determinato intervallo temporale, la seconda offre all'utente la possibilità di visualizzare un report generale, riguardo i dati raccolti nel tempo (sono presenti anche report nazionali)
+- Tutti gli utenti possono accedere a tutti i dati presenti nel sistema, non sono previste limitazioni
+- Qualsiasi stazione può inviare al sistema, tramite eventi specifici, i dati raccolti attraverso gli appositi sensori di cui dispone
+- La stazione dovrà emettere l'evento solo quando viene registrato un cambiamento rispetto al dato (dello stesso sensore) precedentemente inviato al server, includendo la sua posizione tramite Zip Code
+- Gli eventi emessi dalla scheda devono rispettare i parametri definiti dal sistema, in caso contrario tali verranno scartati. Non saranno presi in considerazione, inoltre, dati relativi ad un sensore per cui il sistema non è predisposto
+- Tutte le specifiche riguardanti la formattazione degli eventi vengono messe a disposizione degli utenti
+- Ogni evento dovrà specificare il topic, il type e la revision di riferimento. I dati raccolti saranno opportunatamente racchiusi sotto la voce payload, il cui schema, potrà variare per ogni evento generato
+
 ## Requisiti del sistema
 ID  | Requisito | Tipo
 -|-|-
@@ -153,7 +166,7 @@ D.6 | Dalla stazione viene rilevato l'attuale stato metereologico | Dominio
 
 ## Analisi dei requisiti
 
-**F1**: La stazione invia i dati al server solo quando avvengono cambiamenti nei valori letti dai sensori; così facendo non si generano eventi ridondanti.
+**F.1**: La stazione invia i dati al server solo quando avvengono cambiamenti nei valori letti dai sensori; così facendo non si generano eventi ridondanti.
 <br>Da questo requisito possiamo evincere che:
 - Abbiamo bisogno, internamente alla stazione meteo, di memorizzare gli eventi letti dai sensori e poter quindi andare ad analizzare se un evento è più o meno significativo.
 - Così facendo possiamo limitare il numero di eventi da inviare al server e ridurre il numero sia di chiamate che la quantità di dati persistenti.
