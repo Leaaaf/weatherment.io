@@ -119,7 +119,7 @@ Il progetto è strutturato in modo tale da permettere la consultazione e la visu
 
 
 L'architettura è quella di un sistema ad eventi, distruibuito su diversi server e database per avere una maggiore efficienza, scalabilità e affidabilità.
-Nello specifico i dati finali esposti all'utente sono organizzati rispetto all'evento che rappresentano su opportune proiezioni. I dati raccolti direttamente dalle stazioni, invece, vengono processati ed immagazzinati da un server dedicato, che si appoggia su di un database relazionale. In questo modo viene garantita una maggiore efficienza su grandi quantità di informazioni, in quanto principali operazioni di lettura e scrittura avvengono in modo del tutto scorrelato.
+Nello specifico i dati finali esposti all'utente sono organizzati rispetto all'evento che rappresentano su opportune proiezioni. I dati raccolti direttamente dalle stazioni, invece, vengono processati ed immagazzinati da un altro database in modo dedicato e maggiormente efficace nella gestione di grandi moli di dati. In questo modo viene garantita una maggiore efficienza su grandi quantità di informazioni, in quanto principali operazioni di lettura e scrittura avvengono in modo del tutto scorrelato.
 
 
 Il progetto mira ad essere facilmente scalabile sia orizzontalmente che verticalmente ed espandibile sia dal punto di vista di nuove stazioni che di nuovi tipi di dato.
@@ -136,11 +136,11 @@ F.1 | La stazione invia i dati al server solo quando avvengono cambiamenti nei v
 F.2 | Nel momento in cui si genera un evento da inviare al server, la stazione provvederà a determinare la sua posizione e aggiungerà lo ZIP Code prima di inoltrarlo | Funzionale
 F.3 | I dati raccolti dalle stazioni vengono validati dal server prima dell'inserimento sul database, assicurandone la correttezza all'utente finale | Funzionale
 F.4 | Attraverso il client è possibile visualizzare i dati in tempo reale o in un intervallo di tempo definito dall'utente di una specifica città (dati di più stazioni aventi lo stesso cap) | Funzionale
-F.5 | L'interfaccia web deve permettere la consultazione attraverso filtri e criteri di ricerca | Funzionale
-F.6 | L'interfaccia web deve permettere la consultazione di grafici e report riassuntivi | Funzionale
+F.5 | L'interfaccia deve permettere la consultazione attraverso filtri e criteri di ricerca | Funzionale
+F.6 | L'interfaccia deve permettere la consultazione di grafici e report riassuntivi | Funzionale
 F.7 | Ogni evento generato dalla stazione meteo appartiene ad uno specifico topic | Funzionale
 F.8 | Per ogni topic ci sono determinati tipi di evento | Funzionale
-F.9 | Per ogni tipo di evento è definito un preciso schema che il payload deve rispettare | Funzionale
+F.9 | Per ogni topic, tipo e revisione di un evento è definito un preciso schema che il payload di quest'ultimo deve rispettare | Funzionale
 F.10 | Ogni volta che viene aggiunto un evento sul database si notifica alle componenti del sistema che si occupano di creare le proiezioni | Funzionale 
 D.1 | La temperatura inviata dai sensori deve essere misurata in *gradi Celsius (°C)* | Dominio
 D.2 | La pressione inviata dai sensori deve essere misurata in *ettopascal (hPa)* | Dominio
@@ -150,6 +150,44 @@ D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *part
 D.6 | Dalla stazione viene rilevato l'attuale stato metereologico | Dominio
 
 <div></div>
+
+## Analisi dei requisiti
+
+**F1**: La stazione invia i dati al server solo quando avvengono cambiamenti nei valori letti dai sensori; così facendo non si generano eventi ridondanti.
+<br>Da questo requisito possiamo evincere che:
+- Abbiamo bisogno, internamente alla stazione meteo, di memorizzare gli eventi letti dai sensori e poter quindi andare ad analizzare se un evento è più o meno significativo.
+- Così facendo possiamo limitare il numero di eventi da inviare al server e ridurre il numero sia di chiamate che la quantità di dati persistenti.
+
+**F.2**: Nel momento in cui si genera un evento da inviare al server, la stazione provvederà a determinare la sua posizione e aggiungerà lo ZIP Code prima di inoltrarlo.<br>Possiamo quindi dire che:
+- La stazione meteo dovrà essere in grado di calcolare la sua posizione tramite sensori GPS, ricavarne lo ZIP Code per poter poi trasmettere gli eventi, così facendo si potrà aggregare il dato in baso a quest'ultimo.
+- Potrebbe essere necessario utilizzare un sistema esterno per la geolocalizzazione.
+
+**F.3**: I dati raccolti dalle stazioni vengono validati dal server prima dell'inserimento sul database, assicurandone la correttezza all'utente finale.<br>Quindi:
+- Il server dovrà validare l'evento inviato dalla stazione meteo, attraverso uno schema definito per quello specifico tipo di evento. Quindi una volta validato (ad esempio, che un evento di cambio temperatura porti con sè dei dati strettamente legati alla temperatura e sensati) provvederà a scriverlo in maniera persistente.
+
+**F.4**: Attraverso il client è possibile visualizzare i dati in tempo reale o in un intervallo di tempo definito dall'utente di una specifica città (dati di più stazioni aventi lo stesso cap).<br>Questo requisito è stato in parte spiegato nella versione preliminare dell'analisi dei requisiti e condivide parte della spiegazione del **F.2**, per quanto riguarda lo zipCode. Si aggiunge però che:
+- Il sistema deve poter permettere la visualizzazione di dati in tempo reale, che verranno aggregati in un certo modo, e dati storici relativi ad una città cercata.
+
+
+Accorpiamo i requisiti **F.5** e **F.6** in quanto riferiscono le interfacce utente:<br>
+**F.5**: L'interfaccia deve permettere la consultazione attraverso filtri e criteri di ricerca.<br>
+**F.6**: L'interfaccia deve permettere la consultazione di grafici e report riassuntivi.<br>Si evince quanto segue:
+- L'interfaccia necessita di poter filtrare e visualizzare determinati dati, scegliendo diversi criteri. 
+- Si possono visualizzare dei report sia specifici che generali, a livello nazionale.
+
+**F.7**: Ogni evento generato dalla stazione meteo appartiene ad uno specifico topic.<br>
+- Il topic permette di differenziare diversi tipi di evento, come possono essere ad esempio legati alle condizioni meteo (i dati di cui ci occuperemo in questa prima versione) e altri come azione di utenti, registrazioni di nuovi sensori che potranno essere liberamente aggiunte senza dover alterare la struttura di base del sistema.
+- E' necessario poter distinguere i topic degli eventi registrati in quanto, lavorando su grandi moli di dati, bisogna essere il più efficienti e specifici possibili nel salvarli in modo persistente per poterli poi riutilizzare. 
+
+**F.8**: Per ogni topic ci sono determinati tipi di evento.<br>Questo tipo di requisito ci porta a:
+- Dover gestire, a seconda del topic di un evento ricevuto, i vari tipi che possono rappresentarlo; ad esempio, nel caso di un evento di topic meteorologico, i tipi possono essere diversi a seconda del sensore che ha registrato il cambiamento. Permette un'ulteriore suddivisione dei dati a livello di persistenza che rende ulteriormente efficace la ricerca e il filtraggio.
+
+**F.9**: Per ogni topic, tipo e revisione di un evento è definito un preciso schema che il payload di quest'ultimo deve rispettare.<br> Quindi si ha che:
+- A seconda del topic, del tipo e della revisione di un evento, ci sarà uno schema che il dato ricevuto dovrà rispettare per poter essere considerato valido dal sistema. 
+- Le stazioni meteo dovranno quindi seguire un "formato" standard nell'inviare gli eventi, altrimenti essi saranno considerati invalidi e scartati.
+
+**F.10**: Ogni volta che viene aggiunto un evento sul database si notifica alle componenti del sistema che si occupano di creare le proiezioni.<br>Abbiamo quindi dedotto che:
+- Per migliorare ulteriormente le prestazioni del sistema, invece di creare le proiezioni su richiesta dell'utente o di aggregare i dati in un modo diverso, conviene andare ad aggiornarle o crearle ogni volta che viene ricevuto un evento, notificando quindi le componenti del sistema che si occupano di trasformarlo in una proiezione.
 
 ## Analisi del dominio
 
@@ -205,7 +243,8 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Postcondizioni</b></td><td>Il sistema ha rilevato l'evento, controllato la sua validità e scritto in maniera persistente sul sistema</td></tr>
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;"> La stazione meteo invia i dati dell'evento a Gestione Evento <li style="list-style-type: decimal;"> Gestione Evento controlla che l'evento ricevuto sia valido secondo uno schema preciso, definito internamente al sistema<li style="list-style-type: decimal;">Gestione Evento registra in maniera persistente l'evento sul sistema<li style="list-style-type: decimal;">Il sistema prosegue la sua normale esecuzione, in attesa di ricevere altri eventi</td></tr>
 <tr><td><b>Scenari alternativi</b> </td><td>La connessione con la stazione meteo viene persa o è molto lenta: <li style="list-style-type: decimal;">La stazione meteo nel caso in cui il server smetta di rispondere riempie un buffer<li style="list-style-type: decimal;">Appena il server torna a rispondere la stazione svuota il buffer inviando gli eventi memorizzati<li style="list-style-type: decimal;">La stazione meteo elimina localmente in via definitiva l'evento solo ed esclusivamente se il server ne conferma la ricezione, per evitare una perdita di eventi</td></tr>
-<tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati letti dal sensore <br> Velocità nella validazione dell'evento <br> Efficienza nella scrittura persisente sul sistema <br> Efficienza della stazione meteo nell'invio dei dati e nell'utilizzo di memoria cache</td></tr>
+<tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati letti dal sensore <br> Velocità nella validazione dell'evento <br> Efficienza nella scrittura persisente sul sistema <br> Ef-ficienza della stazione meteo nell'invio dei dati e nell'utilizzo di memoria cache</td></tr>
+<tr><td><b>Punti aperti</b></td><td></td></tr>
 </table>
 <div></div>
 <table>
@@ -218,6 +257,7 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;"> L'utente ricerca la città di cui vuole visualizzare i dati<li style="list-style-type: decimal;"> Viene mostrata una schermata contenente tutti gli eventi relativi a quella città (registrati in base al cap della stazione meteo)<li style="list-style-type: decimal;">L'utente può decidere di filtrare attraverso Filtro Grafici per decidere la visualizzazione secondo criteri di tempo e di dato</td></tr>
 <tr><td><b>Scenari alternativi</b> </td><td>La città ricercata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente e ridireziona alla schermata di ricerca</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati <br>Semplicità nell'utilizzo e immediatezza nella lettura<br>Velocità in lettura</td></tr>
+<tr><td><b>Punti aperti</b></td><td></td></tr>
 </table>
 <br>
 <table>
@@ -230,6 +270,7 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente imposta i criteri secondo cui filtrare gli eventi: temporali, oppure legati al dato da visualizzare: pressione, inquinamento aria, temperatura, vento e l'umidità<li style="list-style-type: decimal;">Il sistema effettua la ricerca e mostra all'utente gli eventi risultanti</td></tr>
 <tr><td><b>Scenari alternativi</b> </td><td>La ricerca effettuata non ha eventi: <li style="list-style-type: decimal;">Il sistema notifica all'utente</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Rapidità ricerca</td></tr>
+<tr><td><b>Punti aperti</b></td><td></td></tr>
 </table>
 <div></div>
 <table>
@@ -242,6 +283,7 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente seleziona la schermata relativa alle statistiche<li style="list-style-type: decimal;">Il sistema mostra all'utente un report annuo generale di tutte le località<li style="list-style-type: decimal;">L'utente può decidere di filtrare le statistiche temporalmente e/o geograficamente</td></tr>
 <tr><td><b>Scenari alternativi</b> </td><td>Non vi sono statistiche da mostrare:<li style="list-style-type: decimal;">Il sistema notifica all'utente di non poter proseguire l'azione</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Integrità dei dati<br>Velocità in lettura <br>Immediatezza e semplicità di utilizzo e di consultazione</td></tr>
+<tr><td><b>Punti aperti</b></td><td></td></tr>
 </table>
 <table>
 <tr class="firstRow"><td><b>Titolo</b></td> <td>Filtro Statistiche</td></tr>
@@ -253,6 +295,7 @@ L’utente ha la possibilità di consultare la vista città di tutti i dati mete
 <tr><td><b>Scenario principale</b></td><td><li style="list-style-type: decimal;">L'utente imposta i criteri secondo cui filtrare le statistiche: temporalmente o geograficamente può impostare un'area di grandezza variabile che comprenda diverse località<li style="list-style-type: decimal;">Il sistema mostra all'utente un report che soddisfi i criteri impostati</td></tr>
 <tr><td><b>Scenari alternativi</b> </td><td>Non vi sono statistiche che soddisfino i criteri da mostrare:<li style="list-style-type: decimal;">Il sistema notifica all'utente di non poter proseguire l'azione</td></tr>
 <tr><td><b>Requisiti non funzionali</b></td><td>Rapidità ricerca</td></tr>
+<tr><td><b>Punti aperti</b></td><td></td></tr>
 </table>
 
 <div></div>
