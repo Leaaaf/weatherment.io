@@ -1,6 +1,6 @@
 - implementa una lista 
 - Fa vedere del codice e ti chiede quale sicuramente NON implementa il Singleton--> quello con il costruttore Pubblico
-- Quale operazione NON Ë supportata dai casi d'uso? Aggregazione
+- Quale operazione NON è supportata dai casi d'uso? Aggregazione
 - Definizione di requisito : definizione di funzionale e non funzionale 
 - Quale affermazione è falsa sugli Assembly? Nella cache non vengono salvati in codice nativo
 - public event Qualcosa a. Cos'è 'Qualcosa' ? Un delegato
