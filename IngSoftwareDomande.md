@@ -14,7 +14,7 @@
 - Quale delle seguenti affermazioni non è vera sui Pattern ? I pattern strutturali si occupano della creazioni degli oggetti. 
 - Cosa NON fa il GC ? Distruzione Deterministica 
 - Quale Pattern si utilizza per oggetti che cambiano runtime il loro comportamento ? STATE
-- ``` 
+- ```Cs
     Public MyClass {
         internal myClass2 { 
             ... }
@@ -28,7 +28,7 @@
 - Individuare un affermazione vera su attività-azioni : un'attività è una computazione non atomica legata ad uno stato
 -  Individuare l'affermazione falsa su pre/post condizioni + invarianti : un'invariante deve essere verificato durante tutta l'esecuzione di un'operazione  
 - Quale di queste NON Ë una caratteristica esterna? : Modularità
-- ```
+- ```CS
   public ? point { x y }
     public ? rettangolo {point p1 point p2 }   ===> point : struct ;
     ```    
