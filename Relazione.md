@@ -105,7 +105,7 @@
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#progettazione-del-collaudo">Progettazione del collaudo</a></td><td class="right"> pag. 59 </td></tr>
 <tr><td><a href="#deployment"><b>Deployment</b></a></td><td class="right"> pag. 63</td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#artefatti">Artefatti</a></td><td class="right"> pag. 63 </td></tr>
-<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#deplyment-type-level">Deployment-type Level</a></td><td class="right"> pag. 63 </td></tr>x
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#deplyment-type-level">Deployment-type Level</a></td><td class="right"> pag. 63 </td></tr>
 </table>
 
 <div></div>
