@@ -40,6 +40,7 @@
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#requisiti-del-sistema">Requisiti del sistema</a></td><td class="right"> pag. 5 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-dominio">Analisi del dominio</a></td><td class="right"> pag. 6 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#vocabolario">Vocabolario</a></td><td class="right"> pag. 6 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sistemi-esterni">Sistemi Esterni</a></td><td class="right"> pag. 6 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-requisiti-1">Analisi dei requisiti</a></td><td class="right"> pag. 8 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#casi-duso">Casi d'uso</a></td><td class="right"> pag. 8 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-rischio">Analisi del rischio</a></td><td class="right"> pag. 12 </td></tr>
@@ -175,6 +176,10 @@ Vista città | L'insieme di tutti i dati raccolti dalle diverse stazioni organiz
 Type | Definisce nello specifico il tipo di evento che riferisce il topic | Tipo evento
 Topic | Definisce l'argomento a cui l'evento fa riferimento | Argomento
 Version | Indica la versione della stazione
+
+### Sistemi Esterni
+
+Ogni stazione meteo è in grado di acquisire dati da più sensori esterni, ognuno adibito alla lettura di uno specifico dato. I sensori, comunicano con la stazione attraverso una porta seriale.
 
 <div></div>
 
@@ -524,7 +529,7 @@ State:<br>SUNNY; CLOUDY; RAINY; SNOWY
 **LogController** scrive dei file di log a seconda delle azioni avvenute sul sistema. <br>
 **TrasmissioneController** si occupa della trasmissione dei dati dalla stazione meteo al server. <br>
 **EventoController** scrive in maniera persistente gli eventi dopo aver effettuato la validazione secondo lo schema predefinito. <br>
-**ProiezioniController** aggrega gli eventi letti da EventoController creando delle proiezioni a seconda degli eventi ricevuti. Le proiezioni così create verranno poi utilizzate da VistaCittaController e da StatisticheController.
+**ProiezioniPresenter** aggrega gli eventi letti da EventoController creando delle proiezioni a seconda degli eventi ricevuti. Le proiezioni così create verranno poi utilizzate da VistaCittaController e da StatisticheController.
 
 <div></div>
 
@@ -553,7 +558,7 @@ I dati ricevuti dai sensori vengono elaborati da **StazioneController** il quale
 #### Diagramma di sequenza: Proiezione
 ![](resources/InteractionProiezione.svg)
 
-Il **ProiezioniController** viene notificato [ `notify()` ] della scrittura di un nuovo evento, che subisce un ulteriore elaborazione per creare le diverse proiezioni del dato.
+Il **ProiezioniPresenter** viene notificato [ `notify()` ] della scrittura di un nuovo evento, che subisce un ulteriore elaborazione per creare le diverse proiezioni del dato.
 
 <div></div>
 
@@ -669,15 +674,15 @@ Per rendere sicura una trasmissione remota dei dati sismici dalle stazioni meteo
 
 ![](resources/ProgettazioneDettaglio_ProiezioniEvento.svg)
 
-Dopo un'attenta riflessione, sono stati apportati dei cambiamenti rispetto alla struttura dei package definiti nella fase di analisi. I due controller, **VistaCittaController** e **StatisticheController**, sono stati ritenuti superflui e sono stati accorpati in **ProiezioniController**. Questo per permettere di mantenere la logica di business in un unico posto, non dovendo così definire più controller per la lettura e la scrittura dei dati. Inoltre, utilizzando un repository pattern, non è necessario specificare come sia effettivamente l'implementazione, che può utilizzare diversi approcci (DAO etc..). 
+Dopo un'attenta riflessione, sono stati apportati dei cambiamenti rispetto alla struttura dei package definiti nella fase di analisi. I due controller, **VistaCittaController** e **StatisticheController**, sono stati ritenuti superflui e sono stati accorpati in **ProiezioniPresenter**. Questo per permettere di mantenere la logica di business in un unico posto, non dovendo così definire più controller per la lettura e la scrittura dei dati. Inoltre, utilizzando un repository pattern, non è necessario specificare come sia effettivamente l'implementazione, che può utilizzare diversi approcci (DAO etc..). 
 
 #### GestioneEvento
-- **EventoController**: questo controller agisce da tramite tra la trasmissione della stazione meteo (TrasmissioneController) e il controller delle proiezioni. È un componente fondamentale del sistema in quanto gestisce la validazione degli eventi attraverso Validator e, tramite il repository pattern, delega la persistenza degli eventi all'EventoRepository.<br>A differenza della fase di analisi non abbiamo più bisogno del meodo notify per comunicare con ProiezioniController in quanto per scelte tecnologiche si utilizza il DBMS PostrgreSQL che fornisce l'apposita funzione standard `notify()`.
+- **EventoController**: questo controller agisce da tramite tra la trasmissione della stazione meteo (TrasmissioneController) e il presenter delle proiezioni. È un componente fondamentale del sistema in quanto gestisce la validazione degli eventi attraverso Validator e, tramite il repository pattern, delega la persistenza degli eventi all'EventoRepository.<br>A differenza della fase di analisi non abbiamo più bisogno del meodo notify per comunicare con ProiezioniPresenter in quanto per scelte tecnologiche si utilizza il DBMS PostrgreSQL che fornisce l'apposita funzione standard `notify()`.
 - **Validator**: si occupa della validazione del payload, facendo riferimento al JSON Schema relativo al tipo di evento ricevuto. In caso di evento malformato o non valido lancia una eccezione *InvalidEvent*.
 - **EventoRepository**: attraverso il repository pattern viene disaccoppiata la logica di business e la logica di accesso ai dati; l'EventoRepository quindi permette la lettura e la scrittura degli eventi sulla persistenza. Per farlo implementa l'interfaccia EventoRepositoryInterface che definisce esattamente come salvare, trovare e filtrare gli eventi interfacciandosi direttamente con il DB.<br>I metodi `find` e `filter` servono per recuperare degli eventi avvenuti in passato nel caso in cui si voglia generare una nuova proiezione da zero, in quanto la funzione di notifica dell'EventoController viene richiamata solo una volta, appena ricevuto il dato.<br>Non espone, a differenza di un generico repository pattern, tutti i metodi CRUD (Create, Read, Update, Delete) per ogni entità del modello, in quanto la persistenza degli eventi viene gestita in APPEND-ONLY e quindi non può per nessun motivo permettere la modifica o l'eliminazione dei dati.
 
 #### Proiezioni
-- **ProiezioniController**: si occupa della creazione e dell'aggiornamento delle proiezioni attraverso il DataRepository a partire dalle notifiche degli eventi ricevuti dall'EventoController.<br>Il metodo `gestisciEvento`, dato l'evento in input, lo trasforma a seconda del tipo dell'evento in una classe specifica.
+- **ProiezioniPresenter**: si occupa della creazione e dell'aggiornamento delle proiezioni attraverso il DataRepository a partire dalle notifiche degli eventi ricevuti dall'EventoController.<br>Il metodo `gestisciEvento`, dato l'evento in input, lo trasforma a seconda del tipo dell'evento in una classe specifica.
 - **DataRepository**: è un componente fondamentale del sistema; sempre attraverso il repository pattern, permette di separare la business logic dall'accesso ai dati, permettendo inoltre di poter avere diverse implementazioni a seconda del caso d'uso.<br>Essendo l'unico responsabile della persistenza delle proiezioni, viene utilizzato sia in scrittura, in quanto permette di creare ed aggiornare le proiezioni, sia in lettura poichè viene utilizzato direttamente dalle interfacce utente.<br>Implementa un numero di interfacce pari al numero di proiezioni di cui il sistema ha bisogno; proprio per questo motivo il repository pattern è facilmente mantenibile ed espandibile nel futuro. Ogni interfaccia quindi espone i metodi per la scrittura e la lettura del dato a seconda di come esso è definito nel DB. I metodi `save` di ogni interfaccia consentono la scrittura permanente del dato, mentre i vari metodi `get` permettono di recuperare i dati compresi in un certo intervallo temporale dato un detterminato zipCode.
 
 <div></div>
