@@ -39,11 +39,10 @@
 <tr><td><b><a href=#analisi-dei-requisiti>Analisi dei requisiti</a></b></td><td class="right"> pag. 5 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#raccolta-requisiti">Raccolta requisiti</a></td><td class="right"> pag. 5 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#requisiti-del-sistema">Requisiti del sistema</a></td><td class="right"> pag. 5 </td></tr>
-<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-requisiti-1">Analisi dei requisiti</a></td><td class="right"> pag. 5 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-dominio">Analisi del dominio</a></td><td class="right"> pag. 6 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#vocabolario">Vocabolario</a></td><td class="right"> pag. 6 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sistemi-esterni">Sistemi Esterni</a></td><td class="right"> pag. 6 </td></tr>
-<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-requisiti-2">Analisi dei requisiti</a></td><td class="right"> pag. 8 </td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-dei-requisiti-1">Analisi dei requisiti</a></td><td class="right"> pag. 6 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#casi-duso">Casi d'uso</a></td><td class="right"> pag. 8 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#analisi-del-rischio">Analisi del rischio</a></td><td class="right"> pag. 12 </td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#valutazione-dei-beni">Valutazione dei beni</a></td><td class="right"> pag. 12 </td></tr>
@@ -162,9 +161,6 @@ D.4 | L'umidità inviata dai sensori deve essere misurata in *percentuale (%)* |
 D.5 | La quantità di *CO*$_2$ inviata dai sensori deve essere misurata in *parti per milione (ppm)* | Dominio 
 D.6 | Dalla stazione viene rilevato l'attuale stato metereologico | Dominio
 
-<div></div>
-
-## Analisi dei requisiti
 
 **F.1**: La stazione invia i dati al server solo quando avvengono cambiamenti nei valori letti dai sensori; così facendo non si generano eventi ridondanti.
 <br>Da questo requisito possiamo evincere che:
@@ -201,6 +197,8 @@ Accorpiamo i requisiti **F.5** e **F.6** in quanto riferiscono le interfacce ute
 
 **F.10**: Ogni volta che viene aggiunto un evento sul database si notifica alle componenti del sistema che si occupano di creare le proiezioni.<br>Abbiamo quindi dedotto che:
 - Per migliorare ulteriormente le prestazioni del sistema, invece di creare le proiezioni su richiesta dell'utente o di aggregare i dati in un modo diverso, conviene andare ad aggiornarle o crearle ogni volta che viene ricevuto un evento, notificando quindi le componenti del sistema che si occupano di trasformarlo in una proiezione.
+
+<div></div>
 
 ## Analisi del dominio
 
