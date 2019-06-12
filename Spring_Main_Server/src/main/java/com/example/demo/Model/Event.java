@@ -22,6 +22,10 @@ package com.example.demo.Model;
  */
 ///////////////////////////////////////////////////////////////////////////
 
+/*
+'{"type": "TemperatureChanged","payload": {"board_id": "cafebafe-cafebabe-cafebabe","board_offset": 3,"value": 5,"emitted_at": 857671257612}}'
+*/
+
 import com.example.demo.MyException;
 import com.example.demo.Validator.PayloadValidator;
 import com.fasterxml.jackson.databind.JsonNode;
