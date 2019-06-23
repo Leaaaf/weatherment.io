@@ -23,11 +23,14 @@
         <span onclick="nextDiv()"><img src="resources/arrow.svg"></span>
         -->
         <div id="slideshow">
-            <div class="chart">
+            <div class="chart animated fadeIn slow" id="start">
                 <canvas id="chart-pie"></canvas>
             </div>
             <div class="chart">
                 <canvas id="chart-donut"></canvas>
+            </div>
+            <div class="chart">
+                <canvas id="chart-mix"></canvas>
             </div>
         </div>
     </div>
@@ -40,6 +43,8 @@
 
         function nextDiv() {
             const logo = document.getElementById('logo');
+            const start = document.getElementById('start');
+            start.classList.remove('animated');
             logo.classList.remove('animated', 'delay-1s', 'jello')
             $('#slideshow > div:first')
                 .fadeOut(1000, () => {$('#slideshow > div:first').next().fadeIn(1000).end().appendTo('#slideshow'); logo.classList.add('animated', 'delay-1s', 'jello');})
@@ -119,7 +124,7 @@
         data= {
 				datasets: [{
 					data: [30, 20, 30, 15, 5],
-					backgroundColor: ['#FFD700', '#9b9b9b' ,'#004ba8', '#c2edf8', '#457CBF'],
+					backgroundColor: ['#FFD700', '#ababab' ,'#004ba8', '#c2edf8', '#457CBF'],
 				}],
 				labels: [
 					'Soleggiato',
@@ -137,7 +142,7 @@
                 labels: {
                     fontSize: 14,
                     padding: 14,
-                    boxWidth: 2,
+                    boxWidth: 4,
                     fontStyle: 'italic'
                 }
             },
@@ -157,5 +162,49 @@
             data: data,
             options: options
         })
+
+        var chartData = {
+			labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+			datasets: [{
+				type: 'line',
+				label: 'Umidità',
+				borderColor: '#ff3953',
+				borderWidth: 2,
+                data: [5, 7, 10, 7, 7, 4, 9, 12, 25, 10, 11, 4],
+				fill: false                
+			}, {
+				type: 'bar',
+				label: 'Pioggia (mm)',
+				backgroundColor: '#457CBF',
+                data: [50, 34, 56, 21, 34, 67, 65, 12, 34, 24, 11, 9, 45],
+				borderColor: 'white',
+				borderWidth: 2
+			}]
+		};
+        var chartMix = new Chart('chart-mix', {
+				type: 'bar',
+				data: chartData,
+				options: {
+					responsive: true,
+					title: {
+						display: true,
+                        position: 'bottom',
+						text: 'Prepicitazioni ed umidità medie annue'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: true
+					}, 
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                        fontSize: 14,
+                        padding: 14,
+                        boxWidth: 2,
+                        fontStyle: 'italic'
+                        }
+                    }
+				}
+			});
     </script>
 </body>
