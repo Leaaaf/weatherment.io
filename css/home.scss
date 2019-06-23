@@ -97,7 +97,7 @@ body {
             filter: brightness(130%);
         }
 
-        a {
+        a:not(.logo) {
             margin-top: 50px;
             font-size: 1.9em;
             color: #d8d8d8;

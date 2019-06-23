@@ -1,0 +1,161 @@
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link href="css/stats.scss" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/019efa71b1.js"></script>
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <center><a class="logo" href="/index.html"><img id="logo" class="animated jello slow delay-1s" src="/resources/WEATHERMENT-small.svg"></a></center>
+        <!--
+        <h1>Statistiche Nazionali</h1>
+        <form style="margin-left: 0.5vw" onsubmit="event.preventDefault(); onSearch();">
+                <input type="search" placeholder="Ricerca località">
+                <i class="fa fa-search"></i>
+        </form>
+        -->
+        <!--
+        <span onclick="nextDiv()"><img src="resources/arrow.svg"></span>
+        -->
+        <div id="slideshow">
+            <div class="chart">
+                <canvas id="chart-pie"></canvas>
+            </div>
+            <div class="chart">
+                <canvas id="chart-donut"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $("#slideshow > div:gt(0)").hide();
+
+        setInterval(nextDiv, 10000);
+
+        function nextDiv() {
+            const logo = document.getElementById('logo');
+            logo.classList.remove('animated', 'delay-1s', 'jello')
+            $('#slideshow > div:first')
+                .fadeOut(1000, () => {$('#slideshow > div:first').next().fadeIn(1000).end().appendTo('#slideshow'); logo.classList.add('animated', 'delay-1s', 'jello');})
+        }
+        
+        function transparentize(color, opacity) {
+			var alpha = opacity === undefined ? 0.5 : 1 - opacity;
+			return Color(color).alpha(alpha).rgbString();
+		}
+        
+		var presets = window.chartColors;
+        
+        var options = {
+            responsive: true,
+            maintainAspectRatio: true,
+            title: {
+               display: true,
+               position: 'bottom',
+               text: 'Temperature medie nazionali (°C)'
+            },
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    fontSize: 14,
+                    padding: 10,
+                    boxWidth: 2,
+                    fontStyle: 'italic',
+                    usePointStyle: true
+                }
+            },
+			spanGaps: false,
+			elements: {
+				line: {
+					tension: 0.000001
+				}
+			},
+			plugins: {
+				filler: {
+					propagate: true
+				}
+			},
+            scale: {
+                ticks: {
+                    min: 0,
+                    max: 30,
+                    stepSize: 10,
+                }
+            }
+		};
+
+        var data = {
+			labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+			datasets: [{
+                pointRadius: 3,
+				backgroundColor: transparentize('#457CBF'),
+				borderColor: '#457CBF',
+				data: [4, 2, 11, 13, 15, 16, 20, 20, 16, 10, 5, 4],
+				label: 'Minima',
+                fill: -1
+			}, {
+            pointRadius: 3,
+				backgroundColor: transparentize('#ff3953'),
+				borderColor: '#ff3953',
+				data: [7, 6, 14, 15, 20, 24, 26, 27, 23, 20, 16, 11],
+				label: 'Massima',
+                fill: -1
+            }]
+		};
+        
+        var chart = new Chart('chart-pie', {
+			type: 'radar',
+			data: data,
+			options: options
+		});
+
+        data= {
+				datasets: [{
+					data: [30, 20, 30, 15, 5],
+					backgroundColor: ['#FFD700', '#9b9b9b' ,'#004ba8', '#c2edf8', '#457CBF'],
+				}],
+				labels: [
+					'Soleggiato',
+					'Nuvolo',
+					'Piovoso',
+					'Neve',
+					'Grandine'
+				]
+			}
+
+        options= {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+                labels: {
+                    fontSize: 14,
+                    padding: 14,
+                    boxWidth: 2,
+                    fontStyle: 'italic'
+                }
+            },
+            title: {
+                display: true,
+                position: 'bottom',
+                text: 'Percentuali annue (%)'
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+
+        var chart2 = new Chart('chart-donut', {
+            type: 'doughnut',
+            data: data,
+            options: options
+        })
+    </script>
+</body>
