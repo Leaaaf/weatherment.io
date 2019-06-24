@@ -37,7 +37,8 @@ body {
             padding: 5px;
 
             .fa,
-            .fas {
+            .fas,
+            .far {
                 color: #d8d8d8;
                 box-sizing: border-box;
                 padding: 10px;
@@ -79,14 +80,16 @@ body {
             }
 
             .fa,
-            .fas {
+            .fas,
+            .far {
                 background: $light-blue;
                 color: $white;
             }
         }
 
         .fa,
-        .fas {
+        .fas,
+        .far {
             align-self: center;
         }
 
@@ -98,7 +101,7 @@ body {
         }
 
         a:not(.logo) {
-            margin-top: 50px;
+            margin-top: 40px;
             font-size: 1.9em;
             color: #d8d8d8;
             text-decoration: none;
@@ -151,7 +154,7 @@ body {
             flex-direction: row;
             align-items: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.3em;
+            font-size: 1.2em;
 
             p {
                 margin-left: 40px;
