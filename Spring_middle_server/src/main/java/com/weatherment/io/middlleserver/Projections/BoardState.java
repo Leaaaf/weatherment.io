@@ -7,6 +7,8 @@ public class BoardState {
     private Temperature temperature;
     private Pressure pressure;
     private Wind wind;
+    private Humidity humidity;
+    private Pollution pollution;
 
     public long getId() {
         return id;
@@ -24,6 +26,14 @@ public class BoardState {
         this.wind = wind;
     }
 
+    public Pollution getPollution() {
+        return pollution;
+    }
+
+    public void setPollution(Pollution pollution) {
+        this.pollution = pollution;
+    }
+
     public Temperature getTemperature() {
         return temperature;
     }
@@ -38,5 +48,13 @@ public class BoardState {
 
     public void setPressure(Pressure pressure) {
         this.pressure = pressure;
+    }
+
+    public Humidity getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(Humidity humidity) {
+        this.humidity = humidity;
     }
 }

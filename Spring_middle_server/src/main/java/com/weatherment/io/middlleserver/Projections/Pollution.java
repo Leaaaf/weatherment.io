@@ -1,22 +1,15 @@
 package com.weatherment.io.middlleserver.Projections;
 
-public class Pressure {
+public class Pollution {
+
     private long id;
     private float value;
-    private long emitted_at;
+    private long timestamp;
 
-    public Pressure(long id, float value, long emitted_at) {
+    public Pollution(long id, float value, long timestamp) {
         this.id = id;
         this.value = value;
-        this.emitted_at = emitted_at;
-    }
-
-    public long getEmitted_at() {
-        return emitted_at;
-    }
-
-    public void setEmitted_at(long emitted_at) {
-        this.emitted_at = emitted_at;
+        this.timestamp = timestamp;
     }
 
     public long getId() {
@@ -33,5 +26,13 @@ public class Pressure {
 
     public void setValue(float value) {
         this.value = value;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

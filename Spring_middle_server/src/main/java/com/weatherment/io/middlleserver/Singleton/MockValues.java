@@ -1,9 +1,6 @@
 package com.weatherment.io.middlleserver.Singleton;
 
-import com.weatherment.io.middlleserver.Projections.BoardState;
-import com.weatherment.io.middlleserver.Projections.Pressure;
-import com.weatherment.io.middlleserver.Projections.Temperature;
-import com.weatherment.io.middlleserver.Projections.Wind;
+import com.weatherment.io.middlleserver.Projections.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +8,16 @@ import java.util.List;
 import java.util.Random;
 
 public class MockValues {
+
+    private static final int MAX_PRESSURE = 80000;
+    private static final int MIN_PRESSURE = 78000;
+    private static final int MIN_WIND = 9;
+    private static final int MAX_WIND = 13;
+    private static final int MIN_HUMIDITY = 70;
+    private static final int MAX_HUMIDITY = 72;
+    private static final int MIN_POLLUTION = 200;
+    private static final int MAX_POLLUTION = 220;
+
 
     protected static MockValues instance;
     protected final int MAX_TEMPERATURES = 40;
@@ -55,12 +62,15 @@ public class MockValues {
         Temperature temp = new Temperature();
         float max, min;
         if (1 < lastTempValue) {
-            max = lastTempValue + 0.5F;
-            min = lastTempValue - 0.5F;
+            max = lastTempValue + 0.1F;
+            min = lastTempValue - 0.1F;
         } else {
-            min = 25;
-            max = 35;
+            min = 29;
+            max = 31;
         }
+
+        if (min < 29) min = 29;
+        if (max > 31) max = 31;
 
         temp.setValue(min + rand.nextFloat() * (max - min)); // Generate a random value form 25 to 30;
         temp.setId(Long.valueOf(rand.nextInt(100)));
@@ -75,11 +85,16 @@ public class MockValues {
     public BoardState getBoardState() {
         BoardState res = new BoardState();
         res.setId(rand.nextInt(100));
-        Pressure pressure = new Pressure(rand.nextInt(100), 10 + rand.nextFloat() * (30 - 10), new Date().getTime());
-        Wind wind = new Wind(1, 5 + rand.nextFloat() * (25 - 5), "N/NE", new Date().getTime());
+        Pressure pressure = new Pressure(rand.nextInt(100), MIN_PRESSURE + rand.nextFloat() * (MAX_PRESSURE - MIN_PRESSURE), new Date().getTime());
+        Humidity humidity = new Humidity(rand.nextInt(100), MIN_HUMIDITY + rand.nextFloat() * (MAX_HUMIDITY - MIN_HUMIDITY), new Date().getTime());
+        Pollution pollution = new Pollution(rand.nextInt(100), MIN_POLLUTION + rand.nextFloat() * (MAX_POLLUTION - MIN_POLLUTION), new Date().getTime());
+
+        Wind wind = new Wind(1, MIN_WIND + rand.nextFloat() * (MAX_WIND - MIN_WIND), "N/NE", new Date().getTime());
         res.setWind(wind);
         res.setTemperature(getTemperature());
         res.setPressure(pressure);
+        res.setPollution(pollution);
+        res.setHumidity(humidity);
         return res;
     }
 
