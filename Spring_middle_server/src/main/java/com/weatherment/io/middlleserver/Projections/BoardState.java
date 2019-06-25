@@ -57,4 +57,16 @@ public class BoardState {
     public void setHumidity(Humidity humidity) {
         this.humidity = humidity;
     }
+
+    @Override
+    public String toString() {
+        return "BoardState{" +
+                "id=" + id +
+                ", temperature=" + temperature +
+                ", pressure=" + pressure +
+                ", wind=" + wind +
+                ", humidity=" + humidity +
+                ", pollution=" + pollution +
+                '}';
+    }
 }

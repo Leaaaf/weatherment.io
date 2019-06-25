@@ -34,4 +34,13 @@ public class Humidity {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "Humidity{" +
+                "id=" + id +
+                ", value=" + value +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

@@ -28,7 +28,9 @@ public class MockController {
 
     @GetMapping("/mock/boardstate")
     public BoardState getBoardState() {
-        return MockValues.getInstance().getBoardState();
+        BoardState res = MockValues.getInstance().getBoardState();
+        System.out.println("Print board state\n" + res);
+        return res;
     }
 
     @GetMapping("/mock/temperature/all")

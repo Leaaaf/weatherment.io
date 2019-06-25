@@ -34,4 +34,13 @@ public class Pressure {
     public void setValue(float value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "Pressure{" +
+                "id=" + id +
+                ", value=" + value +
+                ", emitted_at=" + emitted_at +
+                '}';
+    }
 }
