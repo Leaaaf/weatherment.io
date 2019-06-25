@@ -108,7 +108,7 @@
             //chart.data.labels.push(new Date().getHours().toString() + ':' + new Date().getMinutes().toString() + ':' +
               //  new Date().getSeconds().toString())
             //chart.data.datasets[0].data.push(Math.floor(Math.random() * (maximum - minimum + 1)) + minimum)
-            $.get("http://192.168.1.53:8080/mock/temperature/one",
+            $.get("http://localhost:8080/mock/temperature/one",
                 (result) => {
                         chart.data.labels.push(
                             new Date(result.emitted_at).getHours().toString() 
@@ -120,7 +120,7 @@
         }
 
         function reqLive() {
-            $.get("http://192.168.1.53:8080/mock/boardstate",
+            $.get("http://localhost:8080/mock/boardstate",
                 (result) => {
                     document.getElementById('temperaturaLive').innerHTML = result.temperature.value + '°' + '<i class="fa fa-thermometer-three-quarters"></i>'
                     document.getElementById('pressioneLive').innerHTML = result.pressure.value + 'hPA' + '<i class="fa fa-tachometer-alt"></i>'
