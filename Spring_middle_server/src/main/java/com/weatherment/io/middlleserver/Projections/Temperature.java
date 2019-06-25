@@ -4,12 +4,12 @@ package com.weatherment.io.middlleserver.Projections;
 import javax.persistence.*;
 
 @Entity
-@Table(name="temperature")
+@Table(name = "temperature")
 public class Temperature {
 
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "value")
@@ -22,6 +22,9 @@ public class Temperature {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getEmitted_at() {
         return emitted_at;
@@ -29,10 +32,6 @@ public class Temperature {
 
     public void setEmitted_at(Long emitted_at) {
         this.emitted_at = emitted_at;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public float getValue() {

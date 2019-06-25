@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TemperatureRepository extends JpaRepository<Temperature,Long> {
+public interface TemperatureRepository extends JpaRepository<Temperature, Long> {
     List<Temperature> findAll();
 }

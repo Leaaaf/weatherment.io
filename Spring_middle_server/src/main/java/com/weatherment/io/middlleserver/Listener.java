@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,27 +17,16 @@ import java.sql.Statement;
 
 @Component
 public class Listener {
-    @Value("${spring.datasource.url}")
-    private String url = "jdbc:postgresql://localhost/weatherment";
-
-    @Autowired
-    TemperatureRepository temperatureRepository;
-
-    @Value("${spring.datasource.username}")
-    private String username = "postgres";
-
-    @Value("${spring.datasource.password}")
-    private String password = "Gunsacdc97";
-
     // SINGLETON
     private static Listener instance;
-
-    public static Listener getInstance() {
-        if (instance == null) {
-            instance = new Listener();
-        }
-        return instance;
-    }
+    @Autowired
+    TemperatureRepository temperatureRepository;
+    @Value("${spring.datasource.url}")
+    private String url = "jdbc:postgresql://localhost/weatherment";
+    @Value("${spring.datasource.username}")
+    private String username = "postgres";
+    @Value("${spring.datasource.password}")
+    private String password = "Gunsacdc97";
 
     protected Listener() {
         try {
@@ -53,6 +41,32 @@ public class Listener {
         System.out.println("NOTIFICATION SYSTEM STARTED OK");
     }
 
+    public static Listener getInstance() {
+        if (instance == null) {
+            instance = new Listener();
+        }
+        return instance;
+    }
+
+    private void parseNotification(PGNotification notification) {
+        System.out.println("Update on notification channel: " + notification.getName());
+        System.out.println("Notification message: " + notification.getParameter());
+
+        try {
+            Object obj = Parser.getInstance().parse(notification.getParameter());
+            if (obj instanceof Temperature) temperatureRepository.save((Temperature) obj);
+            System.out.print("Saved new temperature to DB " + obj);
+        } catch (NullPointerException e) {
+            System.out.println("Unable to parse obj");
+            e.printStackTrace();
+        } catch (NotFoundException e) {
+            System.out.println("Unable to parse obj");
+            e.printStackTrace();
+        } catch (JSONException e) {
+            System.out.println("Unable to parse obj");
+            e.printStackTrace();
+        }
+    }
 
     class ListenerThread extends Thread {
         private Connection conn;
@@ -70,7 +84,7 @@ public class Listener {
             try {
                 System.out.println("Waiting for notification...");
                 while (true) {
-                    org.postgresql.PGNotification notifications[] = pgconn.getNotifications();
+                    org.postgresql.PGNotification[] notifications = pgconn.getNotifications();
                     if (notifications != null) {
                         for (int i = 0; i < notifications.length; i++)
                             parseNotification(notifications[i]);
@@ -86,26 +100,6 @@ public class Listener {
                 System.out.println("Error in waiting for notification");
                 System.exit(0);
             }
-        }
-    }
-
-    private void parseNotification(PGNotification notification) {
-        System.out.println("Update on notification channel: " + notification.getName());
-        System.out.println("Notification message: " + notification.getParameter());
-
-        try {
-            Object obj = Parser.getInstance().parse(notification.getParameter());
-            if(obj instanceof Temperature) temperatureRepository.save((Temperature) obj);
-            System.out.print("Saved new temperature to DB " + (Temperature) obj);
-        } catch (NullPointerException e) {
-            System.out.println("Unable to parse obj");
-            e.printStackTrace();
-        } catch (NotFoundException e) {
-            System.out.println("Unable to parse obj");
-            e.printStackTrace();
-        } catch (JSONException e) {
-            System.out.println("Unable to parse obj");
-            e.printStackTrace();
         }
     }
 }

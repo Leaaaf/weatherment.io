@@ -3,14 +3,14 @@ package com.weatherment.io.middlleserver.Projections;
 public class Wind {
 
     private long id;
-    private float speed;
+    private float value;
     private String direction;
     private long emitted_at;
 
 
-    public Wind(long id, float speed, String direction, long emitted_at) {
+    public Wind(long id, float value, String direction, long emitted_at) {
         this.id = id;
-        this.speed = speed;
+        this.value = value;
         this.direction = direction;
         this.emitted_at = emitted_at;
     }
@@ -31,12 +31,12 @@ public class Wind {
         this.id = id;
     }
 
-    public float getSpeed() {
-        return (float) (Math.round(speed * 10.0) / 10.0);
+    public float getValue() {
+        return (float) (Math.round(value * 10.0) / 10.0);
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public void setValue(float value) {
+        this.value = value;
     }
 
     public String getDirection() {
