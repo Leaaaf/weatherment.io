@@ -9,6 +9,12 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 
+
+//////////
+// EXAMPLE OF JSON TO NOTIFY
+//'{"type": "TemperatureChanged","payload": {"board_id": "cafebafe-cafebabe-cafebabe","board_offset": 3,"value": 10,"emitted_at": 857671257612}}'
+///////////
+
 public class Parser {
 
     private static Parser instance;
