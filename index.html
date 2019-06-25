@@ -44,19 +44,19 @@
         <div class="main">
             <div class="title">
                 <h1>BOLOGNA</h1>
-                <p id="temperaturaLive">31° <i class="fa fa-thermometer-three-quarters"></i></p>
-                <p>450hPA <i class="fa fa-tachometer-alt"></i></p>
-                <p>S/SE 15km/h <i class="fa fa-wind"></i></p>
-                <p>58% <i class="fa fa-tint"></i></p>
-                <p>200ppm <i class="fa fa-smog"></i></p>
-                <p>SUNNY<i class="fa fa-sun"></i></p>
+                <p id="temperaturaLive"><i class="fa fa-thermometer-three-quarters"></i></p>
+                <p id="pressioneLive"><i class="fa fa-tachometer-alt"></i></p>
+                <p id="ventoLive"><i class="fa fa-wind"></i></p>
+                <p id="umiditaLive"><i class="fa fa-tint"></i></p>
+                <p id="smogLive"><i class="fa fa-smog"></i></p>
+                <p id="tempoLive">SUNNY<i class="fa fa-sun"></i></p>
             </div>
             <div class="chart-container" style="display: none;">
                 <canvas id="myChart"></canvas>
             </div>
             <div class="switch animated fadeInRight delay-1s slow">
                 <!--<i class="fa fa-clock"></i><br>-->
-                <center><p id="infoTime">REAL TIME <a href="#" onclick="switchTime();"><i class="fas fa-toggle-on"></i></a> STORICO GIORNI</p></center>
+                <p id="infoTime">REAL TIME <a href="#" onclick="switchTime();"><i class="fas fa-toggle-on"></i></a> STORICO GIORNI</p>
             </div>
         </div>
     </div>
@@ -68,6 +68,7 @@
         var interval = null
         var myChart = null
 
+        reqLive()
         var interval2 = setInterval(() => reqLive(), 5000)
 
         function onSearch() {
@@ -119,10 +120,13 @@
         }
 
         function reqLive() {
-            temp = document.getElementById('temperaturaLive')
-            $.get("http://192.168.1.53:8080/mock/temperature/one",
+            $.get("http://192.168.1.53:8080/mock/boardstate",
                 (result) => {
-                    temp.innerHTML = result.value + '°' + '<i class="fa fa-thermometer-three-quarters"></i>'
+                    document.getElementById('temperaturaLive').innerHTML = result.temperature.value + '°' + '<i class="fa fa-thermometer-three-quarters"></i>'
+                    document.getElementById('pressioneLive').innerHTML = result.pressure.value + 'hPA' + '<i class="fa fa-tachometer-alt"></i>'
+                    document.getElementById('ventoLive').innerHTML = result.wind.direction + ' ' + result.wind.value + 'km/h' + '<i class="fa fa-wind"></i>'
+                    document.getElementById('umiditaLive').innerHTML = result.humidity.value + '%' + '<i class="fa fa-tint"></i>'
+                    document.getElementById('smogLive').innerHTML = result.pollution.value + 'ppm' + '<i class="fa fa-smog"></i>'
                 });
         }
 
@@ -163,8 +167,8 @@
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true,
-                                    minimum: 25,
-                                    maximum: 35
+                                    min: 28.8,
+                                    max: 31.2
                                 }
                             }]
                         },
