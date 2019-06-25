@@ -36,7 +36,7 @@ public class Temperature {
     }
 
     public float getValue() {
-        return value;
+        return (float) (Math.round(value * 10.0) / 10.0);
     }
 
     public void setValue(float value) {
@@ -45,6 +45,6 @@ public class Temperature {
 
     @Override
     public String toString() {
-        return "ID : " + id + "\nValue : " + value;
+        return "ID : " + getId() + "\nValue : " + getValue() + "\nemitted_at : " + emitted_at;
     }
 }

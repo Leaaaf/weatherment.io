@@ -96,6 +96,7 @@ public class Listener {
         try {
             Object obj = Parser.getInstance().parse(notification.getParameter());
             if(obj instanceof Temperature) temperatureRepository.save((Temperature) obj);
+            System.out.print("Saved new temperature to DB " + (Temperature) obj);
         } catch (NullPointerException e) {
             System.out.println("Unable to parse obj");
             e.printStackTrace();
