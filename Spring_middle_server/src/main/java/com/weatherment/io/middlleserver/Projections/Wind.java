@@ -46,4 +46,14 @@ public class Wind {
     public void setDirection(String direction) {
         this.direction = direction;
     }
+
+    @Override
+    public String toString() {
+        return "Wind{" +
+                "id=" + id +
+                ", value=" + value +
+                ", direction='" + direction + '\'' +
+                ", emitted_at=" + emitted_at +
+                '}';
+    }
 }

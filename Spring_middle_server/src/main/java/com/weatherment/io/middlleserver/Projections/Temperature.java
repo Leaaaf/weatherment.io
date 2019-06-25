@@ -44,6 +44,10 @@ public class Temperature {
 
     @Override
     public String toString() {
-        return "ID : " + getId() + "\nValue : " + getValue() + "\nemitted_at : " + emitted_at;
+        return "Temperature{" +
+                "id=" + id +
+                ", value=" + value +
+                ", emitted_at=" + emitted_at +
+                '}';
     }
 }
