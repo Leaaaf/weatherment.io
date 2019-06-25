@@ -1,4 +1,4 @@
-package com.weatherment.io.middlleserver;
+package com.weatherment.io.middlleserver.Singleton;
 
 import com.weatherment.io.middlleserver.Projections.Temperature;
 
@@ -30,6 +30,7 @@ public class MockValues {
             temp.setEmitted_at(START_TIMESTAMP + (1000 * 60) * i + 1);
             temperatureList.add(temp);
         }
+        System.out.println("Created temperature mocked values");
     }
 
     public Temperature getTemperatureRandom() {
