@@ -2,7 +2,6 @@ package com.weatherment.io.middlleserver.Parser;
 
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.weatherment.io.middlleserver.Projections.Temperature;
 import javassist.NotFoundException;
 import org.json.JSONException;
@@ -28,12 +27,12 @@ public class Parser {
         JSONObject jsonObject = new JSONObject(parameter);
         JSONObject payloadObject = jsonObject.getJSONObject("payload");
         Object obj = gson.fromJson(String.valueOf(payloadObject), formatClass(jsonObject.getString("type")));
-        if(null==obj) throw new NullPointerException();
+        if (null == obj) throw new NullPointerException();
         return obj;
     }
 
     private Type formatClass(String type) throws NotFoundException {
-        switch(type) {
+        switch (type) {
             case "TemperatureChanged":
                 return Temperature.class;
         }
