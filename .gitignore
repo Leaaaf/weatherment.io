@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 .cache/
 dist/
 node_modules/
+=======
+node_modules/
+.cache/
+dist/
+>>>>>>> frontend

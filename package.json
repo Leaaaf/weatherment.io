@@ -1,0 +1,29 @@
+{
+  "name": "weatherment.io",
+  "version": "1.0.0",
+  "description": "A beatiful app for weather management",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel *.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leaaaf/weatherment.io.git"
+  },
+  "keywords": [
+    "vai"
+  ],
+  "author": "io",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leaaaf/weatherment.io/issues"
+  },
+  "homepage": "https://github.com/Leaaaf/weatherment.io#readme",
+  "dependencies": {
+    "chart.js": "^2.8.0",
+    "parcel-bundler": "^1.12.3"
+  },
+  "devDependencies": {
+    "sass": "^1.18.0"
+  }
+}

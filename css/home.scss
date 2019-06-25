@@ -1,0 +1,326 @@
+@import './colors.scss';
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $white;
+}
+
+.city-view {
+    width: 90%;
+    height: 100%;
+
+    .sidenav {
+        height: 100%;
+        width: 5vw;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: $light-blue;
+
+        #selected {
+            color: #ffffff;
+        }
+
+        form {
+            margin-top: 25px;
+            margin-right: 2.5vw;
+            transform: translate(0%, 0%);
+            transition: all 1s;
+            width: 50px;
+            height: 50px;
+            background: $light-blue;
+            box-sizing: border-box;
+            border-radius: 25px;
+            border: 4px solid $light-blue;
+            padding: 5px;
+
+            .fa,
+            .fas,
+            .far {
+                color: #d8d8d8;
+                box-sizing: border-box;
+                padding: 10px;
+                width: 42.5px;
+                height: 42.5px;
+                position: absolute;
+                top: 0;
+                right: 0;
+                border-radius: 50%;
+                text-align: center;
+                font-size: 1.2em;
+                transition: all 1s;
+            }
+        }
+
+        input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 42.5px;
+            line-height: 30px;
+            outline: 0;
+            border: 0;
+            display: none;
+            font-size: 1.5em;
+            border-radius: 20px;
+            padding: 0 20px;
+            background-color: $light-blue;
+        }
+
+        form:hover {
+            width: 500px;
+            cursor: pointer;
+
+            input {
+                display: block;
+                color: $white;
+            }
+
+            .fa,
+            .fas,
+            .far {
+                background: $light-blue;
+                color: $white;
+            }
+        }
+
+        .fa,
+        .fas,
+        .far {
+            align-self: center;
+        }
+
+        .icon {
+            margin-top: 0 auto;
+            align-self: center;
+            max-width: 100%;
+            filter: brightness(130%);
+        }
+
+        a:not(.logo) {
+            margin-top: 40px;
+            font-size: 1.9em;
+            color: #d8d8d8;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+
+            &:hover {
+                color: #ffffff;
+            }
+        }
+    }
+
+    ::-webkit-input-placeholder {
+        /* WebKit, Blink, Edge */
+        color: #bdc7c5;
+    }
+
+    :-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: #bdc7c5;
+        opacity: 1;
+    }
+
+    ::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: #bdc7c5;
+        opacity: 1;
+    }
+
+    :-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: #bdc7c5;
+    }
+
+    ::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: #bdc7c5;
+    }
+
+    ::placeholder {
+        /* Most modern browsers support this now. */
+        color: #bdc7c5;
+    }
+
+    .main {
+
+        .switch {
+            margin-top: 2vh;
+            margin-left: 35vw;
+
+            p {
+                font-family: 'Montserrat', sans-serif;
+                font-size: 1em;
+                color: black;
+                display: flex;
+                flex-direction: row;
+                align-content: center;
+                align-items: center;
+                align-self: center;
+            }
+
+            .fas {
+                color: $light-blue;
+                font-size: 2em;
+                padding-left: 1.5vw;
+                padding-right: 1.5vw;
+            }
+        }
+        
+        .title {
+            margin-bottom: 2vh;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2em;
+
+            p {
+                margin-left: 40px;
+                
+                i {
+                    color: $light-blue;
+                }
+            }
+
+            h1 {
+                margin: 0px 25px;
+                color: $light-blue;
+                font-size: 3em;
+                font-family: 'Montserrat', sans-serif;
+            }
+        }
+
+        margin-left: 5vw;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.splash {
+    margin: 0;
+    width: 100%;
+    height: 80%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    form {
+        margin-top: 25px;
+        margin-right: 2.5vw;
+        transform: translate(0%, 0%);
+        transition: all 1s;
+        width: 50px;
+        height: 50px;
+        background: $white;
+        box-sizing: border-box;
+        border-radius: 25px;
+        border: 4px solid $light-blue;
+        padding: 5px;
+    }
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 42.5px;
+        line-height: 30px;
+        outline: 0;
+        border: 0;
+        display: none;
+        font-size: 1.5em;
+        border-radius: 20px;
+        padding: 0 20px;
+    }
+
+    form:hover {
+        width: 500px;
+        cursor: pointer;
+
+        input {
+            display: block;
+            color: $light-blue;
+        }
+
+        .fa,
+        .fas {
+            background: $white;
+            color: $main-blue;
+        }
+    }
+
+    .fa,
+    .fas {
+        box-sizing: border-box;
+        padding: 10px;
+        width: 42.5px;
+        height: 42.5px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-radius: 50%;
+        color: $light-blue;
+        text-align: center;
+        font-size: 1.2em;
+        transition: all 1s;
+    }
+
+    img {
+        margin: 0;
+        width: 60vw;
+        height: 60vh;
+    }
+
+    .bottom {
+        position: absolute;
+        bottom: 15%;
+    }
+
+    .stats {
+        position: absolute;
+        bottom: 5%;
+
+        .circleStats {
+            margin-top: 25px;
+            margin-right: 2.5vw;
+            width: 50px;
+            height: 50px;
+            background: $white;
+            box-sizing: border-box;
+            border-radius: 25px;
+            border: 4px solid $light-blue;
+            padding: 5px;
+            transform: translate(0%, 0%);
+            transition: all 1s;
+
+            .far {
+                box-sizing: border-box;
+                padding: 10px 0px 5px 2px;
+                width: 42.5px;
+                height: 42.5px;
+                position: absolute;
+                top: 0;
+                right: 0;
+                border-radius: 50%;
+                color: $light-blue;
+                text-align: center;
+                font-size: 1.4em;
+                transition: all 1s;
+
+                &:hover {
+                    color: $main-blue;
+                }
+            }
+        }
+    }
+}
+
+.chart-container {
+    position: relative;
+}

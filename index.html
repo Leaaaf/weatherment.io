@@ -1,0 +1,260 @@
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link href="css/home.scss" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/019efa71b1.js"></script>
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="splash">
+        <img id="logo" class="animated fadeInDown slow delay-1s" src="/resources/WEATHERMENT.svg">
+        <div id="bar" class="bottom animated fadeInUp delay-2s">
+            <form onsubmit="event.preventDefault(); onSearch();">
+                <input type="search" id="searchBar" placeholder="Ricerca località">
+                <i class="fa fa-search"></i>
+            </form>
+        </div>
+        <div id="stats" class="stats animated fadeInUp delay-3s">
+            <div class="circleStats">
+                <a href="stats.html"><i class="far fa-file-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="city-view" style="display: none">
+        <div class="sidenav">
+            <a class="logo" href="."><img id="logo" class="icon animated jello slow delay-1s"
+                    src="/resources/WEATHERMENT-small.svg"></a>
+            <form style="margin-left: 0.5vw" onsubmit="event.preventDefault(); onSearch();">
+                <input type="search" placeholder="Ricerca località">
+                <i class="fa fa-search"></i>
+            </form>
+            <a href="#" onclick="createChart();"><i class="fas fa-tachometer-alt"></i></a>
+            <a href="#" onclick="createChart();"><i id="selected" class="fa fa-thermometer-half"></i></a>
+            <a href="#" onclick="createChart();"><i class="fas fa-wind"></i></a>
+            <a href="#" onclick="createChart();"><i class="fas fa-tint"></i></a>
+            <a href="#" onclick="createChart();"><i class="fas fa-smog"></i></a>
+            <a href="#" onclick="createChart();"><i class="fas fa-cloud-sun-rain"></i></a>
+            <a href="stats.html"><i class="far fa-file-alt"></i></a>
+        </div>
+        <div class="main">
+            <div class="title">
+                <h1>BOLOGNA</h1>
+                <p id="temperaturaLive"><i class="fa fa-thermometer-three-quarters"></i></p>
+                <p id="pressioneLive"><i class="fa fa-tachometer-alt"></i></p>
+                <p id="ventoLive"><i class="fa fa-wind"></i></p>
+                <p id="umiditaLive"><i class="fa fa-tint"></i></p>
+                <p id="smogLive"><i class="fa fa-smog"></i></p>
+                <p id="tempoLive">SUNNY<i class="fa fa-sun"></i></p>
+            </div>
+            <div class="chart-container" style="display: none;">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="switch animated fadeInRight delay-1s slow">
+                <!--<i class="fa fa-clock"></i><br>-->
+                <p id="infoTime">REAL TIME <a href="#" onclick="switchTime();"><i class="fas fa-toggle-on"></i></a> STORICO GIORNI</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var switchToggle = false
+        var maximum = 30
+        var minimum = 10
+        var interval = null
+        var myChart = null
+
+        reqLive()
+        var interval2 = setInterval(() => reqLive(), 5000)
+
+        function onSearch() {
+            searched = document.getElementById('searchBar')
+            if (searched.value.toLowerCase() != 'bologna') {
+                alert('Città non trovata!')
+                searched.value = ""
+                return
+            } else {
+                const logo = document.getElementById('logo');
+                logo.classList.remove('animated', 'fadeInDown', 'delay-1s');
+                logo.classList.add('animated', 'fadeOutUp', 'delay-1s');
+                logo.addEventListener('animationend', function () {
+                    logo.style.display = "none";
+                    document.querySelector('.splash').style.display = "none";
+                    document.querySelector('.city-view').style.display = "flex";
+                    document.querySelector('.sidenav').classList.add('animated', 'fadeInLeft');
+                    document.querySelector('.title').classList.add('animated', 'fadeInDown', 'delay-1s');
+                    createChart();
+                })
+                const bar = document.getElementById('bar');
+                bar.classList.remove('animated', 'fadeInUp', 'delay-2s');
+                bar.classList.add('animated', 'fadeOutDown', 'delay-1s', 'slow');
+                bar.addEventListener('animationend', function () {
+                    bar.style.display = "none";
+                })
+                const stats = document.getElementById('stats');
+                stats.classList.remove('animated', 'fadeInUp', 'delay-3s');
+                stats.classList.add('animated', 'fadeOutDown', 'slower');
+                stats.addEventListener('animationend', function () {
+                    stats.style.display = "none";
+                })
+            }
+        }
+
+        function reqTemp(chart) {
+            //chart.data.labels.push(new Date().getHours().toString() + ':' + new Date().getMinutes().toString() + ':' +
+              //  new Date().getSeconds().toString())
+            //chart.data.datasets[0].data.push(Math.floor(Math.random() * (maximum - minimum + 1)) + minimum)
+            $.get("http://192.168.1.53:8080/mock/temperature/one",
+                (result) => {
+                        chart.data.labels.push(
+                            new Date(result.emitted_at).getHours().toString() 
+                            + ':' + new Date(result.emitted_at).getMinutes().toString() 
+                            + ':' + new Date(result.emitted_at).getSeconds().toString());
+                        chart.data.datasets[0].data.push(result.value);
+                    chart.update();
+                });
+        }
+
+        function reqLive() {
+            $.get("http://192.168.1.53:8080/mock/boardstate",
+                (result) => {
+                    document.getElementById('temperaturaLive').innerHTML = result.temperature.value + '°' + '<i class="fa fa-thermometer-three-quarters"></i>'
+                    document.getElementById('pressioneLive').innerHTML = result.pressure.value + 'hPA' + '<i class="fa fa-tachometer-alt"></i>'
+                    document.getElementById('ventoLive').innerHTML = result.wind.direction + ' ' + result.wind.value + 'km/h' + '<i class="fa fa-wind"></i>'
+                    document.getElementById('umiditaLive').innerHTML = result.humidity.value + '%' + '<i class="fa fa-tint"></i>'
+                    document.getElementById('smogLive').innerHTML = result.pollution.value + 'ppm' + '<i class="fa fa-smog"></i>'
+                });
+        }
+
+        function switchTime() {
+            // clock = document.getElementsByClassName('fa-clock')[0]
+            // clock.classList.add('animated', 'jello', 'slow')
+            // clock.addEventListener('animationend', () => clock.classList.remove('animated', 'jello', 'slow'))
+            if (!switchToggle) {
+                myChart.destroy()
+                toggle = document.getElementsByClassName('fa-toggle-on')[0];
+                toggle.classList.remove('fa-toggle-on');
+                toggle.classList.add('fa-toggle-off');
+                switchToggle = true
+                chartContainer = document.querySelector('.chart-container');
+                chartContainer.style.display = "flex";
+                chartContainer.classList.add('animated', 'fadeInUp', 'slow')
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Temperature',
+                            data: [],
+                            borderColor: 'rgba(0, 75, 168, 1)',
+                            fill: false,
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        elements: {
+                            line: {
+                                tension: 0
+                            }
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    min: 28.8,
+                                    max: 31.2
+                                }
+                            }]
+                        },
+                        legend: {
+                            labels: {
+                                boxWidth: 1,
+                            },
+                            position: 'right'
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuad'
+                        }
+                    }
+                });
+                reqTemp(myChart)
+                interval = setInterval(() => (reqTemp(myChart)), 5000)
+            } else {
+                clearInterval(interval)
+                myChart.destroy()
+                toggle = document.getElementsByClassName('fa-toggle-off')[0];
+                toggle.classList.remove('fa-toggle-off');
+                toggle.classList.add('fa-toggle-on');
+                createChart()
+                switchToggle = false
+            }
+        }
+
+        function createChart() {
+            clearInterval(interval)
+            chartContainer = document.querySelector('.chart-container');
+            chartContainer.style.display = "flex";
+            chartContainer.classList.add('animated', 'fadeInUp', 'slow')
+            var ctx = document.getElementById('myChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['11/01', '12/01', '13/01', '14/01', '15/01', '16/01', '17/01', '18/01', '19/01',
+                        '20/01', '21/01', '22/01', '23/01', '24/01', '25/01', '26/01', '27/01', '28/01',
+                        '29/01', '30/01', '31/01', '01/02', '02/02', '03/02'
+                    ],
+                    datasets: [{
+                            label: 'MAX Temperature',
+                            data: [20, 22, 23, 25, 18, 20, 20, 21, 20, 18, 18, 22, 20, 22, 15, 17, 18, 20,
+                                23, 26, 27, 24, 26, 18
+                            ],
+                            borderColor: 'rgba(252, 60, 60, 1)',
+                            fill: false,
+                            borderWidth: 3
+                        },
+                        {
+                            label: 'MIN Temperature',
+                            data: [12, 13, 12, 15, 8, 10, 12, 12, 9, 12, 11, 11, 10, 13, 7, 8, 7, 9, 11, 16,
+                                19, 22, 20, 14
+                            ],
+                            borderColor: 'rgba(0, 75, 168, 1)',
+                            fill: false,
+                            borderWidth: 3
+                        }
+                    ]
+                },
+                options: {
+                    elements: {
+                        line: {
+                            tension: 0
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    legend: {
+                        labels: {
+                            boxWidth: 1,
+                        },
+                        position: 'right'
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuad'
+                    }
+                }
+            });
+        }
+    </script>
+</body>
